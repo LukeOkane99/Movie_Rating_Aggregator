@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title>{{ title }} - Movie Rating Aggregator</title>
+    </head>
+    <body>
+        <h1>Movie Rating Aggregator</h1>
+        {% for movie in movies %}
+        <div><p>name: <b>{{ movie.name }}</b>, year: <b>{{ movie.year }}</b>, rating: <b>{{ movie.rating }}</b></p></div>
+        {% endfor %}
+    </body>
+</html>
