@@ -14,13 +14,12 @@ import lxml
 import time
 import cchardet
 
-movie = "spider-man"
-year = "2002"
+movie = "tenet"
+year = "2020"
 
 session = Session()
 
-def get_IMDB_MetaCritic_ratings(movie, year):
-    #search_url = r"https://www.imdb.com/search/title/?title="+movie+"+&title_type=feature"
+def get_imdb_metacritic_ratings(movie, year):
     try:
         response = session.get(r"https://www.imdb.com/search/title/?title="+movie+"+&title_type=feature")
         if response.status_code == 200:
@@ -40,7 +39,6 @@ def get_IMDB_MetaCritic_ratings(movie, year):
         return float(imdb_rating), float(metacritic_rating)
 
 def get_letterboxd_rating(movie, year):
-    #search_url = "https://letterboxd.com/search/films/"+movie+" "+year
     try:
         response = session.get("https://letterboxd.com/search/films/"+movie+" "+year)
         if response.status_code == 200:
@@ -55,8 +53,6 @@ def get_letterboxd_rating(movie, year):
     except Exception as ex:
         print(str(ex))
     finally:
-        # Search review page for rating
-        #search_url = "https://letterboxd.com"+review_endpoint
         try:
             response = session.get("https://letterboxd.com"+review_endpoint)
             if response.status_code == 200:
@@ -70,8 +66,6 @@ def get_letterboxd_rating(movie, year):
             return rating
 
 def get_rotten_tomatoes_ratings(movie, year):
-    # Set headless broswer option for chrome driver
-    #search_url = r"https://www.rottentomatoes.com/search?search="+movie
     try:
         response = session.get(r"https://www.rottentomatoes.com/search?search="+movie)
         if response.status_code == 200:
@@ -100,6 +94,18 @@ def get_tmdb_rating(movie, year):
             print(str(ex))    
     finally:
         return tmdb_rating
+
+def get_average_rating(imdb, metascore, letterboxd, tomatometer, audience_score, tmdb):
+    avg_rating = ((imdb*10)+metascore+(letterboxd*20)+tomatometer+audience_score+(tmdb*10)) / 6
+    avg_rating = round(avg_rating, 1)
+    return avg_rating
+
+#imdb, metascore = get_imdb_metacritic_ratings(movie, year)
+#letterboxd = get_letterboxd_rating(movie, year)
+#tomatometer, audience_score = get_rotten_tomatoes_ratings(movie, year)
+#tmdb = get_tmdb_rating(movie, year)
+#print(get_average_rating(imdb, metascore, letterboxd, tomatometer, audience_score, tmdb))
+
 """
 def get_roger_ebert_rating(movie, year):
     # Set headless broswer option for chrome driver
