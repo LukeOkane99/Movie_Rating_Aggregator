@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{ title }} - Movie Rating Aggregator</title>
+    </head>
+    <body>
+        <h1>Movie Rating Aggregator</h1>
+        {% for movie in movies %}
+        <div><p>Title: <b>{{ movie["title"] }}</b>, Year: <b>{{ movie["year"] }}</b>, IMDB: <b>{{ movie["Imdb_rating"] }}</b>, Metascore: <b>{{ movie["Metascore"] }}</b>, Tomatometer: <b>{{ movie["Tomatometer"] }}</b>, Audience Score: <b>{{ movie["Audience_score"] }}</b>, Letterboxd: <b>{{ movie["Letterboxd_rating"] }}</b>, Tmdb: <b>{{ movie["Tmdb_rating"] }}</b>, Average: <b>{{ movie["Average_rating"] }}</b></p></div>
+        {% endfor %}
+    </body>
+</html>
