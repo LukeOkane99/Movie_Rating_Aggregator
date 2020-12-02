@@ -6,7 +6,7 @@ from rating_aggregator.models import User, Movie, WatchlistMovies
 @app.route('/', methods=['GET'])
 @app.route('/index')
 def hello():
-    return "Hello Wolrd!"
+    return "Hello World!"
 
 # Endpoint to access all movies in the database
 #@app.route('/movies/all', methods=['GET'])

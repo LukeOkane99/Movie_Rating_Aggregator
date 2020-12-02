@@ -23,11 +23,12 @@ def get_imdb_metascore_ratings(movie, year):
                 if film_title.lower() == movie.lower() and film_year == year:
                     imdb_rating = title.find('div', class_='inline-block ratings-imdb-rating').get('data-value')
                     metacritic_rating = title.find('div', class_ = 'inline-block ratings-metascore').span.text.strip()
+                    synopsis = bs_object.find_all('p', class_ = "text-muted")[1].get_text()
                     break
     except Exception as ex:
         print(str(ex))
     finally:
-        return film_title, film_year, ((float(imdb_rating))*10), float(metacritic_rating)
+        return film_title, film_year, ((float(imdb_rating))*10), float(metacritic_rating), synopsis
 
 # scrape letterboxd rating for movie
 def get_letterboxd_rating(movie, year):
@@ -97,7 +98,7 @@ def get_average_rating(imdb, metascore, letterboxd, tomatometer, audience_score,
 
 # return all ratings
 def get_all_ratings(movie, year):
-    title, year, imdb, metascore = get_imdb_metascore_ratings(movie, year)
+    title, year, imdb, metascore, synopsis = get_imdb_metascore_ratings(movie, year)
     tomatometer, audience_score = get_rotten_tomatoes_ratings(movie, year)
     letterboxd = get_letterboxd_rating(movie, year)
     tmdb = get_tmdb_rating(movie, year)
@@ -105,4 +106,21 @@ def get_all_ratings(movie, year):
     session.close()
     avg = get_average_rating(imdb, metascore, tomatometer, audience_score, letterboxd, tmdb)
 
-    return title, year, imdb, metascore, tomatometer, audience_score, letterboxd, tmdb, avg
+    return title, year, imdb, metascore, synopsis, tomatometer, audience_score, letterboxd, tmdb, avg
+
+# Testing
+movie = 'Inception'
+year = '2010'
+
+title, release_year, imdb, metacritic, synopsis, letterboxd, tomatometer, audience, tmdb, avg = get_all_ratings(movie, year)
+
+print("Title: " + title)
+print("Year: " + release_year)
+print("Synopsis: " + synopsis)
+print("Imdb: " + str(imdb))
+print("Metacritic: " + str(metacritic))
+print("Letterboxd: " + str(letterboxd))
+print("Tomatometer: " + str(tomatometer))
+print("Audience score: " + str(audience))
+print("TMDB: " + str(tmdb))
+print("Average: " + str(avg))
