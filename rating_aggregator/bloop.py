@@ -1,22 +1,40 @@
-import sqlite3
+from rating_aggregator import app, db
+from models import User, Movie, WatchlistMovies
 import get_ratings
 
-movie = 'Bob'
-release_year = '2005'
-#title, year, imdb, metascore, tomatometer, audience_score, letterboxd, tmdb, avg = get_ratings.get_all_ratings(movie, release_year)
+movie = 'inception'
+release_year = '2010'
+title, release_year, imdb, metacritic, synopsis, image, letterboxd, tomatometer, audience, tmdb, avg = get_all_ratings(movie, year)
 
 # create database if it doesn't already exist
 def create_db():
-    # create and connect to database
-    conn = sqlite3.connect('database.db')
-    # create movies table
-    conn.execute('CREATE TABLE Movies (MovieId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Title TEXT NOT NULL, Year TEXT NOT NULL, Imdb_rating REAL, Metascore REAL, Tomatometer REAL, Audience_score REAL, Letterboxd_rating REAL, Tmdb_rating REAL, Average_rating REAL)')
-    # create users table
-    conn.execute('CREATE TABLE Users (UserId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Forename TEXT NOT NULL, Surname TEXT NOT NULL, Username TEXT NOT NULL, Password TEXT NOT NULL, Date_created TEXT NOT NULL)')
-    conn.close()
+    if db is None:
+        db.create_all()
+    else:
+        print('The database already exists')
 
 # add a new movie to the database if not present
-def add_movie_to_db(ttl, yr, imdb, metacritic, tomatometer, audience_score, letterboxd, tmdb, average):
+def add_movie_to_db(ttl, yr, imdb, metacritic, tomatometer, audience_score, letterboxd, tmdb, average, image, synopsis):
+    record = Movie.query.filter_by(title=ttl).first()
+    if record:
+        print("Record already exists!")
+    else:
+        try:
+            movie = Movie(ttl, yr, imdb, metacritic, tomatometer, audience_score, letterboxd, tmdb, average, image, synopsis)
+            db.session.add(movie)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            print("error when inserting movie record")
+        finally:
+            session.close()
+            print("Movie successfully added!")
+
+add_movie_to_db(title, release_year, imdb, metacritic, synopsis, image, letterboxd, tomatometer, audience, tmdb, avg)
+
+"""
+# add a new movie to the database if not present
+def add_movie_to_db(ttl, yr, imdb, metacritic, tomatometer, audience_score, letterboxd, tmdb, average, image, synopsis):
     with sqlite3.connect('database.db') as conn:
         cur = conn.cursor()
         # Check if movie record already exists in database
@@ -63,3 +81,4 @@ def get_movie(ttl, yr):
             return record[0]
         else:
             print("No record exists for this movie")
+"""
