@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Register An Account</h1>
+    <div>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.forename.label }}
+                {{ form.forename }}
+            </div>
+            <div>
+                {{ form.surname.label }}
+                {{ form.surname }}
+            </div>
+            <div>
+                {{ form.email_address.label }}
+                {{ form.email_address }}
+            </div>
+            <div>
+                {{ form.password.label }}
+                {{ form.password }}
+            </div>
+            <div>
+                {{ form.password_confirmation.label }}
+                {{ form.password_confirmation }}
+            </div>
+            <div>
+                {{ form.register_button }}
+            </div>
+        </form>
+    </div>
+    <div>
+        <small>
+            Already have an account? <a href="{{ url_for('login_user')  }}">Click Here!</a>
+        </small>
+    </div>
+{% endblock content %}

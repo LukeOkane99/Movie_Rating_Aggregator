@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Log in to your account</h1>
+    <div>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.email_address.label }}
+                {{ form.email_address }}
+            </div>
+            <div>
+                {{ form.password.label }}
+                {{ form.password }}
+            </div>
+            <div>
+                {{ form.login_button }}
+            </div>
+        </form>
+    </div>
+    <div>
+        <small>
+            Don't have an account? <a href="{{ url_for('register_user')  }}">Click Here!</a>
+        </small>
+    </div>
+{% endblock content %}

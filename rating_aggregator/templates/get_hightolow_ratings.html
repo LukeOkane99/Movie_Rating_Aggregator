@@ -1,12 +1,7 @@
-<!doctype html>
-<html>
-    <head>
-        <title>{{ title }} - Movie Rating Aggregator</title>
-    </head>
-    <body>
-        <h1>High to Low Ratings</h1>
-        {% for movie in movies %}
+{% extends "layout.html" %}
+{% block content %}
+    <h1>High to Low Ratings</h1>
+    {% for movie in movies %}
         <div><p>Title: <b>{{ movie["title"] }}</b>, Year: <b>{{ movie["year"] }}</b>, IMDB: <b>{{ movie["imdb_rating"] }}</b>, Metascore: <b>{{ movie["metascore"] }}</b>, Tomatometer: <b>{{ movie["tomatometer"] }}</b>, Audience Score: <b>{{ movie["audience_score"] }}</b>, Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b>, Tmdb: <b>{{ movie["tmdb_rating"] }}</b>, Average: <b>{{ movie["average_rating"] }}</b>, Image: <b>{{ movie["movie_image"] }}</b>, Synopsis: <b>{{ movie["synopsis"] }}</b>, Update date: <b>{{ movie["date_updated"] }}</b></p></div>
-        {% endfor %}
-    </body>
-</html>
+    {% endfor %}
+{% endblock content %}

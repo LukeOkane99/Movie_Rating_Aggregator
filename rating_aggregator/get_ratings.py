@@ -112,6 +112,7 @@ def get_all_ratings(movie, year):
 
     return title, year, imdb, metascore, synopsis, image, tomatometer, audience_score, letterboxd, tmdb, avg
 
+"""
 # Testing
 movie = 'Rocketman'
 year = '2019'
@@ -129,3 +130,4 @@ print("Tomatometer: " + str(tomatometer))
 print("Audience score: " + str(audience))
 print("TMDB: " + str(tmdb))
 print("Average: " + str(avg))
+"""

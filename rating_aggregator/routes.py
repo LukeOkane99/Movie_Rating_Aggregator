@@ -1,9 +1,10 @@
 import flask
-from flask import render_template, url_for, flash, request
+from flask import render_template, url_for, flash, request, redirect
 from rating_aggregator import app, db
 from rating_aggregator.models import User, Movie, WatchlistMovies
 from rating_aggregator.get_ratings import get_all_ratings
 from sqlalchemy import desc, asc
+from rating_aggregator.forms import registrationForm, loginForm
 
 # Route for index page
 @app.route('/', methods=['GET'])
@@ -75,4 +76,20 @@ def get_nonfavourable_reviews():
     return render_template('get_non-favourable_movies.html', title='Non-Favourable Ratings', movies=movies)
 
 #<--------------------User Endpoints------------------->
+
+# Route to register a new user
+@app.route('/register', methods=['GET', 'POST'])
+def register_user():
+    form = registrationForm()
+    if form.validate_on_submit():
+        flash(f'Account successfully created for {form.username.data} {form.surname.data}!')
+        return redirect(url_for('login_user'))
+    return render_template('register.html', title='Register an account', form=form)
+
+# Route to login a registered user
+@app.route('/login', methods=['GET', 'POST'])
+def login_user():
+    form = loginForm()
+    return render_template('login.html', title='Log in to your account', form=form)
+
 

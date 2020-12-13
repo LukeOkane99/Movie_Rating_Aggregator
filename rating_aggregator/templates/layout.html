@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }} - Movie Rating Aggregator</title>
+        {% else %}
+            <title>Movie Rating Aggregator</title>
+        {% endif %}
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+    </body>
+</html>
