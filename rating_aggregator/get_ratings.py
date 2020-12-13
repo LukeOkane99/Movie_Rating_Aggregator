@@ -113,8 +113,8 @@ def get_all_ratings(movie, year):
     return title, year, imdb, metascore, synopsis, image, tomatometer, audience_score, letterboxd, tmdb, avg
 
 # Testing
-movie = 'tenet'
-year = '2020'
+movie = 'Rocketman'
+year = '2019'
 
 title, release_year, imdb, metacritic, synopsis, image, letterboxd, tomatometer, audience, tmdb, avg = get_all_ratings(movie, year)
 
