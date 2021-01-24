@@ -1,6 +1,8 @@
 # Initialise application
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 
 # Create app instance
 app = Flask(__name__)
@@ -13,5 +15,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' # Relative path 
 # Create instance of database
 db = SQLAlchemy(app)
 
+bcrypt = Bcrypt(app)
+
+# Handle logged in user sessions
+login_manager = LoginManager(app)
+
 # import routes after app is initialised
-from rating_aggregator import routes
+from rating_aggregator import routes, db_test

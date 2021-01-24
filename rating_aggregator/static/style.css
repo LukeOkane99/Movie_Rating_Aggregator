@@ -1,0 +1,63 @@
+.header {
+    background-color: #817f7f;
+    padding: 1rem 0 3rem;
+  }
+
+.header h1 {
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.header ul {
+  display: inline-flex;
+}
+
+.header li {
+    list-style-type: none;
+    font-size: 20px;
+    padding-left: 1rem;
+}
+
+.header a {
+    font-family: sans-serif;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.header a:hover {
+    color: white;
+}
+
+  .container {
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 0rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content {
+    flex-grow: 1;
+}
+
+.body {
+  padding-left: 1rem;
+}
+
+  .search_form {
+    float: right;
+    padding-right: 1%;
+    font-family: sans-serif;
+    display: inline-flex;
+    font-weight: bold;
+  }
+
+  .page_tites {
+    text-align: center;
+    font-family: sans-serif;
+  }
+
+  .page_content {
+    text-align: center;
+  }

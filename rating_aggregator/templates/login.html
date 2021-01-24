@@ -1,25 +1,47 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Log in to your account</h1>
-    <div>
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <div>
-                {{ form.email_address.label }}
-                {{ form.email_address }}
-            </div>
-            <div>
-                {{ form.password.label }}
-                {{ form.password }}
-            </div>
-            <div>
-                {{ form.login_button }}
-            </div>
-        </form>
-    </div>
-    <div>
-        <small>
-            Don't have an account? <a href="{{ url_for('register_user')  }}">Click Here!</a>
-        </small>
+    <h1 style="text-align: center; font-family: sans-serif;">Log in to your account</h1>
+    <div style="text-align: center;">
+        <div style="display: inline-block; text-align: left;"">
+            <form method="POST" action="">
+                {{ login_form.hidden_tag() }}
+                <div>
+                    {{ login_form.email.label }}
+
+                    {% if login_form.email.errors %}
+                        {{ login_form.email }}
+                        <div>
+                            {% for error in login_form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ login_form.email }}
+                    {% endif %}
+                </div>
+                <div>
+                    {{ login_form.password.label }}
+
+                    {% if login_form.password.errors %}
+                        {{ login_form.password }}
+                        <div>
+                            {% for error in login_form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ login_form.password }}
+                    {% endif %}
+                </div>
+                <div>
+                    {{ login_form.login_button }}
+                </div>
+            </form>
+        </div>
+        <div>
+            <small>
+                Don't have an account? <a href="{{ url_for('register')  }}">Click Here!</a>
+            </small>
+        </div>
     </div>
 {% endblock content %}

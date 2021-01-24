@@ -1,13 +1,86 @@
 <!doctype html>
 <html>
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         {% if title %}
             <title>{{ title }} - Movie Rating Aggregator</title>
         {% else %}
             <title>Movie Rating Aggregator</title>
         {% endif %}
     </head>
-    <body>
-        {% block content %}{% endblock %}
-    </body>
+    <body class="container">
+        <div class="content">
+            <header class="header">
+                <div>
+                    <h1>Movie Rating Aggregator</h1>
+                    <div>
+                        <form method="POST" action="" class="search_form">
+                            {{ search_form.hidden_tag() }}
+                            <div class="menu">
+                                {{ search_form.movie_title.label }}
+                
+                                {% if search_form.movie_title.errors %}
+                                    {{ search_form.movie_title }}
+                                    <div>
+                                        {% for error in search_form.movie_title.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ search_form.movie_title }}
+                                {% endif %}
+                            </div>
+                            <div>
+                                {{ search_form.movie_year.label }}
+                
+                                {% if search_form.movie_year.errors %}
+                                    {{ search_form.movie_year }}
+                                    <div>
+                                        {% for error in search_form.movie_year.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ search_form.movie_year }}
+                                {% endif %}
+                            </div>
+                            <div>
+                                {{ search_form.submit_button }}
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <ul>
+                            <li><a href="{{ url_for('index') }}">Home</a></li>
+                            <li><a href="{{ url_for('get_all_movies') }}">All Movies</a></li>
+                            <li><a href="{{ url_for('get_high_to_low_ratings') }}">High-to-Low</a></li>
+                            <li><a href="{{ url_for('get_low_to_high_ratings') }}">Low-to-High</a></li>
+                            <li><a href="{{ url_for('get_favourable_reviews') }}">Favourable</a></li>
+                            <li><a href="{{ url_for('get_nonfavourable_reviews') }}">Non-Favourable</a></li>
+                            <li><a href="{{ url_for('get_top10_movies') }}">Top 10</a></li>
+                            {% if current_user.is_authenticated %}
+                                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                            {% else %}
+                                <li><a href="{{ url_for('login') }}">Login</a></li>
+                                <li><a href="{{ url_for('register') }}">Register</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </header>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="body">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </body>
+    </div>
 </html>

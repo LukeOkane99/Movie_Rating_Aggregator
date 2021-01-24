@@ -1,37 +1,89 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Register An Account</h1>
-    <div>
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <div>
-                {{ form.forename.label }}
-                {{ form.forename }}
-            </div>
-            <div>
-                {{ form.surname.label }}
-                {{ form.surname }}
-            </div>
-            <div>
-                {{ form.email_address.label }}
-                {{ form.email_address }}
-            </div>
-            <div>
-                {{ form.password.label }}
-                {{ form.password }}
-            </div>
-            <div>
-                {{ form.password_confirmation.label }}
-                {{ form.password_confirmation }}
-            </div>
-            <div>
-                {{ form.register_button }}
-            </div>
-        </form>
-    </div>
-    <div>
-        <small>
-            Already have an account? <a href="{{ url_for('login_user')  }}">Click Here!</a>
-        </small>
+    <h1 style="text-align: center; font-family: sans-serif;">Register An Account</h1>
+    <div style="text-align: center;">
+        <div style="display: inline-block; text-align: left;">
+            <form method="POST" action="">
+                {{ register_form.hidden_tag() }}
+                <div>
+                    {{ register_form.forename.label }}
+
+                    {% if register_form.forename.errors %}
+                        {{ register_form.forename }}
+                        <div>
+                            {% for error in register_form.forename.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ register_form.forename }}
+                    {% endif %}
+                </div>
+                <div>
+                    {{ register_form.surname.label }}
+
+                    {% if register_form.surname.errors %}
+                        {{ register_form.surname }}
+                        <div>
+                            {% for error in register_form.surname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ register_form.surname }}
+                    {% endif %}
+                </div>
+                <div>
+                    {{ register_form.email.label }}
+
+                    {% if register_form.email.errors %}
+                        {{ register_form.email }}
+                        <div>
+                            {% for error in register_form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ register_form.email }}
+                    {% endif %}
+                </div>
+                <div>
+                    {{ register_form.password.label }}
+
+                    {% if register_form.password.errors %}
+                        {{ register_form.password }}
+                        <div>
+                            {% for error in register_form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ register_form.password }}
+                    {% endif %}
+                </div>
+                <div>
+                    {{ register_form.password_confirmation.label }}
+
+                    {% if register_form.password_confirmation.errors %}
+                        {{ register_form.password_confirmation }}
+                        <div>
+                            {% for error in register_form.password_confirmation.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ register_form.password_confirmation }}
+                    {% endif %}
+                </div>
+                <div>
+                    {{ register_form.register_button }}
+                </div>
+            </form>
+        </div>
+        <div>
+            <small>
+                Already have an account? <a href="{{ url_for('login')  }}">Click Here!</a>
+            </small>
+        </div>
     </div>
 {% endblock content %}
