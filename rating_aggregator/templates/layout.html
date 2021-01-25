@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
     <head>
+        <link rel='stylesheet' href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css')}}">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         {% if title %}
             <title>{{ title }} - Movie Rating Aggregator</title>
@@ -11,67 +12,80 @@
     <body class="container">
         <div class="content">
             <header class="header">
-                <div>
-                    <h1>Movie Rating Aggregator</h1>
-                    <div>
-                        <form method="POST" action="" class="search_form">
-                            {{ search_form.hidden_tag() }}
-                            <div class="menu">
-                                {{ search_form.movie_title.label }}
-                
-                                {% if search_form.movie_title.errors %}
-                                    {{ search_form.movie_title }}
-                                    <div>
-                                        {% for error in search_form.movie_title.errors %}
-                                            <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    {{ search_form.movie_title }}
-                                {% endif %}
-                            </div>
+                <h1>Movie Rating Aggregator</h1>
+                <form method="POST" action="" class="form-control">
+                    {{ search_form.hidden_tag() }}
+                    <div style="padding-right: 2rem;">
+                        {% if search_form.movie_title.errors %}
+                            {{ search_form.movie_title }}
                             <div>
-                                {{ search_form.movie_year.label }}
-                
-                                {% if search_form.movie_year.errors %}
-                                    {{ search_form.movie_year }}
-                                    <div>
-                                        {% for error in search_form.movie_year.errors %}
-                                            <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    {{ search_form.movie_year }}
-                                {% endif %}
+                                {% for error in search_form.movie_title.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
                             </div>
+                        {% else %}
+                            {{ search_form.movie_title }}
+                        {% endif %}
+                    </div>
+                    <div style="padding-right: 1rem;">
+                        {% if search_form.movie_year.errors %}
+                            {{ search_form.movie_year }}
                             <div>
-                                {{ search_form.submit_button }}
+                                {% for error in search_form.movie_year.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
                             </div>
-                        </form>
+                        {% else %}
+                            {{ search_form.movie_year }}
+                        {% endif %}
                     </div>
                     <div>
-                        <ul>
-                            <li><a href="{{ url_for('index') }}">Home</a></li>
+                        {{ search_form.submit_button }}
+                    </div>
+                </form>
+            </header>
+            <div class="sidebar-container">
+                <div class="sidebar">
+                    <h1>Menu</h1>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}", style="padding-left: 0.5rem;">Home
+                            <i class="fa fa-home"></i>
+                        </a></li>
+                        <button class="dropdown-btn">Movies 
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-container">
                             <li><a href="{{ url_for('get_all_movies') }}">All Movies</a></li>
                             <li><a href="{{ url_for('get_high_to_low_ratings') }}">High-to-Low</a></li>
                             <li><a href="{{ url_for('get_low_to_high_ratings') }}">Low-to-High</a></li>
                             <li><a href="{{ url_for('get_favourable_reviews') }}">Favourable</a></li>
                             <li><a href="{{ url_for('get_nonfavourable_reviews') }}">Non-Favourable</a></li>
                             <li><a href="{{ url_for('get_top10_movies') }}">Top 10</a></li>
-                            {% if current_user.is_authenticated %}
-                                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                            {% else %}
-                                <li><a href="{{ url_for('login') }}">Login</a></li>
-                                <li><a href="{{ url_for('register') }}">Register</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
+                        </div>
+                        {% if current_user.is_authenticated %}
+                            <button class="dropdown-btn">User 
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-container">
+                                <li><a href="{{ url_for('profile', user_id=current_user.id) }}", style="padding-left: 0.5rem;">Profile
+                                    <i class="fa fa-user" style="float: left;"></i>
+                                </a></li>
+                                <li><a href="{{ url_for('get_high_to_low_ratings') }}", style="padding-left: 0.5rem;">Watchlist
+                                    <i class="fa fa-eye", style="float: left;"></i>
+                                </a></li>
+                            </div>
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('login') }}">Login</a></li>
+                            <li><a href="{{ url_for('register') }}">Register</a></li>
+                        {% endif %}
+                    </ul>
                 </div>
-            </header>
+            </div>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
-                        <div>
+                        <div class="body">
                             {{ message }}
                         </div>
                     {% endfor %}
@@ -84,3 +98,20 @@
         </body>
     </div>
 </html>
+
+<script>
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+</script>

@@ -1,11 +1,20 @@
 .header {
-    background-color: #817f7f;
-    padding: 1rem 0 3rem;
+    background-color: #708090;
+    padding: 1rem 0 2rem;
+    margin-left: 205px;
+    display:block;
+    height: 4rem;
   }
 
 .header h1 {
-    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 6rem;
     font-family: sans-serif;
+    display: inline;
+    font-weight: bold;
+    font-size: 50px;
+    
 }
 
 .header ul {
@@ -29,6 +38,96 @@
     color: white;
 }
 
+.sidebar {
+  margin: 0;
+  width: 205px;
+  background-color:#778899;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  top: 0;
+  
+}
+
+.sidebar h1 {
+  font-family: sans-serif;
+  padding-left: 2rem;
+  text-decoration: underline;
+  padding-bottom: 1rem;
+}
+
+.sidebar ul {
+  padding-left: 2rem;
+  display: inline-flexbox;
+}
+
+.sidebar li {
+  list-style-type: none;
+  font-size: 20px;
+  padding-bottom: 2rem;
+}
+
+.sidebar a {
+  font-family: sans-serif;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.sidebar a:hover {
+  color: white;
+}
+
+.sidenav a, .dropdown-btn {
+  text-decoration: none;
+  border: none;
+  font-size: 20px;
+  color: black;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  font-family: sans-serif;
+  font-weight: bold;
+  padding-bottom: 2rem;
+  padding-right: 3rem;
+}
+
+/* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover {
+  color: white;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+  color: white;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: #708090;
+  float: left;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  color: black;
+  padding-left: 1rem;
+}
+
+.fa-caret-down:active {
+  color: white;
+}
+
+.fa-caret-down:hover {
+  color: white;
+}
+
+.fa-home {
+  float: left;
+}
+
   .container {
     min-height: 100vh;
     margin: 0 auto;
@@ -43,15 +142,21 @@
 
 .body {
   padding-left: 1rem;
+  margin-left: 205px;
 }
 
-  .search_form {
-    float: right;
-    padding-right: 1%;
-    font-family: sans-serif;
-    display: inline-flex;
-    font-weight: bold;
-  }
+.form-control {
+  float: right;
+  display: inline-flex;
+  padding-right: 2rem;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-top: 1.5rem;
+}
+
+.form-item {
+  padding-right: 2rem;
+}
 
   .page_tites {
     text-align: center;

@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 style="text-align: center; font-family: sans-serif;">Profile Page</h1>
+
+    <div style="display: inline-block; text-align: left;">
+        <form method="POST" action="">
+            {{ update_form.hidden_tag() }}
+            <div>
+                {{ update_form.forename.label }}
+
+                {% if update_form.forename.errors %}
+                    {{ update_form.forename }}
+                    <div>
+                        {% for error in update_form.forename.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ update_form.forename }}
+                {% endif %}
+            </div>
+            <div>
+                {{ update_form.surname.label }}
+
+                {% if update_form.surname.errors %}
+                    {{ update_form.surname }}
+                    <div>
+                        {% for error in update_form.surname.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ update_form.surname }}
+                {% endif %}
+            </div>
+            <div>
+                {{ update_form.email.label }}
+
+                {% if update_form.email.errors %}
+                    {{ update_form.email }}
+                    <div>
+                        {% for error in update_form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ update_form.email }}
+                {% endif %}
+            </div>
+            <div>
+                {{ update_form.update_button }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

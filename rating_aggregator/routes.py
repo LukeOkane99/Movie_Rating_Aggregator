@@ -4,13 +4,13 @@ from rating_aggregator import app, db, bcrypt
 from rating_aggregator.models import User, Movie, WatchlistMovies
 from rating_aggregator.get_ratings import get_all_ratings
 from sqlalchemy import desc, asc, func
-from rating_aggregator.forms import registrationForm, loginForm, MovieSearchForm
-from flask_login import login_user, current_user, logout_user
+from rating_aggregator.forms import registrationForm, loginForm, MovieSearchForm, UpdateDetailsForm
+from flask_login import login_user, current_user, logout_user, login_required
 
 # Route for index page
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
-def index(name=None, year=None):
+def index():
     search_form = MovieSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('search_for_movie', name=search_form.movie_title.data.lower(), year=search_form.movie_year.data))
@@ -24,7 +24,7 @@ def get_all_movies():
     search_form = MovieSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('search_for_movie', name=search_form.movie_title.data.lower(), year=search_form.movie_year.data))
-    movies = Movie.query.all()
+    movies = Movie.query.order_by(Movie.title).all()
     return render_template('all_movies.html', title='All Movies', movies=movies, search_form=search_form)
 
 # Route to search for a specific movie
@@ -158,8 +158,10 @@ def login():
         user = User.query.filter_by(email=login_form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, login_form.password.data): # check if both hashed passwords are equal
             login_user(user)
+            # access page user was trying to access before login
+            next_page = request.args.get('next')
             flash('Login was successful!')
-            return redirect(url_for('index'))
+            return redirect(next_page) if next_page else redirect(url_for('index'))
         else:
             flash('Login was unsuccessful. Please check you have input the correct email and password', 'danger')
     return render_template('login.html', title='Log in to your account', login_form=login_form, search_form=search_form)
@@ -169,4 +171,28 @@ def logout():
     logout_user()
     flash('User successfully logged out')
     return redirect(url_for('index'))
+
+@app.route('/users/<user_id>', methods=['GET', 'POST'])
+@login_required
+def profile(user_id):
+    update_form = UpdateDetailsForm()
+    if update_form.validate_on_submit():
+        current_user.forename = update_form.forename.data
+        current_user.surname = update_form.surname.data
+        current_user.email = update_form.email.data
+        db.session.commit()
+        flash('Account details successfully updated!')
+        return redirect(url_for('profile', user_id=current_user.id))
+    elif request.method == 'GET':
+        # Populate form with users current details
+        update_form.forename.data = current_user.forename
+        update_form.surname.data = current_user.surname
+        update_form.email.data = current_user.email
+
+    search_form = MovieSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('search_for_movie', name=search_form.movie_title.data.lower(), year=search_form.movie_year.data))
+
+    return render_template('profile.html', title='Profile', search_form=search_form, update_form=update_form)
+
 #<--------------------Admin Endpoints------------------->

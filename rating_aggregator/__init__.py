@@ -14,11 +14,11 @@ app.config["SECRET_KEY"] = 'dab516ff56bff14979aa4568b1fd78ba'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' # Relative path for database
 # Create instance of database
 db = SQLAlchemy(app)
-
 bcrypt = Bcrypt(app)
 
 # Handle logged in user sessions
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
 # import routes after app is initialised
 from rating_aggregator import routes, db_test

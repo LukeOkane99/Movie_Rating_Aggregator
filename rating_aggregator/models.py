@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
 
     # Define how User object is printed
     def __repr__(self):
-        return f"User('{self.forename}', '{self.surname}', '{self.email}', '{self.admin}', '{self.date_created}')"
+        return f"User('{self.id}', '{self.forename}', '{self.surname}', '{self.email}', '{self.admin}', '{self.date_created}')"
 
 class Movie(db.Model):
     movieId = db.Column(db.Integer, primary_key=True)

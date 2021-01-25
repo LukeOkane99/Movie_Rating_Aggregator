@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from rating_aggregator.models import User, Movie
@@ -26,6 +27,25 @@ class loginForm(FlaskForm):
 
 # Form to search for a movie in the header
 class MovieSearchForm(FlaskForm):
-    movie_title = StringField('Search Title', validators=[DataRequired()])
-    movie_year = StringField('Search Year', validators=[DataRequired()])
+    movie_title = StringField('Search Title', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Title"})
+    movie_year = StringField('Search Year', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Year"})
     submit_button = SubmitField('Search')
+
+# Form to search for movies by year
+class YearSearchForm(FlaskForm):
+    year = StringField('Search by Year', validators=[DataRequired()])
+
+# Form so users can update their account details
+class UpdateDetailsForm(FlaskForm):
+    forename = StringField('Forename', validators=[DataRequired(), Length(min=2, max=30)])
+    surname = StringField('Surname', validators=[DataRequired(), Length(min=2, max=30)])
+    email = StringField('Email Address', validators=[DataRequired(), Email(), Length(max=120)])
+    update_button = SubmitField('Update Details')
+
+    # check if updated email is already in use by another user
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('This email is in use, please use a different one!')
+    
