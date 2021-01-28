@@ -63,6 +63,16 @@
                             <li><a href="{{ url_for('get_top10_movies') }}">Top 10</a></li>
                         </div>
                         {% if current_user.is_authenticated %}
+                            {% if current_user.admin %}
+                                <button class="dropdown-btn">Admin 
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-container">
+                                    <li><a href="{{ url_for('get_all_users') }}", style="padding-left: 0.5rem;">All Users
+                                        <i class="fa fa-user" style="float: left;"></i>
+                                    </a></li>
+                                </div>
+                            {% endif %}
                             <button class="dropdown-btn">User 
                                 <i class="fa fa-caret-down"></i>
                             </button>
@@ -70,7 +80,7 @@
                                 <li><a href="{{ url_for('profile', user_id=current_user.id) }}", style="padding-left: 0.5rem;">Profile
                                     <i class="fa fa-user" style="float: left;"></i>
                                 </a></li>
-                                <li><a href="{{ url_for('get_high_to_low_ratings') }}", style="padding-left: 0.5rem;">Watchlist
+                                <li><a href="{{ url_for('get_watchlist', user_id=current_user.id) }}", style="padding-left: 0.5rem;">Watchlist
                                     <i class="fa fa-eye", style="float: left;"></i>
                                 </a></li>
                             </div>

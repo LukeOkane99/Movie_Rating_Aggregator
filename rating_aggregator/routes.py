@@ -1,5 +1,5 @@
 import flask
-from flask import render_template, url_for, flash, request, redirect
+from flask import render_template, url_for, flash, request, redirect, abort
 from rating_aggregator import app, db, bcrypt
 from rating_aggregator.models import User, Movie, WatchlistMovies
 from rating_aggregator.get_ratings import get_all_ratings
@@ -52,7 +52,13 @@ def search_for_movie(name, year):
             return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=image)
     return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=image)
 
-# Route to search for a movie by year
+# Route displaying searched movie results
+@app.route('/movies/<name>', methods=['GET', 'POST'])
+    search_form = MovieSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('search_for_movie', name=search_form.movie_title.data.lower(), year=search_form.movie_year.data))
+
+# Route to search for a movie by year ***** TODO *****
 @app.route('/movies/<year>', methods=['GET', 'POST'])
 def search_movies_by_year(year):
     search_form = MovieSearchForm()
@@ -166,28 +172,47 @@ def login():
             flash('Login was unsuccessful. Please check you have input the correct email and password', 'danger')
     return render_template('login.html', title='Log in to your account', login_form=login_form, search_form=search_form)
 
+# Route to log user out
 @app.route('/logout', methods=['GET'])
 def logout():
     logout_user()
     flash('User successfully logged out')
     return redirect(url_for('index'))
 
+# Route to view user's profile
 @app.route('/users/<user_id>', methods=['GET', 'POST'])
 @login_required
 def profile(user_id):
     update_form = UpdateDetailsForm()
-    if update_form.validate_on_submit():
-        current_user.forename = update_form.forename.data
-        current_user.surname = update_form.surname.data
-        current_user.email = update_form.email.data
-        db.session.commit()
-        flash('Account details successfully updated!')
-        return redirect(url_for('profile', user_id=current_user.id))
-    elif request.method == 'GET':
-        # Populate form with users current details
-        update_form.forename.data = current_user.forename
-        update_form.surname.data = current_user.surname
-        update_form.email.data = current_user.email
+    if current_user.is_authenticated and current_user.admin:
+        user = User.query.filter_by(id=user_id).first()
+        if update_form.validate_on_submit():
+            user.forename = update_form.forename.data
+            user.surname = update_form.surname.data
+            user.email = update_form.email.data
+            db.session.commit()
+            flash('Account details successfully updated!')
+            return redirect(url_for('profile', user_id=user.id))
+        elif request.method == 'GET':
+            # Populate form with users current details
+            update_form.forename.data = user.forename
+            update_form.surname.data = user.surname
+            update_form.email.data = user.email
+    elif current_user.is_authenticated and not current_user.admin:
+        if update_form.validate_on_submit():
+            current_user.forename = update_form.forename.data
+            current_user.surname = update_form.surname.data
+            current_user.email = update_form.email.data
+            db.session.commit()
+            flash('Account details successfully updated!')
+            return redirect(url_for('profile', user_id=current_user.id))
+        elif request.method == 'GET':
+            # Populate form with users current details
+            update_form.forename.data = current_user.forename
+            update_form.surname.data = current_user.surname
+            update_form.email.data = current_user.email
+        else:
+            abort(403)
 
     search_form = MovieSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
@@ -195,4 +220,111 @@ def profile(user_id):
 
     return render_template('profile.html', title='Profile', search_form=search_form, update_form=update_form)
 
+#<--------------------User Watchlist------------------->
+
+# Route to view user's watchlist
+@app.route('/users/<user_id>/watchlist', methods=['GET', 'POST'])
+@login_required
+def get_watchlist(user_id):
+    search_form = MovieSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('search_for_movie', name=search_form.movie_title.data.lower(), year=search_form.movie_year.data))
+
+    movies = []
+
+    watchlist = WatchlistMovies.query.filter_by(userId=current_user.id).all()
+    for entry in watchlist:
+        movie = Movie.query.filter_by(movieId=entry.movieId).first()
+        movies.append(movie)
+        
+    return render_template('watchlist.html', title='Watchlist', search_form=search_form, movies=movies)
+
+# Route to add a movie to watchlist
+@app.route('/users/<user_id>/watchlist/add/movies/<movie_id>/<name>_<year>', methods=['POST'])
+@login_required
+def add_to_watchlist(user_id, movie_id, name, year):
+    movie = WatchlistMovies.query.filter_by(userId=user_id, movieId=movie_id).first()
+    if movie:
+        flash('Movie already exists in watchlist!')
+        return redirect(url_for('search_for_movie', name=name, year=year))
+    else:
+        movie = WatchlistMovies(userId=user_id, movieId=movie_id)
+        db.session.add(movie)
+        db.session.commit()
+        flash('Movie added to watchlist!')
+        return redirect(url_for('search_for_movie', name=name, year=year))
+
+# Route to delete a movie from watchlist
+@app.route('/users/<user_id>/watchlist/delete/movies/<movie_id>/<name>_<year>', methods=['POST'])
+@login_required
+def delete_from_watchlist(user_id, movie_id, name, year):
+    watchlist_entry = WatchlistMovies.query.filter_by(userId=user_id, movieId=movie_id).first()
+    db.session.delete(watchlist_entry)
+    db.session.commit()
+    flash('Movie removed from watchlist!')
+    return redirect(url_for('get_watchlist', user_id=user_id))
+    
 #<--------------------Admin Endpoints------------------->
+
+# Route to view all users
+@app.route('/users/all', methods=['GET', 'POST'])
+@login_required
+def get_all_users():
+    search_form = MovieSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('search_for_movie', name=search_form.movie_title.data.lower(), year=search_form.movie_year.data))
+
+    users = User.query.order_by(User.id).all()
+
+    if current_user.admin:
+        return render_template('all_users.html', title='All users', search_form=search_form, users=users)
+    else: 
+        abort(403)
+
+# Route to add or remove user admin priviledges
+@app.route('/users/<user_id>/admin=<admin>', methods=['POST'])
+@login_required
+def update_admin_role(user_id, admin):
+    if current_user.admin:
+        try:
+            user = User.query.filter_by(id=user_id).first()
+            if user.admin:
+                user.admin = False
+            else:
+                user.admin = True
+            db.session.commit()
+        except:
+            db.session.rollback()
+        finally:
+            return redirect(url_for('get_all_users'))
+
+# Route to delete a user account
+@app.route('/users/<user_id>/delete', methods=['POST'])
+@login_required
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User account has been deleted!')
+    return redirect(url_for('get_all_users'))
+
+#<--------------------Error Handling------------------->
+
+# Route for 403 custom error page
+@app.errorhandler(403)
+def forbidden_page(e):
+    search_form = MovieSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('search_for_movie', name=search_form.movie_title.data.lower(), year=search_form.movie_year.data))
+
+    return render_template('403.html', title='403', search_form=search_form), 403
+
+# Route for 404 custom error page
+@app.errorhandler(404)
+def not_found_page(e):
+    search_form = MovieSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('search_for_movie', name=search_form.movie_title.data.lower(), year=search_form.movie_year.data))
+
+    return render_template('404.html', title='404', search_form=search_form), 404
+    

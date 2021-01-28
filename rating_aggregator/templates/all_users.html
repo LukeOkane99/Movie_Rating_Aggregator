@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 style="text-align: center; font-family: sans-serif;">All Users</h1>
+    {% for user in users %}
+        <div>
+            <p style="font-family: sans-serif;">Id: <b>{{ user["id"] }}</b>, forename: <b>{{ user["forename"] }}</b>, surname: <b>{{ user["surname"] }}</b>, email: <b>{{ user["email"] }}</b>, date created: <b>{{ user["date_created"] }}</b>, admin: <b>{{ user["admin"] }}</b></p>
+            {% if user.admin %}
+                <form action='{{ url_for("update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
+                    <input type=submit value="Remove Admin">
+                </form>
+            {% else %}
+                <form action='{{ url_for("update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
+                    <input type=submit value="Make Admin">
+                </form>
+            {% endif %}
+            <form action='{{ url_for("profile", user_id=user.id) }}' method=get>
+                <input type=submit value="Edit">
+            </form>
+            <form action='{{ url_for("delete_user", user_id=user.id) }}' method=post>
+                <input type=submit value="Delete">
+            </form>
+        </div>
+    {% endfor %}
+{% endblock content %}

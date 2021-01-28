@@ -21,6 +21,9 @@ def get_imdb_metascore_ratings_and_synopsis(movie, year):
             for title in titles:
                 film_title = title.find_all('a')[0].get_text()
                 film_year = title.find('span', class_ = 'lister-item-year text-muted unbold').get_text()
+                if '(I' in film_year and year in film_year:
+                    film_year = film_year.split(' ')
+                    film_year = film_year[1]
                 film_year = film_year.replace('(', '').replace(')', '')
                 if film_title.lower() == movie.lower() and film_year == year:
                     if title.find('div', class_='inline-block ratings-imdb-rating'):
@@ -131,7 +134,7 @@ def get_all_ratings(movie, year):
 
 """
 # Testing
-movie = "spider in the web"
+movie = "rocketman"
 year = '2019'
 
 title, release_year, imdb, metacritic, synopsis, image, letterboxd, tomatometer, audience, tmdb, avg = get_all_ratings(movie, year)
