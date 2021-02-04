@@ -1,4 +1,40 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Results</h1>
+    <h1 style="text-align: center;">{{count}} Results found for search '{{name}}'</h1>
+    <p style="text-align: center;">Can't find what you are looking for? Please search with the exact title and year of the movie!<br></p>
+    <form method="POST" action="" class="form-control" style="margin-left: auto; margin-right: auto; width: 60%;">
+        {{ results_form.hidden_tag() }}
+        <div style="padding-right: 2rem;">
+            {% if results_form.result_movie_title.errors %}
+                {{ results_form.result_movie_title }}
+                <div>
+                    {% for error in results_form.result_movie_title.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ results_form.result_movie_title }}
+            {% endif %}
+        </div>
+        <div style="padding-right: 2rem;">
+            {% if results_form.result_movie_year.errors %}
+                {{ results_form.result_movie_year }}
+                <div>
+                    {% for error in results_form.result_movie_year.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ results_form.result_movie_year }}
+            {% endif %}
+        </div>
+        <div>
+            {{ results_form.submit }}
+        </div>
+    </form>
+    {% if movies %}
+        {% for movie in movies %}
+            <div style="padding-top: 4rem;"><p style="font-family: sans-serif;">Title: <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}"><b>{{ movie["title"] }}</b></a>, Year: <b>{{ movie["year"] }}</b>, IMDB: <b>{{ movie["imdb_rating"] }}</b>, Metascore: <b>{{ movie["metascore"] }}</b>, Tomatometer: <b>{{ movie["tomatometer"] }}</b>, Audience Score: <b>{{ movie["audience_score"] }}</b>, Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b>, Tmdb: <b>{{ movie["tmdb_rating"] }}</b>, Average: <b>{{ movie["average_rating"] }}</b>, Image: <b>{{ movie["movie_image"] }}</b>, Synopsis: <b>{{ movie["synopsis"] }}</b>, Update date: <b>{{ movie["date_updated"] }}</b></p></div>
+        {% endfor %}
+    {% endif %}
 {% endblock content %}

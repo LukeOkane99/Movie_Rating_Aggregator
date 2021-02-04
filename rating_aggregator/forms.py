@@ -1,3 +1,4 @@
+from flask import request
 from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField
@@ -25,15 +26,21 @@ class loginForm(FlaskForm):
     password = PasswordField('Enter Password', validators=[DataRequired()])
     login_button = SubmitField('Login')
 
-# Form to search for a movie in the header
-class MovieSearchForm(FlaskForm):
+# Form to search for movie title
+class TitleSearchForm(FlaskForm):
     movie_title = StringField('Search Title', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Title"})
-    movie_year = StringField('Search Year', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Year"})
     submit_button = SubmitField('Search')
+
+# Form to get exact search for movie on results page
+class ResultsSearchForm(FlaskForm):
+    result_movie_title = StringField('Search Title', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Title"})
+    result_movie_year = StringField('Search Year', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Year"})
+    submit = SubmitField('Search')
 
 # Form to search for movies by year
 class YearSearchForm(FlaskForm):
-    year = StringField('Search by Year', validators=[DataRequired()])
+    movie_year = StringField('Search by Year', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Year"})
+    submit_year = SubmitField('Search')
 
 # Form so users can update their account details
 class UpdateDetailsForm(FlaskForm):
@@ -44,8 +51,8 @@ class UpdateDetailsForm(FlaskForm):
 
     # check if updated email is already in use by another user
     def validate_email(self, email):
-        if email.data != current_user.email:
-            user = User.query.filter_by(email=email.data).first()
-            if user:
-                raise ValidationError('This email is in use, please use a different one!')
-    
+        if not current_user.admin:
+            if email.data != current_user.email:
+                user = User.query.filter_by(email=email.data).first()
+                if user:
+                    raise ValidationError('This email is in use, please use a different one!')

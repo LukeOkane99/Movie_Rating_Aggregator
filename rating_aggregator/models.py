@@ -31,7 +31,7 @@ class Movie(db.Model):
     letterboxd_rating = db.Column(db.Float, nullable=True)
     tmdb_rating = db.Column(db.Float, nullable=True)
     average_rating = db.Column(db.Float, nullable=False)
-    movie_image = db.Column(db.Text, nullable=False, default='No Image Available')
+    movie_image = db.Column(db.Text, nullable=False, default='https://bigears.info/wp-content/themes/bigears/images/image-not-found.jpg')
     synopsis = db.Column(db.Text, nullable=False, default='Unfortunately there is no synopsis available for this movie.')
     date_updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 

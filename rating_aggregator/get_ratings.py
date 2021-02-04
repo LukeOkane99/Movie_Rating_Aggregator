@@ -18,6 +18,7 @@ def get_imdb_metascore_ratings_and_synopsis(movie, year):
             titles = bs_object.find_all('div', class_ = "lister-item-content")
             imdb_rating = None
             metacritic_rating = None
+            synopsis = None
             for title in titles:
                 film_title = title.find_all('a')[0].get_text()
                 film_year = title.find('span', class_ = 'lister-item-year text-muted unbold').get_text()
@@ -32,10 +33,9 @@ def get_imdb_metascore_ratings_and_synopsis(movie, year):
                         metacritic_rating = float(title.find('div', class_ = 'inline-block ratings-metascore').span.text.strip()) 
                     synopsis = title.find_all('p', class_ = "text-muted")[1].get_text()
                     break
+        return film_title, film_year, imdb_rating, metacritic_rating, synopsis
     except Exception as ex:
         print(str(ex))
-    finally:
-        return film_title, film_year, imdb_rating, metacritic_rating, synopsis
 
 # scrape letterboxd rating for movie
 def get_letterboxd_rating(movie, year):
@@ -44,28 +44,23 @@ def get_letterboxd_rating(movie, year):
         if response.status_code == 200:
             bs_object = BeautifulSoup(response.content, 'lxml')
             titles = bs_object.find_all('span', class_ = "film-title-wrapper")
-            rating = None
             for title in titles:
                 # Split string into substrings based on title and year
                 ttl,yr = title.text.rsplit(' ', 1)
-                if movie.lower() == ttl.lower() and yr in year:  
+                if movie.lower() == str(ttl.lower()) and str(yr) in year: 
+                    print('bloop')
                     review_endpoint = title.find('a').get('href')
                     break
+        response = session.get("https://letterboxd.com"+review_endpoint)
+        if response.status_code == 200:
+            bs_object = BeautifulSoup(response.content, 'lxml')
+            b = bs_object.find_all('script', type='application/ld+json')[0]
+            # parse json inside script tag and use regex to return only the dict
+            if json.loads( re.search(r'({.*})', b.string).group() )['aggregateRating']['ratingValue']:
+                rating = round((json.loads( re.search(r'({.*})', b.string).group() )['aggregateRating']['ratingValue'] * 20), 1)
+        return rating
     except Exception as ex:
         print(str(ex))
-    finally:
-        try:
-            response = session.get("https://letterboxd.com"+review_endpoint)
-            if response.status_code == 200:
-                bs_object = BeautifulSoup(response.content, 'lxml')
-                b = bs_object.find_all('script', type='application/ld+json')[0]
-                # parse json inside script tag and use regex to return only the dict
-                if json.loads( re.search(r'({.*})', b.string).group() )['aggregateRating']['ratingValue']:
-                    rating = round((json.loads( re.search(r'({.*})', b.string).group() )['aggregateRating']['ratingValue'] * 20), 1)      
-        except Exception as ex:
-            print(str(ex))
-        finally:
-            return rating
 
 # scrape rotten tomatoes tomatometer and audience score ratings
 def get_rotten_tomatoes_ratings(movie, year):
@@ -83,15 +78,14 @@ def get_rotten_tomatoes_ratings(movie, year):
                         tomatometer_score = float(item['tomatometerScore']['score'])
                     if item['audienceScore']['score']:
                         audience_score = float(item['audienceScore']['score'])
-                    break
+        return tomatometer_score, audience_score
     except Exception as ex:
             print(str(ex))
-    finally:
-        return tomatometer_score, audience_score
 
 # scrape tmdb rating
 def get_tmdb_rating_and_movie_image(movie, year):
     tmdb_rating = None
+    image_url = None
     try:
         response = session.get('https://api.themoviedb.org/3/search/movie?api_key=35847ff7af4ea4159527ddec5fa4a2f4&query='+movie+'&year='+year)
         if response.status_code == 200:
@@ -103,10 +97,9 @@ def get_tmdb_rating_and_movie_image(movie, year):
                     image_endpoint = film['poster_path']
                     image_url = image_base_url + image_endpoint
                     break
+        return tmdb_rating, image_url
     except Exception as ex:
             print(str(ex))    
-    finally:
-        return tmdb_rating, image_url
 
 # calculate an average rating from all ratings
 def get_average_rating(imdb, metascore, letterboxd, tomatometer, audience_score, tmdb):
@@ -122,7 +115,7 @@ def get_average_rating(imdb, metascore, letterboxd, tomatometer, audience_score,
 
 # return all ratings
 def get_all_ratings(movie, year):
-    title, year, imdb, metascore, synopsis = get_imdb_metascore_ratings_and_synopsis(movie, year)
+    movie_title, movie_year, imdb, metascore, synopsis = get_imdb_metascore_ratings_and_synopsis(movie, year)
     tomatometer, audience_score = get_rotten_tomatoes_ratings(movie, year)
     letterboxd = get_letterboxd_rating(movie, year)
     tmdb, image = get_tmdb_rating_and_movie_image(movie, year)
@@ -130,14 +123,14 @@ def get_all_ratings(movie, year):
     session.close()
     avg = get_average_rating(imdb, metascore, tomatometer, audience_score, letterboxd, tmdb)
 
-    return title, year, imdb, metascore, synopsis, image, tomatometer, audience_score, letterboxd, tmdb, avg
+    return movie_title, movie_year, imdb, metascore, synopsis, tomatometer, audience_score, letterboxd, tmdb, image, avg
 
 """
 # Testing
-movie = "rocketman"
-year = '2019'
+movie = "the dirt"
+year = '2018'
 
-title, release_year, imdb, metacritic, synopsis, image, letterboxd, tomatometer, audience, tmdb, avg = get_all_ratings(movie, year)
+title, release_year, imdb, metacritic, synopsis, tomatometer, audience, letterboxd, tmdb, image, avg = get_all_ratings(movie, year)
 
 print("Title: " + title)
 print("Year: " + release_year)

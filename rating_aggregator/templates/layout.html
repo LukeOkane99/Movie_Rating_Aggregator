@@ -27,18 +27,6 @@
                             {{ search_form.movie_title }}
                         {% endif %}
                     </div>
-                    <div style="padding-right: 1rem;">
-                        {% if search_form.movie_year.errors %}
-                            {{ search_form.movie_year }}
-                            <div>
-                                {% for error in search_form.movie_year.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ search_form.movie_year }}
-                        {% endif %}
-                    </div>
                     <div>
                         {{ search_form.submit_button }}
                     </div>
@@ -61,6 +49,7 @@
                             <li><a href="{{ url_for('get_favourable_reviews') }}">Favourable</a></li>
                             <li><a href="{{ url_for('get_nonfavourable_reviews') }}">Non-Favourable</a></li>
                             <li><a href="{{ url_for('get_top10_movies') }}">Top 10</a></li>
+                            <li><a href="{{ url_for('search_movies_by_year') }}">Search By Year</a></li>
                         </div>
                         {% if current_user.is_authenticated %}
                             {% if current_user.admin %}
