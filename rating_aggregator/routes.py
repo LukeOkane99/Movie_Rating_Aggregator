@@ -37,7 +37,7 @@ def title_results(name):
     elif flask.request.method == 'POST' and results_form.validate_on_submit():
         return redirect(url_for('search_for_movie', name=results_form.result_movie_title.data.lower(), year=results_form.result_movie_year.data))
     count = 0
-    movies = Movie.query.filter(func.lower(Movie.title) == name.lower()).all()
+    movies = Movie.query.filter(func.lower(Movie.title).like("%{0}%".format(name.lower()))).all()
     for movie in movies:
         count += 1
     return render_template('results.html', title='Results', movies=movies, search_form=search_form, results_form=results_form, count=count, name=name)
@@ -46,6 +46,7 @@ def title_results(name):
 @app.route('/movies/<name>_<year>', methods=['GET', 'POST'])
 def search_for_movie(name, year):
     search_form = TitleSearchForm()
+    results_form = ResultsSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
     elif flask.request.method == 'GET':
