@@ -25,11 +25,17 @@ class Movie(db.Model):
     title = db.Column(db.String(50), nullable=False)
     year = db.Column(db.String(10), nullable=False)
     imdb_rating = db.Column(db.Float, nullable=True)
+    imdb_votes = db.Column(db.Integer, nullable=True)
     metascore = db.Column(db.Float, nullable=True)
+    metascore_votes = db.Column(db.Integer, nullable=True)
     tomatometer = db.Column(db.Float, nullable=True)
+    tomatometer_votes = db.Column(db.Integer, nullable=True)
     audience_score = db.Column(db.Float, nullable=True)
+    audience_score_votes = db.Column(db.Integer, nullable=True)
     letterboxd_rating = db.Column(db.Float, nullable=True)
+    letterboxd_votes = db.Column(db.Integer, nullable=True)
     tmdb_rating = db.Column(db.Float, nullable=True)
+    tmdb_votes = db.Column(db.Integer, nullable=True)
     average_rating = db.Column(db.Float, nullable=False)
     movie_image = db.Column(db.Text, nullable=False, default='https://bigears.info/wp-content/themes/bigears/images/image-not-found.jpg')
     synopsis = db.Column(db.Text, nullable=False, default='Unfortunately there is no synopsis available for this movie.')
@@ -37,7 +43,7 @@ class Movie(db.Model):
 
     # Define how Movie object is printed
     def __repr__(self):
-        return f"Movie('{self.title}', '{self.year}', '{self.imdb_rating}', '{self.metascore}', '{self.tomatometer}', '{self.audience_score}', '{self.letterboxd_rating}', '{self.tmdb_rating}', '{self.average_rating}', '{self.movie_image}', '{self.synopsis}', '{self.date_updated}')"
+        return f"Movie('{self.title}', '{self.year}', '{self.imdb_rating}', '{self.imdb_votes}', '{self.metascore}', '{self.metascore_votes}', '{self.tomatometer}', '{self.tomatometer_votes}', '{self.audience_score}', '{self.audience_score_votes}', '{self.letterboxd_rating}', '{self.letterboxd_votes}', '{self.tmdb_rating}', '{self.tmdb_votes}', '{self.average_rating}', '{self.movie_image}', '{self.synopsis}', '{self.date_updated}')"
 
 class WatchlistMovies(db.Model):
     userId = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True, nullable=False)

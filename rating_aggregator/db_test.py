@@ -1,3 +1,4 @@
+"""
 from rating_aggregator import db
 from rating_aggregator.models import User, Movie, WatchlistMovies
 
@@ -30,3 +31,4 @@ def get_user(email):
 
 #get_all_movies()
 get_all_users()
+"""

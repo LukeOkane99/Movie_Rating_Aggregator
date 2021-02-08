@@ -55,9 +55,10 @@ def search_for_movie(name, year):
             return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
         else:
             try:
-                ttl, yr, imdb, metacritic, synopsis, tomatometer, audience, letterboxd, tmdb, image, avg = get_all_ratings(name, year)
-                movie = Movie(title=ttl, year=yr, imdb_rating=imdb, metascore=metacritic, tomatometer=tomatometer, audience_score=audience, letterboxd_rating=letterboxd,
-                    tmdb_rating=tmdb, average_rating=avg, movie_image=image, synopsis=synopsis)
+                ttl, yr, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, tomatometer, tomatometer_votes, audience, audience_votes, letterboxd, letterboxd_votes, tmdb, tmdb_votes, image, avg = get_all_ratings(name, year)
+                movie = Movie(title=ttl, year=yr, imdb_rating=imdb, imdb_votes=imdb_votes, metascore=metacritic, metascore_votes=metacritic_votes, tomatometer=tomatometer,
+                    tomatometer_votes=tomatometer_votes, audience_score=audience, audience_score_votes=audience_votes, letterboxd_rating=letterboxd, letterboxd_votes=letterboxd_votes,
+                    tmdb_rating=tmdb, tmdb_votes=tmdb_votes, average_rating=avg, movie_image=image, synopsis=synopsis)
                 db.session.add(movie)
                 db.session.commit()
                 return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
