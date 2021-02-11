@@ -35,7 +35,25 @@ def title_results(name):
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
     elif flask.request.method == 'POST' and results_form.validate_on_submit():
-        return redirect(url_for('search_for_movie', name=results_form.result_movie_title.data.lower(), year=results_form.result_movie_year.data))
+        results_form.submit(disabled=True)
+        name = results_form.result_movie_title.data
+        year = results_form.result_movie_year.data
+        movie = Movie.query.filter(func.lower(Movie.title) == name.lower()).filter_by(year = year).first()
+        if movie:
+            return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
+        else:
+            try:
+                ttl, yr, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, tomatometer, tomatometer_votes, audience, audience_votes, letterboxd, letterboxd_votes, tmdb, tmdb_votes, image, avg = get_all_ratings(name, year)
+                movie = Movie(title=ttl, year=yr, imdb_rating=imdb, imdb_votes=imdb_votes, metascore=metacritic, metascore_votes=metacritic_votes, tomatometer=tomatometer,
+                    tomatometer_votes=tomatometer_votes, audience_score=audience, audience_score_votes=audience_votes, letterboxd_rating=letterboxd, letterboxd_votes=letterboxd_votes,
+                    tmdb_rating=tmdb, tmdb_votes=tmdb_votes, average_rating=avg, movie_image=image, synopsis=synopsis)
+                db.session.add(movie)
+                db.session.commit()
+                return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
+            except Exception as e:
+                db.session.rollback()
+                abort(404)
+        #return redirect(url_for('search_for_movie', name=results_form.result_movie_title.data.lower(), year=results_form.result_movie_year.data))
     count = 0
     movies = Movie.query.filter(func.lower(Movie.title).like("%{0}%".format(name.lower()))).all()
     for movie in movies:
@@ -54,17 +72,7 @@ def search_for_movie(name, year):
         if movie:
             return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
         else:
-            try:
-                ttl, yr, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, tomatometer, tomatometer_votes, audience, audience_votes, letterboxd, letterboxd_votes, tmdb, tmdb_votes, image, avg = get_all_ratings(name, year)
-                movie = Movie(title=ttl, year=yr, imdb_rating=imdb, imdb_votes=imdb_votes, metascore=metacritic, metascore_votes=metacritic_votes, tomatometer=tomatometer,
-                    tomatometer_votes=tomatometer_votes, audience_score=audience, audience_score_votes=audience_votes, letterboxd_rating=letterboxd, letterboxd_votes=letterboxd_votes,
-                    tmdb_rating=tmdb, tmdb_votes=tmdb_votes, average_rating=avg, movie_image=image, synopsis=synopsis)
-                db.session.add(movie)
-                db.session.commit()
-                return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
-            except Exception as e:
-                db.session.rollback()
-                abort(404)
+            abort(404)
 
 # Route to search for a movie by year ***** TODO *****
 @app.route('/movies/year', methods=['GET', 'POST'])
@@ -203,11 +211,12 @@ def profile(user_id):
                     other_user = User.query.filter_by(email=update_form.email.data).first()
                     if other_user:
                         flash('This email is already taken, please provide another!')
-                else:
-                    user.email = update_form.email.data
-                    db.session.commit()
-                    flash('Account details successfully updated!')
-                    return redirect(url_for('profile', user_id=user.id))
+                    else:
+                        user.email = update_form.email.data
+                        print(user.email)
+                        db.session.commit()
+                        flash('Account details successfully updated!')
+                        return redirect(url_for('profile', user_id=user.id))
             elif request.method == 'GET':
                 # Populate form with users current details
                 update_form.forename.data = user.forename

@@ -3,7 +3,7 @@
     <div class="page_content">
         <div style="display: inline-block; text-align: left;">
             <h1 class="page_tites"><b>{{ movie.title }}</b> ({{ movie.year }})</h1>
-            <h2 class="page_tites">Average Rating: <b>{{ movie["average_rating"] }}%</b></h2>
+            <h2 class="page_tites">Overall Weighted Rating: <b>{{ movie["average_rating"] }}%</b></h2>
             <p style="line-height: 30px; font-family: sans-serif; text-align: center;">IMDB: <b>{{ movie["imdb_rating"] }}</b>  Metascore: <b>{{ movie["metascore"] }}</b>  Tomatometer: <b>{{ movie["tomatometer"] }}</b>  Audience Score: <b>{{ movie["audience_score"] }}</b>  Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b>  Tmdb: <b>{{ movie["tmdb_rating"] }}</b></p>
             <h3 style="text-align: center; font-family: sans-serif;">Synopsis: {{ movie["synopsis"] }}</h3>
             <img style="width: 500px; height: 600px; margin: auto; display: block;" src="{{ image }}">
