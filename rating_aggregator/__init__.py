@@ -21,4 +21,4 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 # import routes after app is initialised
-from rating_aggregator import routes, db_test
+from rating_aggregator import routes
