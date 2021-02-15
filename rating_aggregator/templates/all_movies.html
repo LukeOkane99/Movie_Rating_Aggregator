@@ -1,8 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1 style="text-align: center; font-family: sans-serif;">All Movies</h1>
-    {% for movie in movies %}
-        <div><p style="font-family: sans-serif;">Title: <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}"><b>{{ movie["title"] }}</b></a>, Year: <b>{{ movie["year"] }}</b>, IMDB: <b>{{ movie["imdb_rating"] }}</b>, Metascore: <b>{{ movie["metascore"] }}</b>, Tomatometer: <b>{{ movie["tomatometer"] }}</b>, Audience Score: <b>{{ movie["audience_score"] }}</b>, Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b>, Tmdb: <b>{{ movie["tmdb_rating"] }}</b>, Average: <b>{{ movie["average_rating"] }}</b>, Image: <b>{{ movie["movie_image"] }}</b>, Synopsis: <b>{{ movie["synopsis"] }}</b>, Update date: <b>{{ movie["date_updated"] }}</b></p></div>
-    {% endfor %}
+    <h1 style="text-align: center; font-family: sans-serif; color: whitesmoke;">All Movies</h1>
+    <div style=" display: grid; grid-template-columns: auto auto auto auto;">
+        {% for movie in movies %}
+            <div class="image-container">
+                <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}">
+                    <img style="width: auto; height: auto; margin: auto; max-width:600px; max-height:600px; display: block; border: 2px solid black;" src="{{ movie.movie_image }}">
+                    <div class="overlay">{{ movie["title"] }} ({{ movie["year"] }})</div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock content %}
   

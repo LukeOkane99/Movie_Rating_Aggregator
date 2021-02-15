@@ -1,5 +1,5 @@
 .header {
-    background-color: #708090;
+    background-color: #202020;
     padding: 1rem 0 2rem;
     margin-left: 205px;
     display:block;
@@ -14,6 +14,7 @@
     display: inline;
     font-weight: bold;
     font-size: 50px;
+    color: #F8F8FF;
     
 }
 
@@ -41,12 +42,11 @@
 .sidebar {
   margin: 0;
   width: 205px;
-  background-color:#778899;
+  background-color:#181818;
   position: fixed;
   height: 100%;
   overflow: auto;
   top: 0;
-  
 }
 
 .sidebar h1 {
@@ -54,6 +54,7 @@
   padding-left: 2rem;
   text-decoration: underline;
   padding-bottom: 1rem;
+  color: whitesmoke;
 }
 
 .sidebar ul {
@@ -70,19 +71,19 @@
 .sidebar a {
   font-family: sans-serif;
   text-decoration: none;
-  color: black;
+  color: whitesmoke;
   font-weight: bold;
 }
 
 .sidebar a:hover {
-  color: white;
+  color: #303030;
 }
 
 .sidenav a, .dropdown-btn {
   text-decoration: none;
   border: none;
   font-size: 20px;
-  color: black;
+  color: whitesmoke;
   background: none;
   cursor: pointer;
   outline: none;
@@ -94,34 +95,34 @@
 
 /* On mouse-over */
 .sidenav a:hover, .dropdown-btn:hover {
-  color: white;
+  color: #303030;
 }
 
 /* Add an active class to the active dropdown button */
 .active {
-  color: white;
+  color: #303030;
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
 .dropdown-container {
   display: none;
-  background-color: #708090;
+  background-color: 	#505050;
   float: left;
 }
 
 /* Optional: Style the caret down icon */
 .fa-caret-down {
   float: right;
-  color: black;
+  color: whitesmoke;
   padding-left: 1rem;
 }
 
 .fa-caret-down:active {
-  color: white;
+  color: #303030;
 }
 
 .fa-caret-down:hover {
-  color: white;
+  color: #303030;
 }
 
 .fa-home {
@@ -138,11 +139,13 @@
 
   .content {
     flex-grow: 1;
+    background-color: #303030;
 }
 
 .body {
-  padding-left: 1rem;
   margin-left: 205px;
+  padding-left: 1rem;
+  background-color: #303030;
 }
 
 .form-control {
@@ -166,3 +169,35 @@
   .page_content {
     text-align: center;
   }
+
+/* Overlay effect for movie images */
+.overlay {
+  position: absolute;
+  top: 0;
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  color: #f1f1f1;
+  width: 100%;
+  transition: .5s ease;
+  opacity:0;
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+  text-align: center;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+/* Fade into overlay title when mouse over container */
+.image-container:hover .overlay {
+  opacity: 1;
+}
+
+/* Container needed to position the overlay. Adjust the width as needed */
+.image-container {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  padding-bottom: 1rem;
+  padding-left: 0.2rem;
+}

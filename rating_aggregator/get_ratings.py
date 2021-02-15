@@ -67,6 +67,7 @@ def get_imdb_metascore_ratings_and_synopsis(movie, year):
 def get_letterboxd_rating(movie, year):
     rating = None
     letterboxd_votes = None
+    review_endpoint = None
     try:
         response = session.get("https://letterboxd.com/search/films/"+movie+" "+year)
         if response.status_code == 200:
@@ -78,14 +79,15 @@ def get_letterboxd_rating(movie, year):
                 if movie.lower() == str(ttl.lower()) and str(yr) in year: 
                     review_endpoint = title.find('a').get('href')
                     break
-        response = session.get("https://letterboxd.com"+review_endpoint)
-        if response.status_code == 200:
-            bs_object = BeautifulSoup(response.content, 'lxml')
-            info = bs_object.find_all('script', type='application/ld+json')[0]
-            # parse json inside script tag and use regex to return only the dict
-            if json.loads( re.search(r'({.*})', info.string).group() )['aggregateRating']['ratingValue']:
-                rating = round((json.loads( re.search(r'({.*})', info.string).group() )['aggregateRating']['ratingValue'] * 20), 1)
-                letterboxd_votes = int(json.loads( re.search(r'({.*})', info.string).group() )['aggregateRating']['ratingCount'])
+        if review_endpoint is not None:
+            response = session.get("https://letterboxd.com"+review_endpoint)
+            if response.status_code == 200:
+                bs_object = BeautifulSoup(response.content, 'lxml')
+                info = bs_object.find_all('script', type='application/ld+json')[0]
+                # parse json inside script tag and use regex to return only the dict
+                if json.loads( re.search(r'({.*})', info.string).group() )['aggregateRating']['ratingValue']:
+                    rating = round((json.loads( re.search(r'({.*})', info.string).group() )['aggregateRating']['ratingValue'] * 20), 1)
+                    letterboxd_votes = int(json.loads( re.search(r'({.*})', info.string).group() )['aggregateRating']['ratingCount'])
         return rating, letterboxd_votes
     except Exception as ex:
         print(str(ex))
@@ -193,15 +195,15 @@ def get_all_ratings(movie, year):
 
 """
 # Testing
-movie = "gladiator"
-year = '2000'
+movie = "Star Wars: Episode VIII - The Last Jedi"
+year = '2017'
 
 title, release_year, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, tomatometer, tomatometer_votes, audience, audience_score_votes, letterboxd, letterboxd_votes, tmdb, tmdb_votes, image, avg = get_all_ratings(movie, year)
 
 print("Title: " + title)
 print("Year: " + release_year)
 print("Synopsis: " + synopsis)
-print("Movie Image: " + image)
+print("Movie Image: " + str(image))
 print("Imdb: " + str(imdb))
 print("Imdb votes:" + str(imdb_votes))
 print("Metacritic: " + str(metacritic))

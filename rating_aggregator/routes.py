@@ -35,12 +35,26 @@ def title_results(name):
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
     elif flask.request.method == 'POST' and results_form.validate_on_submit():
-        results_form.submit(disabled=True)
-        name = results_form.result_movie_title.data
-        year = results_form.result_movie_year.data
+        return redirect(url_for('search_for_movie', name=results_form.result_movie_title.data.lower().strip(), year=results_form.result_movie_year.data.strip()))
+    count = 0
+    movies = Movie.query.filter(func.lower(Movie.title).like("%{0}%".format(name.lower()))).all()
+    for movie in movies:
+        count += 1
+    return render_template('results.html', title='Results', movies=movies, search_form=search_form, results_form=results_form, count=count, name=name)
+
+# Route to return specific movie
+@app.route('/movies/<name>_<year>', methods=['GET', 'POST'])
+def search_for_movie(name, year):
+    search_form = TitleSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+    elif flask.request.method == 'GET':
+        watchlist_entry = None
         movie = Movie.query.filter(func.lower(Movie.title) == name.lower()).filter_by(year = year).first()
         if movie:
-            return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
+            if current_user.is_authenticated:
+                watchlist_entry = WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first()
+            return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image, watchlist_entry=watchlist_entry)
         else:
             try:
                 ttl, yr, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, tomatometer, tomatometer_votes, audience, audience_votes, letterboxd, letterboxd_votes, tmdb, tmdb_votes, image, avg = get_all_ratings(name, year)
@@ -53,26 +67,6 @@ def title_results(name):
             except Exception as e:
                 db.session.rollback()
                 abort(404)
-        #return redirect(url_for('search_for_movie', name=results_form.result_movie_title.data.lower(), year=results_form.result_movie_year.data))
-    count = 0
-    movies = Movie.query.filter(func.lower(Movie.title).like("%{0}%".format(name.lower()))).all()
-    for movie in movies:
-        count += 1
-    return render_template('results.html', title='Results', movies=movies, search_form=search_form, results_form=results_form, count=count, name=name)
-
-# Route to return specific movie
-@app.route('/movies/<name>_<year>', methods=['GET', 'POST'])
-def search_for_movie(name, year):
-    search_form = TitleSearchForm()
-    results_form = ResultsSearchForm()
-    if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
-    elif flask.request.method == 'GET':
-        movie = Movie.query.filter(func.lower(Movie.title) == name.lower()).filter_by(year = year).first()
-        if movie:
-            return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
-        else:
-            abort(404)
 
 # Route to search for a movie by year ***** TODO *****
 @app.route('/movies/year', methods=['GET', 'POST'])
@@ -84,9 +78,11 @@ def search_movies_by_year(year=None):
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
     if flask.request.method == 'POST' and year_form.validate_on_submit():
         return redirect(url_for('search_movies_by_year', year=year_form.movie_year.data))
-
+    count = 0
     movies = Movie.query.filter_by(year=year).all()
-    return render_template('get_movie_by_year.html', title='Movies by year', movies=movies, search_form=search_form, year_form=year_form, year=year)
+    for movie in movies:
+        count += 1
+    return render_template('get_movie_by_year.html', title='Movies by year', movies=movies, search_form=search_form, year_form=year_form, year=year, count=count)
 
 # Route to display movies based on high to low ratings
 @app.route('/movies/hightolow', methods=['GET', 'POST'])
@@ -125,7 +121,7 @@ def get_nonfavourable_reviews():
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
 
-    movies = Movie.query.filter(Movie.average_rating <= 59).all()
+    movies = Movie.query.filter(Movie.average_rating < 60).all()
     return render_template('get_non-favourable_movies.html', title='Non-Favourable Ratings', movies=movies, search_form=search_form)
 
 # Route to display top 10 movies
@@ -286,7 +282,9 @@ def delete_from_watchlist(user_id, movie_id, name, year):
     db.session.delete(watchlist_entry)
     db.session.commit()
     flash('Movie removed from watchlist!')
-    return redirect(url_for('get_watchlist', user_id=user_id))
+    #print(request.referrer)
+    #return redirect(url_for('get_watchlist', user_id=user_id))
+    return redirect(request.referrer)
     
 #<--------------------Admin Endpoints------------------->
 

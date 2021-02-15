@@ -46,7 +46,7 @@ def main():
         
         #--------------------------------------Check if movie votes and ratings need updated--------------------------------------------------#
 
-        print("**** "+name+" ****")
+        print("**** "+name+" ("+year+")"+" ****")
         session = Session()
 
         for response in responses:

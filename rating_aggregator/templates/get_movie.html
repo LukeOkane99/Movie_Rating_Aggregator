@@ -2,16 +2,22 @@
 {% block content %}
     <div class="page_content">
         <div style="display: inline-block; text-align: left;">
-            <h1 class="page_tites"><b>{{ movie.title }}</b> ({{ movie.year }})</h1>
+            <h1 class="page_tites" style="color: whitesmoke;"><b>{{ movie.title }}</b> ({{ movie.year }})</h1>
             <h2 class="page_tites">Overall Weighted Rating: <b>{{ movie["average_rating"] }}%</b></h2>
             <p style="line-height: 30px; font-family: sans-serif; text-align: center;">IMDB: <b>{{ movie["imdb_rating"] }}</b>  Metascore: <b>{{ movie["metascore"] }}</b>  Tomatometer: <b>{{ movie["tomatometer"] }}</b>  Audience Score: <b>{{ movie["audience_score"] }}</b>  Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b>  Tmdb: <b>{{ movie["tmdb_rating"] }}</b></p>
             <h3 style="text-align: center; font-family: sans-serif;">Synopsis: {{ movie["synopsis"] }}</h3>
             <img style="width: 500px; height: 600px; margin: auto; display: block;" src="{{ image }}">
             <p style="line-height: 30px; font-family: sans-serif; text-align: center;">Update date: <b>{{ movie["date_updated"] }}</b></p>
             {% if current_user.is_authenticated %}
-                <form action='{{ url_for("add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
-                    <input type=submit value="Add to watchlist">
-                </form>
+                {% if watchlist_entry %}
+                    <form action='{{ url_for("delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
+                        <input type=submit value="Remove from watchlist">
+                    </form>
+                {% else %}
+                    <form action='{{ url_for("add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
+                        <input type=submit value="Add to watchlist">
+                    </form>
+                {% endif %}
             {% endif %}
         </div>    
     </div>

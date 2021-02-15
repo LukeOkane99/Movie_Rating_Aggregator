@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1 style="text-align: center; font-family: sans-serif;">Search movies by year</h1>
+    <h1 style="text-align: center; font-family: sans-serif; color: whitesmoke;">Search movies by year</h1>
     <form method="POST" action="" class="form-control" style="margin-left: auto; margin-right: auto; width: 55%;">
         {{ year_form.hidden_tag() }}
         <div style="padding-right: 2rem;">
@@ -20,12 +20,18 @@
         </div>
     </form>
     {% if year %}
+        <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Results found for year '{{year}}'</h1>
         {% if movies %}
-            {% for movie in movies %}
-                <div style="padding-top: 4rem;"><p style="font-family: sans-serif;">Title: <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}"><b>{{ movie["title"] }}</b></a>, Year: <b>{{ movie["year"] }}</b>, IMDB: <b>{{ movie["imdb_rating"] }}</b>, Metascore: <b>{{ movie["metascore"] }}</b>, Tomatometer: <b>{{ movie["tomatometer"] }}</b>, Audience Score: <b>{{ movie["audience_score"] }}</b>, Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b>, Tmdb: <b>{{ movie["tmdb_rating"] }}</b>, Average: <b>{{ movie["average_rating"] }}</b>, Image: <b>{{ movie["movie_image"] }}</b>, Synopsis: <b>{{ movie["synopsis"] }}</b>, Update date: <b>{{ movie["date_updated"] }}</b></p></div>
-            {% endfor %}
-        {% else %}
-            <h2 style="text-align: center; padding-top: 4rem;">0 Results found for '{{ year }}'</h2>
+            <div style=" display: grid; grid-template-columns: auto auto auto auto;">
+                {% for movie in movies %}
+                    <div class="image-container">
+                        <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}">
+                            <img style="width: auto; height: auto; margin: auto; max-width:600px; max-height:600px; display: block; border: 2px solid black;" src="{{ movie.movie_image }}">
+                            <div class="overlay">{{ movie["title"] }} ({{ movie["year"] }})</div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
     {% endif %}
 {% endblock content %}
