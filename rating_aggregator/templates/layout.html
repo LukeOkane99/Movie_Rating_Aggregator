@@ -34,7 +34,7 @@
             </header>
             <div class="sidebar-container">
                 <div class="sidebar">
-                    <h1>Menu</h1>
+                    <h1><i class="fa fa-bars"></i> Menu</h1>
                     <ul>
                         <li><a href="{{ url_for('index') }}", style="padding-left: 0.5rem;">Home
                             <i class="fa fa-home"></i>
@@ -73,7 +73,9 @@
                                     <i class="fa fa-eye", style="float: left;"></i>
                                 </a></li>
                             </div>
-                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                            <li><a href="{{ url_for('logout') }}", style="padding-left: 0.5rem;">Logout
+                                <i class="fa fa-sign-out" style="float: left;"></i>
+                            </a></li>
                         {% else %}
                             <li><a href="{{ url_for('login') }}">Login</a></li>
                             <li><a href="{{ url_for('register') }}">Register</a></li>
@@ -81,12 +83,10 @@
                     </ul>
                 </div>
             </div>
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    {% for message in messages %}
-                        <div class="body">
-                            {{ message }}
-                        </div>
+                    {% for category, message in messages %}
+                        <div id="flash-messages" class="flash-{{ category }}">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
@@ -114,3 +114,5 @@
         });
     }
 </script>
+
+<script type="text/javascript">window.setTimeout("document.getElementById('flash-messages').style.display='none';", 5000); </script>

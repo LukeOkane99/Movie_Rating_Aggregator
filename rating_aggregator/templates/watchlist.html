@@ -1,12 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1 style="text-align: center; font-family: sans-serif;">Watchlist</h1>
-{% for movie in movies %}
-<div>
-    <p style="font-family: sans-serif;">Title: <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}"><b>{{ movie["title"] }}</b></a>, Year: <b>{{ movie["year"] }}</b>, IMDB: <b>{{ movie["imdb_rating"] }}</b>, Metascore: <b>{{ movie["metascore"] }}</b>, Tomatometer: <b>{{ movie["tomatometer"] }}</b>, Audience Score: <b>{{ movie["audience_score"] }}</b>, Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b>, Tmdb: <b>{{ movie["tmdb_rating"] }}</b>, Average: <b>{{ movie["average_rating"] }}</b>, Image: <b>{{ movie["movie_image"] }}</b>, Synopsis: <b>{{ movie["synopsis"] }}</b>, Update date: <b>{{ movie["date_updated"] }}</b></p>
-    <form action='{{ url_for("delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
-        <input type=submit value="Remove">
-    </form>
+<h1 style="text-align: center; font-family: sans-serif; color: whitesmoke;">Watchlist</h1>
+<div style=" display: grid; grid-template-columns: auto auto auto auto;">
+    {% for movie in movies %}
+        <div class="image-container">
+            <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}">
+                <img style="width: auto; height: auto; margin: auto; max-width:600px; max-height:600px; display: block; border: 2px solid black;" src="{{ movie.movie_image }}">
+                <div class="overlay">
+                    <div class="movie-heading">
+                        <div style="float: left; font-size: 1.4rem;">{{ movie["title"] }} ({{ movie["year"] }})</br></div>
+                        <form action='{{ url_for("delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
+                            <button type="submit" name="remove_movie" style="border: none; background: none;">
+                                <i class="fa fa-trash trash-button" style="font-size: 25px; padding-left: 1rem;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div style="padding-bottom: 10rem; margin: 0 auto;">
+                        <div class="rating-block" style="padding-top: 4rem; padding-bottom: 2rem;">
+                            <div class="rating-circle" style="width: 120px; height: 120px; line-height: 120px; font-size: 30px; border: 2px solid black;">{{ movie["average_rating"] }}</div>
+                            <div style="display: inline-block; text-align: left;">
+                                <ul style="list-style-type: none; color: whitesmoke; font-family: sans-serif; margin: 0 auto; font-size: 1.1rem; line-height: 1.3; padding-bottom: 2rem;">
+                                    <li>IMDB: <b>{{ movie["imdb_rating"] }}</b></li>
+                                    <li>Metascore: <b>{{ movie["metascore"] }}</b></li>
+                                    <li>Tomatometer: <b>{{ movie["tomatometer"] }}</b></li>
+                                    <li>Audience Score: <b>{{ movie["audience_score"] }}</b></li>
+                                    <li>Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b></li>
+                                    <li>Tmdb: <b>{{ movie["tmdb_rating"] }}</b></li>
+                                </ul>
+                            </div>
+                        </div>  
+                    </div>
+                    <p style="text-align: left, center, right; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; text-align: left; line-height: 1.6rem; margin: 0 auto; padding-top: 1rem;">{{ movie["synopsis"] }}</p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock content %}

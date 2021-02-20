@@ -13,7 +13,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 def index():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
     return render_template('index.html', search_form=search_form)
 
 #<------------Movie Endpoints------------->
@@ -23,7 +23,7 @@ def index():
 def get_all_movies():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
     movies = Movie.query.order_by(Movie.title).all()
     return render_template('all_movies.html', title='All Movies', movies=movies, search_form=search_form)
 
@@ -33,7 +33,7 @@ def title_results(name):
     search_form = TitleSearchForm()
     results_form = ResultsSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
     elif flask.request.method == 'POST' and results_form.validate_on_submit():
         return redirect(url_for('search_for_movie', name=results_form.result_movie_title.data.lower().strip(), year=results_form.result_movie_year.data.strip()))
     count = 0
@@ -47,7 +47,7 @@ def title_results(name):
 def search_for_movie(name, year):
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
     elif flask.request.method == 'GET':
         watchlist_entry = None
         movie = Movie.query.filter(func.lower(Movie.title) == name.lower()).filter_by(year = year).first()
@@ -75,7 +75,7 @@ def search_movies_by_year(year=None):
     search_form = TitleSearchForm()
     year_form = YearSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
     if flask.request.method == 'POST' and year_form.validate_on_submit():
         return redirect(url_for('search_movies_by_year', year=year_form.movie_year.data))
     count = 0
@@ -89,7 +89,7 @@ def search_movies_by_year(year=None):
 def get_high_to_low_ratings():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.order_by(desc(Movie.average_rating)).all()
     return render_template('get_hightolow_ratings.html', title='High to Low Ratings', movies=movies, search_form=search_form)
@@ -99,7 +99,7 @@ def get_high_to_low_ratings():
 def get_low_to_high_ratings():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.order_by(asc(Movie.average_rating)).all()
     return render_template('get_lowtohigh_ratings.html', title='Low to High Ratings', movies=movies, search_form=search_form)
@@ -109,7 +109,7 @@ def get_low_to_high_ratings():
 def get_favourable_reviews():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.filter(Movie.average_rating >= 60).all()
     return render_template('get_favourable_movies.html', title='Favourable Ratings', movies=movies, search_form=search_form)
@@ -119,7 +119,7 @@ def get_favourable_reviews():
 def get_nonfavourable_reviews():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.filter(Movie.average_rating < 60).all()
     return render_template('get_non-favourable_movies.html', title='Non-Favourable Ratings', movies=movies, search_form=search_form)
@@ -129,7 +129,7 @@ def get_nonfavourable_reviews():
 def get_top10_movies():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.order_by(desc(Movie.average_rating)).all()
     movie_list = []
@@ -145,7 +145,7 @@ def get_top10_movies():
 def register():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     if current_user.is_authenticated:
         flash('You are already logged in with a registered account!')
@@ -157,7 +157,7 @@ def register():
         user = User(forename=register_form.forename.data, surname=register_form.surname.data, email=register_form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been successfully created. You can now log in!')
+        flash('Account successfully created. You can now log in!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register an account', register_form=register_form, search_form=search_form)
 
@@ -166,10 +166,10 @@ def register():
 def login():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     if current_user.is_authenticated:
-        flash('You are already logged in with a registered account!')
+        flash('You are already logged in with a registered account!', 'warning')
         return redirect(url_for('index'))
 
     login_form = loginForm()
@@ -179,17 +179,17 @@ def login():
             login_user(user)
             # access page user was trying to access before login
             next_page = request.args.get('next')
-            flash('Login was successful!')
+            flash('Login successful!', 'success')
             return redirect(next_page) if next_page else redirect(url_for('index'))
         else:
-            flash('Login was unsuccessful. Please check you have input the correct email and password', 'danger')
+            flash('Login unsuccessful, please check you have input the correct email and password!', 'danger')
     return render_template('login.html', title='Log in to your account', login_form=login_form, search_form=search_form)
 
 # Route to log user out
 @app.route('/logout', methods=['GET'])
 def logout():
     logout_user()
-    flash('User successfully logged out')
+    flash('User successfully logged out', 'success')
     return redirect(url_for('index'))
 
 # Route to view user's profile
@@ -206,12 +206,12 @@ def profile(user_id):
                 if update_form.email.data != user.email:
                     other_user = User.query.filter_by(email=update_form.email.data).first()
                     if other_user:
-                        flash('This email is already taken, please provide another!')
+                        flash('Email already taken, please provide another!', 'danger')
                     else:
                         user.email = update_form.email.data
                         print(user.email)
                         db.session.commit()
-                        flash('Account details successfully updated!')
+                        flash('Account details successfully updated!', 'success')
                         return redirect(url_for('profile', user_id=user.id))
             elif request.method == 'GET':
                 # Populate form with users current details
@@ -224,7 +224,7 @@ def profile(user_id):
                 current_user.surname = update_form.surname.data
                 current_user.email = update_form.email.data
                 db.session.commit()
-                flash('Account details successfully updated!')
+                flash('Account details successfully updated!', 'success')
                 return redirect(url_for('profile', user_id=current_user.id))
             elif request.method == 'GET':
                 # Populate form with users current details
@@ -236,7 +236,7 @@ def profile(user_id):
 
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     return render_template('profile.html', title='Profile', search_form=search_form, update_form=update_form)
 
@@ -248,7 +248,7 @@ def profile(user_id):
 def get_watchlist(user_id):
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = []
 
@@ -265,13 +265,13 @@ def get_watchlist(user_id):
 def add_to_watchlist(user_id, movie_id, name, year):
     movie = WatchlistMovies.query.filter_by(userId=user_id, movieId=movie_id).first()
     if movie:
-        flash('Movie already exists in watchlist!')
+        flash('Movie already exists in watchlist!', 'danger')
         return redirect(url_for('search_for_movie', name=name, year=year))
     else:
         movie = WatchlistMovies(userId=user_id, movieId=movie_id)
         db.session.add(movie)
         db.session.commit()
-        flash('Movie added to watchlist!')
+        flash('Movie added to watchlist!', 'success')
         return redirect(url_for('search_for_movie', name=name, year=year))
 
 # Route to delete a movie from watchlist
@@ -281,9 +281,7 @@ def delete_from_watchlist(user_id, movie_id, name, year):
     watchlist_entry = WatchlistMovies.query.filter_by(userId=user_id, movieId=movie_id).first()
     db.session.delete(watchlist_entry)
     db.session.commit()
-    flash('Movie removed from watchlist!')
-    #print(request.referrer)
-    #return redirect(url_for('get_watchlist', user_id=user_id))
+    flash('Movie removed from watchlist!', 'success')
     return redirect(request.referrer)
     
 #<--------------------Admin Endpoints------------------->
@@ -294,7 +292,7 @@ def delete_from_watchlist(user_id, movie_id, name, year):
 def get_all_users():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
-        return redirect(url_for('title_results', name=search_form.movie_title.data.lower()))
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     users = User.query.order_by(User.id).all()
 
@@ -327,7 +325,7 @@ def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
-    flash('User account has been deleted!')
+    flash('User account has been deleted!', 'success')
     return redirect(url_for('get_all_users'))
 
 #<--------------------Error Handling------------------->
