@@ -32,9 +32,17 @@
         </div>
     </form>
     {% if year %}
-        <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Results found for search '{{name}} {{year}}'</h1>
+        {% if count == 1 %}
+            <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Result found for search '{{name}} {{year}}'</h1>
+        {% else %}
+            <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Results found for search '{{name}} {{year}}'</h1>
+        {% endif %}
     {% else %}
-        <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Results found for search '{{name}}'</h1>
+        {% if count == 1 %}
+            <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Result found for search '{{name}}'</h1>
+        {% else %}
+            <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Results found for search '{{name}}'</h1>
+        {% endif %}
     {% endif %}
     {% if movies %}
         <div style=" display: grid; grid-template-columns: auto auto auto auto;">
