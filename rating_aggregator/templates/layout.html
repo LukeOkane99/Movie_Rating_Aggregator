@@ -12,23 +12,23 @@
     <body class="container">
         <div class="content">
             <header class="header">
-                <h1>Movie Rating Aggregator</h1>
+                <h1><a href="{{ url_for('get_all_movies') }}">Movie Rating Aggregator</a></h1>
                 <form method="POST" action="" class="form-control">
                     {{ search_form.hidden_tag() }}
                     <div style="padding-right: 2rem;">
                         {% if search_form.movie_title.errors %}
-                            {{ search_form.movie_title }}
+                            {{ search_form.movie_title(class_="title-search-control") }}
                             <div>
                                 {% for error in search_form.movie_title.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ search_form.movie_title }}
+                            {{ search_form.movie_title(class_="title-search-control") }}
                         {% endif %}
                     </div>
                     <div>
-                        {{ search_form.submit_button }}
+                        <button type="submit" class="title-search-button"><i class="fa fa-search" style="text-align: center;"></i></button>
                     </div>
                 </form>
             </header>
@@ -36,9 +36,6 @@
                 <div class="sidebar">
                     <h1><i class="fa fa-bars"></i> Menu</h1>
                     <ul>
-                        <li><a href="{{ url_for('index') }}", style="padding-left: 0.5rem;">Home
-                            <i class="fa fa-home"></i>
-                        </a></li>
                         <button class="dropdown-btn">Movies 
                             <i class="fa fa-caret-down"></i>
                         </button>
@@ -73,8 +70,8 @@
                                     <i class="fa fa-eye", style="float: left;"></i>
                                 </a></li>
                             </div>
-                            <li><a href="{{ url_for('logout') }}", style="padding-left: 0.5rem;">Logout
-                                <i class="fa fa-sign-out" style="float: left;"></i>
+                            <li>
+                                <button class="logout-button" onclick="document.getElementById('logout-modal').style.display='block'">Logout <i class="fa fa-sign-out" style="float: left;"></i></button>
                             </a></li>
                         {% else %}
                             <li><a href="{{ url_for('login') }}">Login</a></li>
@@ -91,6 +88,22 @@
                 {% endif %}
             {% endwith %}
             <div class="body">
+                <div>
+                    <div id="logout-modal" class="modal">
+                        <form class="modal-content" action='{{ url_for("logout") }}' method=get>
+                        <div class="modal-container" style="font-family: sans-serif;">
+                            <span onclick="document.getElementById('logout-modal').style.display='none'" class="close" title="Close">&times;</span>
+                            <h1 style="color: black;">Logout</h1>
+                            <p>Are you sure you want to log out of your account?</p>
+                    
+                            <div class="clearfix">
+                                <button type="button" class="cancelbtn" onclick="document.getElementById('logout-modal').style.display='none'" class="close" title="Cancel">Cancel</button>
+                                <input type=submit class="deletebtn" value="Logout">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
                 {% block content %}
                 {% endblock %}
             </div>
@@ -115,4 +128,4 @@
     }
 </script>
 
-<script type="text/javascript">window.setTimeout("document.getElementById('flash-messages').style.display='none';", 5000); </script>
+<script type="text/javascript">window.setTimeout("document.getElementById('flash-messages').style.display='none';", 3000); </script>

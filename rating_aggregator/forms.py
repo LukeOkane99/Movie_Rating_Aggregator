@@ -7,11 +7,11 @@ from rating_aggregator.models import User, Movie
 
 # Registration form so new user can post their details
 class registrationForm(FlaskForm):
-    forename = StringField('Forename', validators=[DataRequired(), Length(min=2, max=30)])
-    surname = StringField('Surname', validators=[DataRequired(), Length(min=2, max=30)])
-    email = StringField('Email Address', validators=[DataRequired(), Email(), Length(max=120)])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password_confirmation = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    forename = StringField('Forename', validators=[DataRequired(), Length(min=2, max=30)], render_kw={"placeholder": "Enter Your Forename.."})
+    surname = StringField('Surname', validators=[DataRequired(), Length(min=2, max=30)], render_kw={"placeholder": "Enter Your Surname.."})
+    email = StringField('Email Address', validators=[DataRequired(), Email(), Length(max=120)], render_kw={"placeholder": "Enter Your Email.."})
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Enter Your Password.."})
+    password_confirmation = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')], render_kw={"placeholder": "Confirm your Password.."})
     register_button = SubmitField('Register')
 
     # check if inputted email already exists in database
@@ -22,8 +22,8 @@ class registrationForm(FlaskForm):
 
 # Login form so registered users can log in to the application
 class loginForm(FlaskForm):
-    email = StringField('Enter Email Address', validators=[DataRequired(), Email(), Length(max=120)])
-    password = PasswordField('Enter Password', validators=[DataRequired()])
+    email = StringField('Email Address', validators=[DataRequired(), Email(), Length(max=120)], render_kw={"placeholder": "Enter Your Email.."})
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Enter Your password.."})
     login_button = SubmitField('Login')
 
 # Form to search for movie title

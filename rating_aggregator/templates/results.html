@@ -1,70 +1,61 @@
 {% extends "layout.html" %}
 {% block content %}
     <h3 style="text-align: center; font-family: sans-serif; color: whitesmoke;">Can't find what you are looking for? Please search with the exact title and year of the movie!<br></h3>
-    <form method="POST" action="" class="form-control" style="margin-left: auto; margin-right: auto; width: 62%; padding-top: 1rem;" onsubmit="return checkForm(this);">
+    <form method="POST" action="" class="form-control" style="margin-left: auto; margin-right: auto; width: 62%; padding-top: 1rem;" onSubmit="document.getElementById('submit').disabled=true;">
         {{ results_form.hidden_tag() }}
         <div style="padding-right: 2rem;">
             {% if results_form.result_movie_title.errors %}
-                {{ results_form.result_movie_title }}
+                {{ results_form.result_movie_title(class_="results-form-control") }}
                 <div>
                     {% for error in results_form.result_movie_title.errors %}
                         <span>{{ error }}</span>
                     {% endfor %}
                 </div>
             {% else %}
-                {{ results_form.result_movie_title }}
+                {{ results_form.result_movie_title(class_="results-form-control") }}
             {% endif %}
         </div>
         <div style="padding-right: 2rem;">
             {% if results_form.result_movie_year.errors %}
-                {{ results_form.result_movie_year }}
+                {{ results_form.result_movie_year(class_="results-form-control") }}
                 <div>
                     {% for error in results_form.result_movie_year.errors %}
                         <span>{{ error }}</span>
                     {% endfor %}
                 </div>
             {% else %}
-                {{ results_form.result_movie_year }}
+                {{ results_form.result_movie_year(class_="results-form-control") }}
             {% endif %}
         </div>
         <div>
-            {{ results_form.submit }}
+            <button type="submit" class="results-search-button" id="submit"><i class="fa fa-search" style="text-align: center;"></i></button>
         </div>
     </form>
-    <script type="text/javascript">
-
-        function checkForm(results_form)
-        {
-          //
-          // validate form fields
-          //
-      
-          results_form.submit.disabled = true;
-          return true;
-        }
-      
-      </script>
-    <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Results found for search '{{name}}'</h1>
+    {% if year %}
+        <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Results found for search '{{name}} {{year}}'</h1>
+    {% else %}
+        <h1 style="text-align: center; padding-top: 6rem; color: whitesmoke;">{{count}} Results found for search '{{name}}'</h1>
+    {% endif %}
     {% if movies %}
         <div style=" display: grid; grid-template-columns: auto auto auto auto;">
         {% for movie in movies %}
-            <div class="image-container">
+            <div class="image-container" style="margin-right: 1rem;">
                 <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}">
                     <img style="width: auto; height: auto; margin: auto; max-width:600px; max-height:600px; display: block; border: 2px solid black;" src="{{ movie.movie_image }}">
                     <div class="overlay">
                         <div class="movie-heading">
                             <div style="float: left; font-size: 1.4rem;">{{ movie["title"] }} ({{ movie["year"] }})</br></div>
                                 {% if current_user.is_authenticated %}
-                                    {% if watchlist_entry %}
+                                    {% if movie in watchlist_entries %}
                                         <form action='{{ url_for("delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
                                             <button type="submit" name="remove_movie" style="border: none; background: none;">
-                                                <i class="fa fa-trash trash-button" style="font-size: 25px; padding-left: 1rem;"></i>
+                                                <span title="Remove from watchlist"><i class="fa fa-trash trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
                                             </button>
                                         </form>
                                     {% else %}
                                         <form action='{{ url_for("add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
                                             <button type="submit" name="add_movie" style="border: none; background: none;">
-                                                <i class="fa fa-plus-square trash-button" style="font-size: 25px; padding-left: 1rem;"></i>
+                                                <span title="Add to watchlist"><i class="fa fa-plus-square trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
                                             </button>
                                         </form>
                                     {% endif %}
@@ -75,17 +66,17 @@
                                 <div class="rating-circle" style="width: 120px; height: 120px; line-height: 120px; font-size: 30px; border: 2px solid black;">{{ movie["average_rating"] }}</div>
                                 <div style="display: inline-block; text-align: left;">
                                     <ul style="list-style-type: none; color: whitesmoke; font-family: sans-serif; margin: 0 auto; font-size: 1.1rem; line-height: 1.3; padding-bottom: 2rem;">
-                                        <li>IMDB: <b>{{ movie["imdb_rating"] }}</b></li>
+                                        <li>IMDb: <b>{{ movie["imdb_rating"] }}</b></li>
                                         <li>Metascore: <b>{{ movie["metascore"] }}</b></li>
                                         <li>Tomatometer: <b>{{ movie["tomatometer"] }}</b></li>
                                         <li>Audience Score: <b>{{ movie["audience_score"] }}</b></li>
                                         <li>Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b></li>
-                                        <li>Tmdb: <b>{{ movie["tmdb_rating"] }}</b></li>
+                                        <li>TMDb: <b>{{ movie["tmdb_rating"] }}</b></li>
                                     </ul>
                                 </div>
                             </div>  
                         </div>
-                        <p style="text-align: left, center, right; font-family: sans-serif; color: whitesmoke; font-size: 1.4rem; text-align: left; line-height: 1.6rem; margin: 0 auto; padding-top: 1rem;">{{ movie["synopsis"] }}</p>
+                        <p style="text-align: left, center, right; font-family: sans-serif; color: whitesmoke; font-size: 1.4rem; text-align: left; line-height: 1.6rem; margin: 0 auto; padding-top: 1rem; font-weight: bold;">{{ movie["synopsis"] }}</p>
                     </div>
                 </a>
             </div>

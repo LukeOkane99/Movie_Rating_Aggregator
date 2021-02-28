@@ -195,8 +195,8 @@ def get_all_ratings(movie, year):
 
 """
 # Testing
-movie = "Star Wars: Episode VIII - The Last Jedi"
-year = '2017'
+movie = "deadpool"
+year = '2016'
 
 title, release_year, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, tomatometer, tomatometer_votes, audience, audience_score_votes, letterboxd, letterboxd_votes, tmdb, tmdb_votes, image, avg = get_all_ratings(movie, year)
 

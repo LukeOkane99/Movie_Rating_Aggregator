@@ -8,7 +8,6 @@ from rating_aggregator.forms import registrationForm, loginForm, TitleSearchForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 # Route for index page
-@app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     search_form = TitleSearchForm()
@@ -19,17 +18,24 @@ def index():
 #<------------Movie Endpoints------------->
 
 # Route to access all movies in the database
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/movies/all', methods=['GET', 'POST'])
 def get_all_movies():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
     movies = Movie.query.order_by(Movie.title).all()
-    return render_template('all_movies.html', title='All Movies', movies=movies, search_form=search_form)
+    watchlist_entries = []
+    for movie in movies:
+        if current_user.is_authenticated:
+            if WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first():
+                watchlist_entries.append(movie)
+    return render_template('all_movies.html', title='All Movies', movies=movies, search_form=search_form, watchlist_entries=watchlist_entries)
 
 # Route displaying searched movie results
-@app.route('/movies/results/<name>', methods=['GET', 'POST'])
-def title_results(name):
+@app.route('/movies/results/<name>', defaults={'year': None}, methods=['GET', 'POST'])
+@app.route('/movies/results/<name>_<year>',methods=['GET', 'POST'])
+def title_results(name, year):
     search_form = TitleSearchForm()
     results_form = ResultsSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
@@ -38,14 +44,19 @@ def title_results(name):
         return redirect(url_for('search_for_movie', name=results_form.result_movie_title.data.lower().strip(), year=results_form.result_movie_year.data.strip()))
     count = 0
     movies = Movie.query.filter(func.lower(Movie.title).like("%{0}%".format(name.lower()))).all()
+    watchlist_entries = []
     for movie in movies:
         count += 1
-    return render_template('results.html', title='Results', movies=movies, search_form=search_form, results_form=results_form, count=count, name=name)
+        if current_user.is_authenticated:
+            if WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first():
+                watchlist_entries.append(movie)
+    return render_template('results.html', title='Results', movies=movies, search_form=search_form, results_form=results_form, count=count, name=name, year=year, watchlist_entries=watchlist_entries)
 
 # Route to return specific movie
 @app.route('/movies/<name>_<year>', methods=['GET', 'POST'])
 def search_for_movie(name, year):
     search_form = TitleSearchForm()
+    results_form = ResultsSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
     elif flask.request.method == 'GET':
@@ -66,9 +77,9 @@ def search_for_movie(name, year):
                 return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
             except Exception as e:
                 db.session.rollback()
-                abort(404)
+                return redirect(url_for('title_results', name=name, year=year))
 
-# Route to search for a movie by year ***** TODO *****
+# Route to search for a movie by year 
 @app.route('/movies/year', methods=['GET', 'POST'])
 @app.route('/movies/year/<year>', methods=['GET', 'POST'])
 def search_movies_by_year(year=None):
@@ -80,9 +91,13 @@ def search_movies_by_year(year=None):
         return redirect(url_for('search_movies_by_year', year=year_form.movie_year.data))
     count = 0
     movies = Movie.query.filter_by(year=year).all()
+    watchlist_entries = []
     for movie in movies:
         count += 1
-    return render_template('get_movie_by_year.html', title='Movies by year', movies=movies, search_form=search_form, year_form=year_form, year=year, count=count)
+        if current_user.is_authenticated:
+            if WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first():
+                watchlist_entries.append(movie)
+    return render_template('get_movie_by_year.html', title='Movies by year', movies=movies, search_form=search_form, year_form=year_form, year=year, count=count, watchlist_entries=watchlist_entries)
 
 # Route to display movies based on high to low ratings
 @app.route('/movies/hightolow', methods=['GET', 'POST'])
@@ -92,7 +107,12 @@ def get_high_to_low_ratings():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.order_by(desc(Movie.average_rating)).all()
-    return render_template('get_hightolow_ratings.html', title='High to Low Ratings', movies=movies, search_form=search_form)
+    watchlist_entries = []
+    for movie in movies:
+        if current_user.is_authenticated:
+            if WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first():
+                watchlist_entries.append(movie)
+    return render_template('get_hightolow_ratings.html', title='High to Low Ratings', movies=movies, search_form=search_form, watchlist_entries=watchlist_entries)
 
 # Route to display movies based on low to high ratings
 @app.route('/movies/lowtohigh', methods=['GET', 'POST'])
@@ -102,7 +122,12 @@ def get_low_to_high_ratings():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.order_by(asc(Movie.average_rating)).all()
-    return render_template('get_lowtohigh_ratings.html', title='Low to High Ratings', movies=movies, search_form=search_form)
+    watchlist_entries = []
+    for movie in movies:
+        if current_user.is_authenticated:
+            if WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first():
+                watchlist_entries.append(movie)
+    return render_template('get_lowtohigh_ratings.html', title='Low to High Ratings', movies=movies, search_form=search_form, watchlist_entries=watchlist_entries)
 
 # Route to display favourable movies
 @app.route('/movies/favourable', methods=['GET', 'POST'])
@@ -112,7 +137,12 @@ def get_favourable_reviews():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.filter(Movie.average_rating >= 60).all()
-    return render_template('get_favourable_movies.html', title='Favourable Ratings', movies=movies, search_form=search_form)
+    watchlist_entries = []
+    for movie in movies:
+        if current_user.is_authenticated:
+            if WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first():
+                watchlist_entries.append(movie)
+    return render_template('get_favourable_movies.html', title='Favourable Ratings', movies=movies, search_form=search_form, watchlist_entries=watchlist_entries)
 
 # Route to display non-favourable reviews
 @app.route('/movies/non-favourable', methods=['GET', 'POST'])
@@ -122,7 +152,12 @@ def get_nonfavourable_reviews():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.filter(Movie.average_rating < 60).all()
-    return render_template('get_non-favourable_movies.html', title='Non-Favourable Ratings', movies=movies, search_form=search_form)
+    watchlist_entries = []
+    for movie in movies:
+        if current_user.is_authenticated:
+            if WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first():
+                watchlist_entries.append(movie)
+    return render_template('get_non-favourable_movies.html', title='Non-Favourable Ratings', movies=movies, search_form=search_form, watchlist_entries=watchlist_entries)
 
 # Route to display top 10 movies
 @app.route('/movies/top10', methods=['GET', 'POST'])
@@ -132,10 +167,13 @@ def get_top10_movies():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     movies = Movie.query.order_by(desc(Movie.average_rating)).all()
-    movie_list = []
-    for movie in movies[:10]:
-        movie_list.append(movie)
-    return render_template('top_10_movies.html', title='Top 10 Movies', movie_list=movie_list, search_form=search_form)
+    movies = movies[:10]
+    watchlist_entries = []
+    for movie in movies:
+        if current_user.is_authenticated:
+            if WatchlistMovies.query.filter_by(userId=current_user.id, movieId=movie.movieId).first():
+                watchlist_entries.append(movie)
+    return render_template('top_10_movies.html', title='Top 10 Movies', movies=movies, search_form=search_form, watchlist_entries=watchlist_entries)
 
 
 #<--------------------User Endpoints------------------->
@@ -148,8 +186,8 @@ def register():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     if current_user.is_authenticated:
-        flash('You are already logged in with a registered account!')
-        return redirect(url_for('index'))
+        flash('You are already logged in with a registered account!', 'danger')
+        return redirect(url_for('get_all_movies'))
 
     register_form = registrationForm()
     if register_form.validate_on_submit():
@@ -169,8 +207,8 @@ def login():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
 
     if current_user.is_authenticated:
-        flash('You are already logged in with a registered account!', 'warning')
-        return redirect(url_for('index'))
+        flash('You are already logged in with a registered account!', 'danger')
+        return redirect(url_for('get_all_movies'))
 
     login_form = loginForm()
     if login_form.validate_on_submit():
@@ -180,7 +218,7 @@ def login():
             # access page user was trying to access before login
             next_page = request.args.get('next')
             flash('Login successful!', 'success')
-            return redirect(next_page) if next_page else redirect(url_for('index'))
+            return redirect(next_page) if next_page else redirect(url_for('get_all_movies'))
         else:
             flash('Login unsuccessful, please check you have input the correct email and password!', 'danger')
     return render_template('login.html', title='Log in to your account', login_form=login_form, search_form=search_form)
@@ -190,7 +228,7 @@ def login():
 def logout():
     logout_user()
     flash('User successfully logged out', 'success')
-    return redirect(url_for('index'))
+    return redirect(url_for('get_all_movies'))
 
 # Route to view user's profile
 @app.route('/users/<user_id>', methods=['GET', 'POST'])
@@ -209,10 +247,9 @@ def profile(user_id):
                         flash('Email already taken, please provide another!', 'danger')
                     else:
                         user.email = update_form.email.data
-                        print(user.email)
-                        db.session.commit()
-                        flash('Account details successfully updated!', 'success')
-                        return redirect(url_for('profile', user_id=user.id))
+                db.session.commit()
+                flash('Account details successfully updated!', 'success')
+                return redirect(url_for('profile', user_id=user.id))
             elif request.method == 'GET':
                 # Populate form with users current details
                 update_form.forename.data = user.forename
@@ -256,7 +293,6 @@ def get_watchlist(user_id):
     for entry in watchlist:
         movie = Movie.query.filter_by(movieId=entry.movieId).first()
         movies.append(movie)
-        
     return render_template('watchlist.html', title='Watchlist', search_form=search_form, movies=movies)
 
 # Route to add a movie to watchlist
@@ -266,13 +302,13 @@ def add_to_watchlist(user_id, movie_id, name, year):
     movie = WatchlistMovies.query.filter_by(userId=user_id, movieId=movie_id).first()
     if movie:
         flash('Movie already exists in watchlist!', 'danger')
-        return redirect(url_for('search_for_movie', name=name, year=year))
+        return redirect(request.referrer)
     else:
         movie = WatchlistMovies(userId=user_id, movieId=movie_id)
         db.session.add(movie)
         db.session.commit()
         flash('Movie added to watchlist!', 'success')
-        return redirect(url_for('search_for_movie', name=name, year=year))
+        return redirect(request.referrer)
 
 # Route to delete a movie from watchlist
 @app.route('/users/<user_id>/watchlist/delete/movies/<movie_id>/<name>_<year>', methods=['POST'])

@@ -8,13 +8,13 @@
                         {% if watchlist_entry %}
                             <form action='{{ url_for("delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
                                 <button type="submit" name="remove_movie" style="border: none; background: none;">
-                                    <i class="fa fa-trash trash-button" style="font-size: 30px; padding-left: 1rem;"></i>
+                                    <span title="Remove from watchlist"><i class="fa fa-trash trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
                                 </button>
                             </form>
                         {% else %}
                             <form action='{{ url_for("add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
                                 <button type="submit" name="add_movie" style="border: none; background: none;">
-                                    <i class="fa fa-plus-square trash-button" style="font-size: 30px; padding-left: 1rem;"></i>
+                                    <span title="Add to watchlist"><i class="fa fa-plus-square trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
                                 </button>
                             </form>
                         {% endif %}
@@ -25,12 +25,12 @@
                     <div class="rating-circle" style="width: 150px; height: 150px; line-height: 150px; font-size: 50px; border: 2px solid black; margin: 0rem;">{{ movie["average_rating"] }}</div>
                     <div style="display: inline-block; text-align: left;">
                         <ul style="list-style-type: none; color: whitesmoke; font-family: sans-serif; margin: 0 auto; font-size: 1.2rem; line-height: 1.4; padding-bottom: 2rem;">
-                            <li>IMDB: <b>{{ movie["imdb_rating"] }}</b></li>
+                            <li>IMDb: <b>{{ movie["imdb_rating"] }}</b></li>
                             <li>Metascore: <b>{{ movie["metascore"] }}</b></li>
                             <li>Tomatometer: <b>{{ movie["tomatometer"] }}</b></li>
                             <li>Audience Score: <b>{{ movie["audience_score"] }}</b></li>
                             <li>Letterboxd: <b>{{ movie["letterboxd_rating"] }}</b></li>
-                            <li>Tmdb: <b>{{ movie["tmdb_rating"] }}</b></li>
+                            <li>TMDb: <b>{{ movie["tmdb_rating"] }}</b></li>
                         </ul>
                     </div>
                 </div>  

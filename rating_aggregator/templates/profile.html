@@ -1,55 +1,68 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1 style="text-align: center; font-family: sans-serif; color: whitesmoke;">Profile Page</h1>
+    <h1 style="text-align: center; font-family: sans-serif; color: whitesmoke; padding-bottom: 2rem;">Profile Page</h1>
+    <div style="text-align: center;">
+        <div style="width: 70%; margin-left: auto; margin-right: auto;">
+            <form method="POST" action="">
+                {{ update_form.hidden_tag() }}
+                <div>
+                    <div class="profile-label-control">{{ update_form.forename.label }}</div></br>
 
-    <div style="display: inline-block; text-align: left;">
-        <form method="POST" action="">
-            {{ update_form.hidden_tag() }}
-            <div>
-                {{ update_form.forename.label }}
+                    {% if update_form.forename.errors %}
+                        {{ update_form.forename(class_="profile-form-control") }}
+                        <div>
+                            {% for error in update_form.forename.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ update_form.forename(class_="profile-form-control") }}
+                    {% endif %}
+                </div>
+                <div>
+                    <div class="profile-label-control">{{ update_form.surname.label }}</div></br>
 
-                {% if update_form.forename.errors %}
-                    {{ update_form.forename }}
-                    <div>
-                        {% for error in update_form.forename.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ update_form.forename }}
-                {% endif %}
-            </div>
-            <div>
-                {{ update_form.surname.label }}
+                    {% if update_form.surname.errors %}
+                        {{ update_form.surname(class_="profile-form-control") }}
+                        <div>
+                            {% for error in update_form.surname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ update_form.surname(class_="profile-form-control") }}
+                    {% endif %}
+                </div>
+                <div>
+                    <div class="profile-label-control">{{ update_form.email.label }}</div></br>
 
-                {% if update_form.surname.errors %}
-                    {{ update_form.surname }}
-                    <div>
-                        {% for error in update_form.surname.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ update_form.surname }}
-                {% endif %}
-            </div>
-            <div>
-                {{ update_form.email.label }}
-
-                {% if update_form.email.errors %}
-                    {{ update_form.email }}
-                    <div>
-                        {% for error in update_form.email.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ update_form.email }}
-                {% endif %}
-            </div>
-            <div>
-                {{ update_form.update_button }}
-            </div>
-        </form>
+                    {% if update_form.email.errors %}
+                        {{ update_form.email(class_="profile-form-control") }}
+                        <div>
+                            {% for error in update_form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ update_form.email(class_="profile-form-control") }}
+                    {% endif %}
+                </div>
+                <button type="button" class="profile-form-button" onclick="document.getElementById('profile-modal').style.display='block'">Update Details</button>
+                <div id="profile-modal" class="modal">
+                    <form class="modal-content" action='' method=post>
+                        <div class="modal-container" style="background-color: #fefefe; margin: 5% auto 15% auto; border: 2px solid black; width: 40%; font-family: sans-serif; color: black;">
+                        <span onclick="document.getElementById('profile-modal').style.display='none'" class="close" title="Close">&times;</span>
+                        <h1>Update User Account</h1>
+                        <p>Are you sure you want to update this account?</p>
+                    
+                        <div class="clearfix">
+                            <button type="button" class="cancelbtn" onclick="document.getElementById('profile-modal').style.display='none'" class="close" title="Cancel">Cancel</button>
+                            <input type=submit class="deletebtn" value="Update">
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock content %}
