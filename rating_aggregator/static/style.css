@@ -301,7 +301,7 @@
   left: 0;
   right: 0;
   background: rgb(0, 0, 0);
-  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  background: rgba(0, 0, 0, 0.8); /* Black see-through */
   color: whitesmoke;
   height: 91%;
   width: 98%;
