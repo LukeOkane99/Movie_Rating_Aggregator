@@ -12,17 +12,12 @@
     <body class="container">
         <div class="content">
             <header class="header">
-                <h1><a href="{{ url_for('get_all_movies') }}">Movie Rating Aggregator</a></h1>
+                <h1><a href="{{ url_for('get_all_movies') }}"><i class="fa fa-film" style="padding-right: 2rem; font-size: 55px;"></i>Movie Rating Aggregator</a></h1>
                 <form method="POST" action="" class="form-control">
                     {{ search_form.hidden_tag() }}
                     <div style="padding-right: 2rem;">
                         {% if search_form.movie_title.errors %}
                             {{ search_form.movie_title(class_="title-search-control") }}
-                            <div>
-                                {% for error in search_form.movie_title.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
                         {% else %}
                             {{ search_form.movie_title(class_="title-search-control") }}
                         {% endif %}
@@ -71,12 +66,13 @@
                                 </a></li>
                             </div>
                             <li>
-                                <button class="logout-button" onclick="document.getElementById('logout-modal').style.display='block'">Logout <i class="fa fa-sign-out" style="float: left;"></i></button>
+                                <button class="logout-button" onclick="document.getElementById('logout-modal').style.display='block'">Logout <i class="fa fa-sign-out" style="float: left; padding-right: 0.5rem;"></i></button>
                             </a></li>
                         {% else %}
-                            <li><a href="{{ url_for('login') }}">Login</a></li>
-                            <li><a href="{{ url_for('register') }}">Register</a></li>
+                            <li><a href="{{ url_for('login') }}" style="padding-left: 0.5rem;">Login <i class="fa fa-sign-out" style="float: left; padding-left: 0.5rem;"></i></a></li>
+                            <li><a href="{{ url_for('register') }}" style="padding-left: 0.5rem;">Register <i class="fa fa-user-plus" style="float: left; padding-left: 0.5rem;"></i></a></li>
                         {% endif %}
+                        <li><a href="{{ url_for('help') }}" style="padding-left: 0.5rem;">Help <i class="fa fa-question-circle" style="float: left; padding-left: 0.5rem;"></i></a></li>
                     </ul>
                 </div>
             </div>

@@ -8,7 +8,7 @@
             <th style="width: 15%;">SURNAME</th>
             <th style="width:20%;">EMAIL</th>
             <th>DATE CREATED</th>
-            <th>ADMIN</th>
+            <th style="text-align: center;">ADMIN</th>
             <th style="text-align: center;">ACTIONS</th>
         </tr>
         {% for user in users %}
@@ -19,22 +19,47 @@
                     <td style="width: 15%;">{{ user["surname"] }}</td>
                     <td style="width: 20%;">{{ user["email"] }}</td>
                     <td>{{ user["date_created"] }}</td>
-                    <td>{{ user["admin"] }}</td>
+                    <td style="text-align: center;">
+                        {% if user.admin %}
+                                <button type="button" class="all-users-buttons all-users-button-admin" type="button" onclick="document.getElementById('remove-admin-modal {{ user.id }}').style.display='block'">Remove Admin</button>
+                                <div id='remove-admin-modal {{ user.id }}' class="modal">
+                                    <form class="modal-content" action='{{ url_for("update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
+                                      <div class="modal-container">
+                                        <span onclick="document.getElementById('remove-admin-modal {{ user.id }}').style.display='none'" class="close" title="Close">&times;</span>
+                                        <h1>Remove User Admin Rights?</h1>
+                                        <p>Are you sure you want to remove this user's admin priviliedges?</p>
+                                  
+                                        <div class="clearfix">
+                                            <button type="button" class="cancelbtn" onclick="document.getElementById('remove-admin-modal {{ user.id }}').style.display='none'" class="close" title="Cancel">Cancel</button>
+                                            <input type=submit class="deletebtn" value="Remove Admin">
+                                        </div>
+                                      </div>
+                                    </form>
+                                </div>
+                        {% else %}
+                            <button type="button" class="all-users-buttons all-users-button-admin" type="button" onclick="document.getElementById('make-admin-modal {{ user.id }}').style.display='block'">Make Admin</button>
+                            <div id='make-admin-modal {{ user.id }}' class="modal">
+                                <form class="modal-content" action='{{ url_for("update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
+                                  <div class="modal-container">
+                                    <span onclick="document.getElementById('make-admin-modal {{ user.id }}').style.display='none'" class="close" title="Close">&times;</span>
+                                    <h1>Give User Admin Rights?</h1>
+                                    <p>Are you sure you want to give this user admin priviledges?</p>
+                              
+                                    <div class="clearfix">
+                                        <button type="button" class="cancelbtn" onclick="document.getElementById('make-admin-modal {{ user.id }}').style.display='none'" class="close" title="Cancel">Cancel</button>
+                                        <input type=submit class="deletebtn" value="Make Admin">
+                                    </div>
+                                  </div>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </td>
                     <td>
                         <div class="user-block" style="text-align: center;">
-                            {% if user.admin %}
-                                <form action='{{ url_for("update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
-                                    <input type=submit value="Remove Admin">
-                                </form>
-                            {% else %}
-                                <form action='{{ url_for("update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
-                                    <input type=submit value="Make Admin">
-                                </form>
-                            {% endif %}
                             <form action='{{ url_for("profile", user_id=user.id) }}' method=get style="padding-left: 1rem;">
-                                <input type=submit value="Edit">
+                                <input class="all-users-buttons all-users-button-edit" type=submit value="Edit">
                             </form>
-                            <button type="button" onclick="document.getElementById('delete-modal {{ user.id }}').style.display='block'">Delete</button>
+                            <button class="all-users-buttons all-users-button-delete" type="button" onclick="document.getElementById('delete-modal {{ user.id }}').style.display='block'">Delete</button>
                             <div id='delete-modal {{ user.id }}' class="modal">
                                 <form class="modal-content" action='{{ url_for("delete_user", user_id=user.id) }}' method=post>
                                   <div class="modal-container">

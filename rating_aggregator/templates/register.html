@@ -34,7 +34,7 @@
                         {{ register_form.email(class_="register-form-control") }}
                         <div>
                             {% for error in register_form.email.errors %}
-                                <span>{{ error }}</span>
+                                <span style="color: whitesmoke; font-family: sans-serif; padding-bottom: 2rem; background-color: red;">{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}

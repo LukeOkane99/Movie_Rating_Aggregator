@@ -1,19 +1,20 @@
 import flask
 from flask import render_template, url_for, flash, request, redirect, abort
-from rating_aggregator import app, db, bcrypt
+from rating_aggregator import app, db, bcrypt, mail
 from rating_aggregator.models import User, Movie, WatchlistMovies
 from rating_aggregator.get_ratings import get_all_ratings
 from sqlalchemy import desc, asc, func
-from rating_aggregator.forms import registrationForm, loginForm, TitleSearchForm, UpdateDetailsForm, ResultsSearchForm, YearSearchForm
+from rating_aggregator.forms import registrationForm, loginForm, TitleSearchForm, UpdateDetailsForm, ResultsSearchForm, YearSearchForm, RequestResetForm, ResetPasswordForm
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_mail import Message
 
-# Route for index page
-@app.route('/index', methods=['GET', 'POST'])
-def index():
+# Route for help page
+@app.route('/help', methods=['GET', 'POST'])
+def help():
     search_form = TitleSearchForm()
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
-    return render_template('index.html', search_form=search_form)
+    return render_template('help.html', title='Help', search_form=search_form)
 
 #<------------Movie Endpoints------------->
 
@@ -68,10 +69,10 @@ def search_for_movie(name, year):
             return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image, watchlist_entry=watchlist_entry)
         else:
             try:
-                ttl, yr, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, tomatometer, tomatometer_votes, audience, audience_votes, letterboxd, letterboxd_votes, tmdb, tmdb_votes, image, avg = get_all_ratings(name, year)
-                movie = Movie(title=ttl, year=yr, imdb_rating=imdb, imdb_votes=imdb_votes, metascore=metacritic, metascore_votes=metacritic_votes, tomatometer=tomatometer,
-                    tomatometer_votes=tomatometer_votes, audience_score=audience, audience_score_votes=audience_votes, letterboxd_rating=letterboxd, letterboxd_votes=letterboxd_votes,
-                    tmdb_rating=tmdb, tmdb_votes=tmdb_votes, average_rating=avg, movie_image=image, synopsis=synopsis)
+                ttl, yr, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, imdb_url, metacritic_url, tomatometer, tomatometer_votes, audience, audience_votes, rotten_tomatoes_url, letterboxd, letterboxd_votes, letterboxd_url, tmdb, tmdb_votes, image, tmdb_url, avg = get_all_ratings(name, year)
+                movie = Movie(title=ttl, year=yr, imdb_rating=imdb, imdb_votes=imdb_votes, imdb_url=imdb_url, metascore=metacritic, metascore_votes=metacritic_votes, metacritic_url=metacritic_url, tomatometer=tomatometer,
+                    tomatometer_votes=tomatometer_votes, audience_score=audience, audience_score_votes=audience_votes, rotten_tomatoes_url=rotten_tomatoes_url, letterboxd_rating=letterboxd, letterboxd_votes=letterboxd_votes,
+                     letterboxd_url=letterboxd_url, tmdb_rating=tmdb, tmdb_votes=tmdb_votes, tmdb_url=tmdb_url, average_rating=avg, movie_image=image, synopsis=synopsis)
                 db.session.add(movie)
                 db.session.commit()
                 return render_template('get_movie.html', title='Searched Movie', movie=movie, search_form=search_form, image=movie.movie_image)
@@ -277,6 +278,62 @@ def profile(user_id):
 
     return render_template('profile.html', title='Profile', search_form=search_form, update_form=update_form)
 
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Request Reset for Password',
+                    sender='noreply@gmail.com', 
+                    recipients=[user.email])
+    msg.body = f'''To reset your password, please visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+
+If you didn't make this request, then please ignore this email, no changes will be made!
+'''
+    mail.send(msg)
+
+# Route to request password reset
+@app.route('/reset_password', methods=['GET', 'POST'])
+def request_reset():
+    search_form = TitleSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
+
+    if current_user.is_authenticated:
+        flash('You are already logged in with a registered account!', 'danger')
+        return redirect(url_for('get_all_movies'))
+    reset_form = RequestResetForm()
+    if reset_form.validate_on_submit():
+        user = User.query.filter_by(email=reset_form.email.data).first()
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password', 'success')
+        return redirect(url_for('login'))
+    return render_template('request_reset.html', title='Reset Password', search_form=search_form, reset_form=reset_form)
+
+# Route to reset password with acquired token
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    search_form = TitleSearchForm()
+    if flask.request.method == 'POST' and search_form.validate_on_submit():
+        return redirect(url_for('title_results', name=search_form.movie_title.data.lower().strip()))
+
+    if current_user.is_authenticated:
+        flash('You are already logged in with a registered account!', 'danger')
+        return redirect(url_for('get_all_movies'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('This is an invalid or expired token', 'danger')
+        return redirect(url_for('request_reset'))
+    password_reset_form = ResetPasswordForm()
+    if password_reset_form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(password_reset_form.password.data).decode('utf-8')
+        user.password =  hashed_password
+        db.session.commit()
+        flash('Your password has been successfully updated. You can now log in!', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', title='Reset Password', search_form=search_form, password_reset_form=password_reset_form)
+
+    
+
+
 #<--------------------User Watchlist------------------->
 
 # Route to view user's watchlist
@@ -349,6 +406,7 @@ def update_admin_role(user_id, admin):
             else:
                 user.admin = True
             db.session.commit()
+            flash('User admin priviledges successfully updated!', 'success')
         except:
             db.session.rollback()
         finally:

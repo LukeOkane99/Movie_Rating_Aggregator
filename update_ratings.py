@@ -25,7 +25,7 @@ def scrape_top_level_urls(url):
 
 def main():
     print('**** Starting Update Process... ****')
-
+    print(datetime.utcnow().strftime('%d/%m/%Y'))
     movies = Movie.query.all()
     for movie in movies:
         difference = datetime.utcnow() - movie.date_updated

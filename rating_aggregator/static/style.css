@@ -3,17 +3,15 @@
     padding: 1rem 4rem 2rem;
     margin-left: 205px;
     display:block;
-    height: 4rem;
+    min-height: 4rem;
   }
 
 .header h1 {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-left: 6rem;
+    padding-left: 3rem;
     font-family: sans-serif;
     display: inline;
     font-weight: bold;
-    font-size: 50px;
+    font-size: 55px;
     color: whitesmoke;
 }
 
@@ -112,7 +110,7 @@
 .fa-caret-down {
   float: right;
   color: whitesmoke;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
 }
 
 .fa-caret-down:active {
@@ -127,13 +125,17 @@
   float: left;
 }
 
-  .container {
-    min-height: 100vh;
-    margin: 0 auto;
-    padding: 0rem;
-    display: flex;
-    flex-direction: column;
-  }
+.container {
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  
+}
+
 
   .content {
     flex-grow: 1;
@@ -144,6 +146,7 @@
   margin-left: 205px;
   padding-left: 0.8rem;
   background-color: #303030;
+  overflow-x:hidden;
 }
 
 /* Form control */
@@ -156,7 +159,7 @@
 }
 
 .title-search-button {
-  height: 30px;
+  height: 31px;
   border: 2px solid black;
   margin-left: 1rem;
   background-color: gray;
@@ -168,7 +171,7 @@
 }
 
 .login-form-button {
-  width: 37%;
+  width: 422px;
   height: 30px;
   margin-bottom: 1.5rem;
   font-weight: bold;
@@ -182,7 +185,7 @@
 }
 
 .login-form-control {
-  width: 35%;
+  width: 400px;
   height: 25px;
   padding-right: 1rem;
   border: 2px solid black;
@@ -190,7 +193,7 @@
 }
 
 .register-form-control {
-  width: 35%;
+  width: 400px;
   height: 25px;
   padding-right: 1rem;
   border: 2px solid black;
@@ -215,10 +218,12 @@
   color: whitesmoke;
   font-family: sans-serif;
   font-weight: bold;
+  text-align: left;
+  padding-bottom: 0.1rem;
 }
 
 .profile-form-control {
-  width: 35%;
+  width: 400px;
   height: 25px;
   padding-right: 1rem;
   border: 2px solid black;
@@ -226,7 +231,7 @@
 }
 
 .profile-form-button {
-  width: 37%;
+  width: 100%;
   height: 30px;
   margin-bottom: 1.5rem;
   font-weight: bold;
@@ -247,7 +252,7 @@
 }
 
 .results-search-button {
-  height: 30px;
+  height: 31px;
   border: 2px solid black;
   background-color: gray;
   font-weight: bold;
@@ -265,7 +270,7 @@
 }
 
 .year-search-button {
-  height: 30px;
+  height: 31px;
   border: 2px solid black;
   background-color: gray;
   font-weight: bold;
@@ -437,6 +442,7 @@
   color: black;
   font-family: sans-serif;
   font-weight: bold;
+  outline: none;
   border: 2px solid black;
 }
 
@@ -446,6 +452,8 @@
   color: black;
   font-family: sans-serif;
   font-weight: bold;
+  outline: none;
+  border: 2px solid black;
 }
 
 .cancelbtn:hover, .deletebtn:hover {
@@ -473,7 +481,7 @@
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: #fefefe;
+  background-color: whitesmoke;
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   border: 2px solid black;
   width: 40%; 
@@ -528,5 +536,43 @@ hr {
 }
 
 .logout-button:hover {
+  color: red;
+}
+
+/* button styles for all users page */
+
+.all-users-buttons {
+  width: 100px;
+  outline: none;
+  border: 1px solid black;
+  font-weight: bold;
+  height: 30px;
+  font-family: sans-serif;
+}
+
+.all-users-button-delete {
+  background-color: red;
+}
+
+.all-users-button-edit {
+  background-color: green;
+}
+
+.all-users-buttons:hover {
+  border: 3px solid black;
+}
+
+.all-users-button-admin {
+  background-color: #4682B4;
+  width: 120px;
+}
+
+/* styling for rating site hrefs */
+.rating-hrefs {
+  text-decoration: none;
+  color: whitesmoke;
+} 
+
+.rating-hrefs:hover {
   color: red;
 }

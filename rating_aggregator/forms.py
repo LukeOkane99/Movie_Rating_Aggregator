@@ -29,7 +29,7 @@ class loginForm(FlaskForm):
 # Form to search for movie title
 class TitleSearchForm(FlaskForm):
     movie_title = StringField('Search Title', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Title"})
-    submit_button = SubmitField('Search')
+    submit_button = SubmitField('')
 
 # Form to get exact search for movie on results page
 class ResultsSearchForm(FlaskForm):
@@ -48,6 +48,7 @@ class UpdateDetailsForm(FlaskForm):
     surname = StringField('Surname', validators=[DataRequired(), Length(min=2, max=30)])
     email = StringField('Email Address', validators=[DataRequired(), Email(), Length(max=120)])
     update_button = SubmitField('Update Details')
+    pass
 
     # check if updated email is already in use by another user
     def validate_email(self, email):
@@ -56,3 +57,19 @@ class UpdateDetailsForm(FlaskForm):
                 user = User.query.filter_by(email=email.data).first()
                 if user:
                     raise ValidationError('This email is in use, please use a different one!')
+
+# Form for reset request page
+class RequestResetForm(FlaskForm):
+    email = StringField('Email Address', validators=[DataRequired(), Email(), Length(max=120)], render_kw={"placeholder": "Enter Your Email.."})
+    request_reset_button = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account linked to this email. Please make sure you are registered!')
+
+# Form for password reset page
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Enter Your Password.."})
+    password_confirmation = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')], render_kw={"placeholder": "Confirm your Password.."})
+    password_reset_button = SubmitField('Reset Password')
