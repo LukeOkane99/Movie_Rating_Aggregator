@@ -2,78 +2,80 @@
 {% block content %}
     <h1 style="text-align: center; font-family: sans-serif; color: whitesmoke; padding-bottom: 2rem;">Register</h1>
     <div style="text-align: center;">
-        <div style="width: 70%; margin-left: auto; margin-right: auto;">
-            <form method="POST" action="">
-                {{ register_form.hidden_tag() }}
-                <div style="color: whitesmoke;">
-                    {% if register_form.forename.errors %}
-                        {{ register_form.forename(class_="register-form-control") }}
-                        <div>
-                            {% for error in register_form.forename.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ register_form.forename(class_="register-form-control") }}
-                    {% endif %}
+        <div style="float: left; position: relative; left: 50%;">
+            <div style="float: left; position: relative; left: -50%;">
+                <form method="POST" action="">
+                    {{ register_form.hidden_tag() }}
+                    <div style="color: whitesmoke;">
+                        {% if register_form.forename.errors %}
+                            {{ register_form.forename(class_="register-form-control") }}
+                            <div>
+                                {% for error in register_form.forename.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ register_form.forename(class_="register-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div style="color: whitesmoke;">
+                        {% if register_form.surname.errors %}
+                            {{ register_form.surname(class_="register-form-control") }}
+                            <div>
+                                {% for error in register_form.surname.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ register_form.surname(class_="register-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div style="color: whitesmoke;">
+                        {% if register_form.email.errors %}
+                            {{ register_form.email(class_="register-form-control") }}
+                            <div>
+                                {% for error in register_form.email.errors %}
+                                    <span style="color: whitesmoke; font-family: sans-serif; padding-bottom: 2rem; background-color: red;">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ register_form.email(class_="register-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div style="color: whitesmoke;">
+                        {% if register_form.password.errors %}
+                            {{ register_form.password(class_="register-form-control") }}
+                            <div>
+                                {% for error in register_form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ register_form.password(class_="register-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div style="color: whitesmoke;">
+                        {% if register_form.password_confirmation.errors %}
+                            {{ register_form.password_confirmation(class_="register-form-control") }}
+                            <div>
+                                {% for error in register_form.password_confirmation.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ register_form.password_confirmation(class_="register-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ register_form.register_button(class_="register-form-button") }}
+                    </div>
+                </form>
+                <div style="text-align: left; padding-left: 0.5rem;">
+                    <small>
+                        <a href="{{ url_for('login')  }}" class="all-small">Already have an account?</a>
+                    </small>
                 </div>
-                <div style="color: whitesmoke;">
-                    {% if register_form.surname.errors %}
-                        {{ register_form.surname(class_="register-form-control") }}
-                        <div>
-                            {% for error in register_form.surname.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ register_form.surname(class_="register-form-control") }}
-                    {% endif %}
-                </div>
-                <div style="color: whitesmoke;">
-                    {% if register_form.email.errors %}
-                        {{ register_form.email(class_="register-form-control") }}
-                        <div>
-                            {% for error in register_form.email.errors %}
-                                <span style="color: whitesmoke; font-family: sans-serif; padding-bottom: 2rem; background-color: red;">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ register_form.email(class_="register-form-control") }}
-                    {% endif %}
-                </div>
-                <div style="color: whitesmoke;">
-                    {% if register_form.password.errors %}
-                        {{ register_form.password(class_="register-form-control") }}
-                        <div>
-                            {% for error in register_form.password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ register_form.password(class_="register-form-control") }}
-                    {% endif %}
-                </div>
-                <div style="color: whitesmoke;">
-                    {% if register_form.password_confirmation.errors %}
-                        {{ register_form.password_confirmation(class_="register-form-control") }}
-                        <div>
-                            {% for error in register_form.password_confirmation.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ register_form.password_confirmation(class_="register-form-control") }}
-                    {% endif %}
-                </div>
-                <div>
-                    {{ register_form.register_button(class_="register-form-button") }}
-                </div>
-            </form>
-        </div>
-        <div style="color: whitesmoke;">
-            <small style="font-family: sans-serif; color: whitesmoke; font-size: 15px;">
-                Already have an account? <a href="{{ url_for('login')  }}" style="color: red; text-decoration: none;">Click Here!</a>
-            </small>
+            </div>
         </div>
     </div>
 {% endblock content %}

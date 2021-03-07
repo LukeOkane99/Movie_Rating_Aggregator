@@ -2,43 +2,46 @@
 {% block content %}
     <h1 style="text-align: center; font-family: sans-serif; color: whitesmoke; padding-bottom: 2rem;">User Login</h1>
     <div style="text-align: center;">
-        <div style="width: 70%; margin-left: auto; margin-right: auto;">
-            <form method="POST" action="">
-                {{ login_form.hidden_tag() }}
-                <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
-                    {% if login_form.email.errors %}
-                        {{ login_form.email(class_="login-form-control") }}
-                        <div>
-                            {% for error in login_form.email.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ login_form.email(class_="login-form-control") }}
-                    {% endif %}
+        <div style="float: left; position: relative; left: 50%;">
+            <div style="float: left; position: relative; left: -50%;">
+                <form method="POST" action="">
+                    {{ login_form.hidden_tag() }}
+                    <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
+                        {% if login_form.email.errors %}
+                            {{ login_form.email(class_="login-form-control") }}
+                            <div>
+                                {% for error in login_form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ login_form.email(class_="login-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
+                        {% if login_form.password.errors %}
+                            {{ login_form.password(class_="login-form-control") }}
+                            <div>
+                                {% for error in login_form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ login_form.password(class_="login-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ login_form.login_button(class_="login-form-button") }}
+                    </div>
+                </form>
+                <div style="text-align: left; padding-left: 0.5rem;">
+                    <small>
+                        <a href="{{ url_for('register')  }}" class="all-small">Don't have an account?</a>
+                    </small></br>
+                    <small>
+                        <a href="{{ url_for('request_reset')  }}" class="all-small">Forgot your password?</a>
+                    </small>
                 </div>
-                <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
-                    {% if login_form.password.errors %}
-                        {{ login_form.password(class_="login-form-control") }}
-                        <div>
-                            {% for error in login_form.password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ login_form.password(class_="login-form-control") }}
-                    {% endif %}
-                </div>
-                <div>
-                    {{ login_form.login_button(class_="login-form-button") }}
-                </div>
-            </form>
-        </div>
-        <small style="font-family: sans-serif; color: whitesmoke; font-size: 15px;">
-            Don't have an account? <a href="{{ url_for('register')  }}" style="color: red; text-decoration: none;">Click Here!</a>
-        </small></br>
-        <small style="font-family: sans-serif; color: whitesmoke; font-size: 15px; margin-top: 1rem;">
-            Forgot your password? <a href="{{ url_for('request_reset')  }}" style="color: red; text-decoration: none;">Click Here!</a>
-        </small>
+            </div>
     </div>
 {% endblock content %}
