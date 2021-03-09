@@ -3,7 +3,7 @@ Project to scrape movie ratings from IMDb, Rotten Tomatoes, Metacritic, Letterbo
 
 The backend is written in Python, using Flask as the web framework. The frontend is a combination of HTML, CSS and some javascript scripts in the Jinja 2 web templating engine
 
-The scraping was achieved with the use of python's request library and Beautiful Soup
+The scraping was achieved with the use of Python's request library and Beautiful Soup
 
 ![image](https://user-images.githubusercontent.com/72694473/110492023-b6f24c80-80e9-11eb-90ee-a2fd1a3cc36e.png)
 
