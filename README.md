@@ -4,7 +4,7 @@ Project to scrape movie ratings from IMDb, Rotten Tomatoes, Mteacritic, Letterbo
 ![image](https://user-images.githubusercontent.com/72694473/110492023-b6f24c80-80e9-11eb-90ee-a2fd1a3cc36e.png)
 
 
-![image](https://user-images.githubusercontent.com/72694473/110494874-e86c1780-80eb-11eb-9236-1c6ca8b87fc8.png)
+![image](https://user-images.githubusercontent.com/72694473/110495113-1baea680-80ec-11eb-8f86-8cc0f2cbacac.png)
 
 
 ![image](https://user-images.githubusercontent.com/72694473/110493298-83fc8880-80ea-11eb-99f7-ccf04b8a4437.png)
