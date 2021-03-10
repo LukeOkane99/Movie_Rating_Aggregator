@@ -4,20 +4,20 @@
     <div style=" display: inline-grid; grid-template-columns: auto auto auto auto;">
         {% for movie in movies %}
             <div class="image-container" style="margin-left: 1rem;">
-                <a href="{{ url_for('search_for_movie', name=movie.title, year=movie.year) }}">
+                <a href="{{ url_for('movies.search_for_movie', name=movie.title, year=movie.year) }}">
                     <img style="width: auto; height: auto; margin: auto; max-width:600px; max-height:600px; display: block; border: 2px solid black;" src="{{ movie.movie_image }}">
                     <div class="overlay">
                         <div class="movie-heading">
                             <div style="float: left; font-size: 1.4rem;">{{ movie["title"] }} ({{ movie["year"] }})</br></div>
                                 {% if current_user.is_authenticated %}
                                     {% if movie in watchlist_entries %}
-                                        <form action='{{ url_for("delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
+                                        <form action='{{ url_for("users.delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
                                             <button type="submit" name="remove_movie" style="border: none; background: none;">
                                                 <span title="Remove from watchlist"><i class="fa fa-trash trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
                                             </button>
                                         </form>
                                     {% else %}
-                                        <form action='{{ url_for("add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
+                                        <form action='{{ url_for("users.add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
                                             <button type="submit" name="add_movie" style="border: none; background: none;">
                                                 <span title="Add to watchlist"><i class="fa fa-plus-square trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
                                             </button>

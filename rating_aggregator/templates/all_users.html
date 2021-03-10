@@ -23,7 +23,7 @@
                         {% if user.admin %}
                                 <button type="button" class="all-users-buttons all-users-button-admin" type="button" onclick="document.getElementById('remove-admin-modal {{ user.id }}').style.display='block'">Remove Admin</button>
                                 <div id='remove-admin-modal {{ user.id }}' class="modal">
-                                    <form class="modal-content" action='{{ url_for("update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
+                                    <form class="modal-content" action='{{ url_for("users.update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
                                       <div class="modal-container">
                                         <span onclick="document.getElementById('remove-admin-modal {{ user.id }}').style.display='none'" class="close" title="Close">&times;</span>
                                         <h1>Remove User Admin Rights?</h1>
@@ -39,7 +39,7 @@
                         {% else %}
                             <button type="button" class="all-users-buttons all-users-button-admin" type="button" onclick="document.getElementById('make-admin-modal {{ user.id }}').style.display='block'">Make Admin</button>
                             <div id='make-admin-modal {{ user.id }}' class="modal">
-                                <form class="modal-content" action='{{ url_for("update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
+                                <form class="modal-content" action='{{ url_for("users.update_admin_role", user_id=user.id, admin=user.admin) }}' method=post>
                                   <div class="modal-container">
                                     <span onclick="document.getElementById('make-admin-modal {{ user.id }}').style.display='none'" class="close" title="Close">&times;</span>
                                     <h1>Give User Admin Rights?</h1>
@@ -56,12 +56,12 @@
                     </td>
                     <td>
                         <div class="user-block" style="text-align: center;">
-                            <form action='{{ url_for("profile", user_id=user.id) }}' method=get style="padding-left: 1rem;">
+                            <form action='{{ url_for("users.profile", user_id=user.id) }}' method=get style="padding-left: 1rem;">
                                 <input class="all-users-buttons all-users-button-edit" type=submit value="Edit">
                             </form>
                             <button class="all-users-buttons all-users-button-delete" type="button" onclick="document.getElementById('delete-modal {{ user.id }}').style.display='block'">Delete</button>
                             <div id='delete-modal {{ user.id }}' class="modal">
-                                <form class="modal-content" action='{{ url_for("delete_user", user_id=user.id) }}' method=post>
+                                <form class="modal-content" action='{{ url_for("users.delete_user", user_id=user.id) }}' method=post>
                                   <div class="modal-container">
                                     <span onclick="document.getElementById('delete-modal {{ user.id }}').style.display='none'" class="close" title="Close">&times;</span>
                                     <h1>Delete User Account</h1>

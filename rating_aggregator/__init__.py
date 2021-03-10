@@ -1,34 +1,42 @@
 # Initialise application
-import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from rating_aggregator.config import Config
 
-# Create app instance
-app = Flask(__name__)
-
-# protect against modifying cookies and forgery attacks
-app.config["SECRET_KEY"] = 'dab516ff56bff14979aa4568b1fd78ba'
-
-# Set location of the database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' # Relative path for database
 # Create instance of database
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
+db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 # Handle logged in user sessions
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager = LoginManager()
+login_manager.login_view = 'users.login'
 
-# config for flask mail
-app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
-app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
-mail = Mail(app)
+mail = Mail()
 
-# import routes after app is initialised
-from rating_aggregator import routes
+# Function allows to create different instances of the app
+# With different configurations
+def create_app(config_class=Config):
+    # Create app instance
+    app = Flask(__name__)
+
+    # Config for app
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+
+    # import routes from blueprints after app is initialised
+    from rating_aggregator.users.routes import users
+    from rating_aggregator.movies.routes import movies
+    from rating_aggregator.main.routes import main
+
+    app.register_blueprint(users)
+    app.register_blueprint(movies)
+    app.register_blueprint(main)
+
+    return app

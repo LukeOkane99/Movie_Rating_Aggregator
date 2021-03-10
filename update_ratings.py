@@ -1,5 +1,6 @@
+from flask import current_app
 from bs4 import BeautifulSoup
-from rating_aggregator import app, db
+from rating_aggregator import db
 from rating_aggregator.models import Movie
 import requests
 from requests import get, Session

@@ -12,7 +12,7 @@
     <body class="container">
         <div class="content">
             <header class="header">
-                <h1><a href="{{ url_for('get_all_movies') }}"><i class="fa fa-film" style="padding-right: 2rem; font-size: 55px;"></i>Movie Rating Aggregator</a></h1>
+                <h1><a href="{{ url_for('movies.get_all_movies') }}"><i class="fa fa-film" style="padding-right: 2rem; font-size: 55px;"></i>Movie Rating Aggregator</a></h1>
                 <form method="POST" action="" class="form-control">
                     {{ search_form.hidden_tag() }}
                     <div style="padding-right: 2rem;">
@@ -35,13 +35,13 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-container">
-                            <li><a href="{{ url_for('get_all_movies') }}">All Movies</a></li>
-                            <li><a href="{{ url_for('get_high_to_low_ratings') }}">High-to-Low</a></li>
-                            <li><a href="{{ url_for('get_low_to_high_ratings') }}">Low-to-High</a></li>
-                            <li><a href="{{ url_for('get_favourable_reviews') }}">Favourable</a></li>
-                            <li><a href="{{ url_for('get_nonfavourable_reviews') }}">Non-Favourable</a></li>
-                            <li><a href="{{ url_for('get_top10_movies') }}">Top 10</a></li>
-                            <li><a href="{{ url_for('search_movies_by_year') }}">Search By Year</a></li>
+                            <li><a href="{{ url_for('movies.get_all_movies') }}">All Movies</a></li>
+                            <li><a href="{{ url_for('movies.get_high_to_low_ratings') }}">High-to-Low</a></li>
+                            <li><a href="{{ url_for('movies.get_low_to_high_ratings') }}">Low-to-High</a></li>
+                            <li><a href="{{ url_for('movies.get_favourable_reviews') }}">Favourable</a></li>
+                            <li><a href="{{ url_for('movies.get_nonfavourable_reviews') }}">Non-Favourable</a></li>
+                            <li><a href="{{ url_for('movies.get_top10_movies') }}">Top 10</a></li>
+                            <li><a href="{{ url_for('movies.search_movies_by_year') }}">Search By Year</a></li>
                         </div>
                         {% if current_user.is_authenticated %}
                             {% if current_user.admin %}
@@ -49,7 +49,7 @@
                                     <i class="fa fa-caret-down"></i>
                                 </button>
                                 <div class="dropdown-container">
-                                    <li><a href="{{ url_for('get_all_users') }}", style="padding-left: 0.5rem;">All Users
+                                    <li><a href="{{ url_for('users.get_all_users') }}", style="padding-left: 0.5rem;">All Users
                                         <i class="fa fa-user" style="float: left;"></i>
                                     </a></li>
                                 </div>
@@ -58,10 +58,10 @@
                                 <i class="fa fa-caret-down"></i>
                             </button>
                             <div class="dropdown-container">
-                                <li><a href="{{ url_for('profile', user_id=current_user.id) }}", style="padding-left: 0.5rem;">Profile
+                                <li><a href="{{ url_for('users.profile', user_id=current_user.id) }}", style="padding-left: 0.5rem;">Profile
                                     <i class="fa fa-user" style="float: left;"></i>
                                 </a></li>
-                                <li><a href="{{ url_for('get_watchlist', user_id=current_user.id) }}", style="padding-left: 0.5rem;">Watchlist
+                                <li><a href="{{ url_for('users.get_watchlist', user_id=current_user.id) }}", style="padding-left: 0.5rem;">Watchlist
                                     <i class="fa fa-eye", style="float: left;"></i>
                                 </a></li>
                             </div>
@@ -69,10 +69,10 @@
                                 <button class="logout-button" onclick="document.getElementById('logout-modal').style.display='block'">Logout <i class="fa fa-sign-out" style="float: left; padding-right: 0.5rem;"></i></button>
                             </a></li>
                         {% else %}
-                            <li><a href="{{ url_for('login') }}" style="padding-left: 0.5rem;">Login <i class="fa fa-sign-out" style="float: left; padding-left: 0.5rem;"></i></a></li>
-                            <li><a href="{{ url_for('register') }}" style="padding-left: 0.5rem;">Register <i class="fa fa-user-plus" style="float: left; padding-left: 0.5rem;"></i></a></li>
+                            <li><a href="{{ url_for('users.login') }}" style="padding-left: 0.5rem;">Login <i class="fa fa-sign-out" style="float: left; padding-left: 0.5rem;"></i></a></li>
+                            <li><a href="{{ url_for('users.register') }}" style="padding-left: 0.5rem;">Register <i class="fa fa-user-plus" style="float: left; padding-left: 0.5rem;"></i></a></li>
                         {% endif %}
-                        <li><a href="{{ url_for('help') }}" style="padding-left: 0.5rem;">Help <i class="fa fa-question-circle" style="float: left; padding-left: 0.5rem;"></i></a></li>
+                        <li><a href="{{ url_for('main.help') }}" style="padding-left: 0.5rem;">Help <i class="fa fa-question-circle" style="float: left; padding-left: 0.5rem;"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -86,7 +86,7 @@
             <div class="body">
                 <div>
                     <div id="logout-modal" class="modal">
-                        <form class="modal-content" action='{{ url_for("logout") }}' method=get>
+                        <form class="modal-content" action='{{ url_for("users.logout") }}' method=get>
                         <div class="modal-container" style="font-family: sans-serif;">
                             <span onclick="document.getElementById('logout-modal').style.display='none'" class="close" title="Close">&times;</span>
                             <h1 style="color: black;">Logout</h1>

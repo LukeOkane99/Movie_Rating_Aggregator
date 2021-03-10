@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from rating_aggregator.models import User, Movie
+from rating_aggregator.models import User
 
 # Registration form so new user can post their details
 class registrationForm(FlaskForm):
@@ -25,22 +25,6 @@ class loginForm(FlaskForm):
     email = StringField('Email Address', validators=[DataRequired(), Email(), Length(max=120)], render_kw={"placeholder": "Enter Your Email.."})
     password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Enter Your password.."})
     login_button = SubmitField('Login')
-
-# Form to search for movie title
-class TitleSearchForm(FlaskForm):
-    movie_title = StringField('Search Title', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Title"})
-    submit_button = SubmitField('')
-
-# Form to get exact search for movie on results page
-class ResultsSearchForm(FlaskForm):
-    result_movie_title = StringField('Search Title', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Title"})
-    result_movie_year = StringField('Search Year', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Year"})
-    submit = SubmitField('Search')
-
-# Form to search for movies by year
-class YearSearchForm(FlaskForm):
-    movie_year = StringField('Search by Year', validators=[DataRequired()], render_kw={"placeholder": "Search Movie Year"})
-    submit_year = SubmitField('Search')
 
 # Form so users can update their account details
 class UpdateDetailsForm(FlaskForm):
