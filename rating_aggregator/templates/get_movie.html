@@ -3,67 +3,68 @@
     <div class="page_content">
         <div style="display: inline-block; text-align: center;">
             <div class="movie-heading">
-                <h1 class="page_tites" style="color: whitesmoke;"><b>{{ movie.title }}</b> ({{ movie.year }}) </h1>
+                <h1 class="page_tites" style="padding-bottom: 1rem;"><b>{{ movie.title }}</b> ({{ movie.year }}) </h1>
                     {% if current_user.is_authenticated %}
                         {% if watchlist_entry %}
                             <form action='{{ url_for("users.delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
                                 <button type="submit" name="remove_movie" style="border: none; background: none;">
-                                    <span title="Remove from watchlist"><i class="fa fa-trash trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
+                                    <span title="Remove from watchlist"><i class="fa fa-trash trash-button" style="font-size: 25px; margin-left: 1rem;"></i></span>
                                 </button>
                             </form>
                         {% else %}
                             <form action='{{ url_for("users.add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
                                 <button type="submit" name="add_movie" style="border: none; background: none;">
-                                    <span title="Add to watchlist"><i class="fa fa-plus-square trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
+                                    <span title="Add to watchlist"><i class="fa fa-plus-square trash-button" style="font-size: 25px; margin-left: 1rem;"></i></span>
                                 </button>
                             </form>
                         {% endif %}
                     {% endif %}
             </div>
-            <div style="width: 60%; margin: 0 auto; padding-top: 1rem;">
-                <p style="font-family: sans-serif; color: whitesmoke; font-weight: bolder; padding-bottom: 2rem; font-size: 1.4rem; text-align: left; line-height: 1.8rem; padding-left: 2rem;">
-                    <img style="width: auto; height: auto; max-width:500px; max-height:500px; display: inline-block; border: 2px solid black; float: left;" src="{{ image }}">
-                    <div style="padding-bottom: 2rem; width: 25%; margin: 0 auto;">
-                        <div class="rating-block" style="padding-left: 4rem; position: relative;">
-                            <div class="rating-circle" style="width: 170px; height: 170px; line-height: 170px; font-size: 60px; border: 3px solid black; margin: 0rem;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div>
-                            <div style="display: inline-block; text-align: left;">
-                                <ul style="list-style-type: none; color: whitesmoke; font-family: sans-serif; margin: 0 auto; font-size: 1.2rem; line-height: 1.6; padding-bottom: 2rem;">
-                                    {% if movie.imdb_url %}
-                                        <span title="View on IMDb"><li><a class="rating-hrefs" href="{{ movie['imdb_url'] }}" target="_blank">IMDb: <b>{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
-                                    {% else %}
-                                        <li>IMDb: <b>{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                    {% endif %}
-                                    {% if movie.metacritic_url %}
-                                        <span title="View on Metacritic"><li><a class="rating-hrefs" href="{{ movie['metacritic_url'] }}" target="_blank">Metascore: <b>{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
-                                    {% else %}
-                                        <li>Metascore: <b>{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                    {% endif %}
-                                    {% if movie.rotten_tomatoes_url %}
-                                        <span title="View on Rotten Tomatoes"><li><a class="rating-hrefs" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">Tomatometer: <b>{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
-                                    {% else %}
-                                        <li>Tomatometer: <b>{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                    {% endif %}
-                                    {% if movie.rotten_tomatoes_url %}
-                                        <span title="View on Rotten Tomatoes"><li><a class="rating-hrefs" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">Audience Score: <b>{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
-                                    {% else %}
-                                        <li>Audience Score: <b>{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                    {% endif %}
-                                    {% if movie.letterboxd_url %}
-                                        <span title="View on Letterboxd"><li><a class="rating-hrefs" href="{{ movie['letterboxd_url'] }}" target="_blank">Letterboxd: <b>{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
-                                    {% else %}
-                                        <li>Letterboxd: <b>{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                    {% endif %}
-                                    {% if movie.tmdb_url %}
-                                        <span title="View on TMDb"><li><a class="rating-hrefs" href="{{ movie['tmdb_url'] }}" target="_blank">TMDb: <b>{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
-                                    {% else %}
-                                        <li>TMDb: <b>{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                            <div style="font-size: 1.5rem; text-align: left; line-height: 1.8rem; font-family: sans-serif; color: whitesmoke;">{{ movie["synopsis"] }}</div>
-                        </div>  
+            
+            <div class="movie-page-rating-section">
+                <div class="rating-block" style="position: relative; padding-bottom: 3rem; ">
+                    <img class="movie-page-image" src="{{ image }}">
+                    <div style="padding-top: 1rem;">
+                        <span title="Overall Weighted Rating"><div class="rating-circle movie-page-rating-circle">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div></span>
+                        <div style="display: inline-block; text-align: left; margin-right: 1rem;">
+                            <ul class="movie-page-individual-ratings">
+                                {% if movie.imdb_url %}
+                                    <span title="View on IMDb"><li><a class="rating-hrefs" href="{{ movie['imdb_url'] }}" target="_blank">IMDb: <b>{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                {% else %}
+                                    <li>IMDb: <b>{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                {% endif %}
+                                {% if movie.metacritic_url %}
+                                    <span title="View on Metacritic"><li><a class="rating-hrefs" href="{{ movie['metacritic_url'] }}" target="_blank">Metascore: <b>{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                {% else %}
+                                    <li>Metascore: <b>{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                {% endif %}
+                                {% if movie.rotten_tomatoes_url %}
+                                    <span title="View on Rotten Tomatoes"><li><a class="rating-hrefs" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">Tomatometer: <b>{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                {% else %}
+                                    <li>Tomatometer: <b>{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                {% endif %}
+                                {% if movie.rotten_tomatoes_url %}
+                                    <span title="View on Rotten Tomatoes"><li><a class="rating-hrefs" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">Audience Score: <b>{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                {% else %}
+                                    <li>Audience Score: <b>{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                {% endif %}
+                                {% if movie.letterboxd_url %}
+                                    <span title="View on Letterboxd"><li><a class="rating-hrefs" href="{{ movie['letterboxd_url'] }}" target="_blank">Letterboxd: <b>{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                {% else %}
+                                    <li>Letterboxd: <b>{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                {% endif %}
+                                {% if movie.tmdb_url %}
+                                    <span title="View on TMDb"><li><a class="rating-hrefs" href="{{ movie['tmdb_url'] }}" target="_blank">TMDb: <b>{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                {% else %}
+                                    <li>TMDb: <b>{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
-                </p>
+                    <p class="movie-page-synopsis">
+                        {{ movie["synopsis"] }}
+                    </p>
+                </div>  
             </div>
         </div>    
     </div>

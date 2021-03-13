@@ -12,7 +12,7 @@
     <body class="container">
         <div class="content">
             <header class="header">
-                <h1><a href="{{ url_for('movies.get_all_movies') }}"><i class="fa fa-film" style="padding-right: 2rem; font-size: 55px;"></i>Movie Rating Aggregator</a></h1>
+                <h1><a href="{{ url_for('movies.get_all_movies') }}"><i class="fa fa-film header-logo"></i>Movie Rating Aggregator</a></h1>
                 <form method="POST" action="" class="form-control">
                     {{ search_form.hidden_tag() }}
                     <div style="padding-right: 2rem;">
@@ -103,8 +103,8 @@
                 {% block content %}
                 {% endblock %}
             </div>
-        </body>
-    </div>
+        </div>
+    </body>
 </html>
 
 <script>

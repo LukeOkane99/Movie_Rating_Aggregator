@@ -1,48 +1,35 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1 style="text-align: center; font-family: sans-serif; color: whitesmoke;">Top 10 Movies</h1>
-    <div style=" display: inline-grid; grid-template-columns: auto auto auto auto;">
+    <h1 class="page_tites">Top 10 Movies</h1>
+    <div class="movie-page-grid">
         {% for movie in movies %}
-            <div class="image-container" style="margin-left: 1rem;">
-                <a href="{{ url_for('movies.search_for_movie', name=movie.title, year=movie.year) }}">
-                    <img style="width: auto; height: auto; margin: auto; max-width:600px; max-height:600px; display: block; border: 2px solid black;" src="{{ movie.movie_image }}">
-                    <div class="overlay">
-                        <div class="movie-heading">
-                            <div style="float: left; font-size: 1.4rem;">{{ movie["title"] }} ({{ movie["year"] }})</br></div>
-                                {% if current_user.is_authenticated %}
-                                    {% if movie in watchlist_entries %}
-                                        <form action='{{ url_for("users.delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
-                                            <button type="submit" name="remove_movie" style="border: none; background: none;">
-                                                <span title="Remove from watchlist"><i class="fa fa-trash trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
-                                            </button>
-                                        </form>
-                                    {% else %}
-                                        <form action='{{ url_for("users.add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
-                                            <button type="submit" name="add_movie" style="border: none; background: none;">
-                                                <span title="Add to watchlist"><i class="fa fa-plus-square trash-button" style="font-size: 25px; padding-left: 1rem;"></i></span>
-                                            </button>
-                                        </form>
-                                    {% endif %}
+            <div class="image-container" style="margin-right: 1rem;">
+                <span title="View Movie Details">
+                    <a href="{{ url_for('movies.search_for_movie', name=movie.title, year=movie.year) }}" style="display: inline-block;">
+                        <img style="width: auto; height: auto; margin: auto; max-width:450px; max-height:450px; display: block; border: 2px solid black;" src="{{ movie.movie_image }}">
+                        <div class="overlay">
+                            {% if current_user.is_authenticated %}
+                                {% if movie in watchlist_entries %}
+                                    <form action='{{ url_for("users.delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
+                                        <button type="submit" name="remove_movie" style="border: none; background: none;">
+                                            <span title="Remove from watchlist"><i class="fa fa-trash trash-button" style="font-size: 1.5rem;"></i></span>
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <form action='{{ url_for("users.add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post style="float: right;">
+                                        <button type="submit" name="add_movie" style="border: none; background: none;">
+                                            <span title="Add to watchlist"><i class="fa fa-plus-square trash-button" style="font-size: 1.5rem;"></i></span>
+                                        </button>
+                                    </form>
                                 {% endif %}
+                            {% endif %}
+                            <div class="movie-grid-titles">
+                                <div style=" font-size: 1.1rem; float: left;">{{ movie["title"] }} ({{ movie["year"] }})</br></div>
+                            </div>
+                            <span title="Overall Weighted Rating"><div class="rating-circle" style="width: 140px; height: 140px; line-height: 140px; font-size: 40px; border: 2px solid black; margin-top: 2rem;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div></span>
                         </div>
-                        <div style="padding-bottom: 10rem; margin: 0 auto;">
-                            <div class="rating-block" style="padding-top: 4rem; padding-bottom: 2rem;">
-                                <div class="rating-circle" style="width: 140px; height: 140px; line-height: 140px; font-size: 40px; border: 2px solid black;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div>
-                                <div style="display: inline-block; text-align: left;">
-                                    <ul style="list-style-type: none; color: whitesmoke; font-family: sans-serif; margin: 0 auto; font-size: 1.1rem; line-height: 1.4; padding-bottom: 2rem;">
-                                        <li>IMDb: <b>{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                        <li>Metascore: <b>{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                        <li>Tomatometer: <b>{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                        <li>Audience Score: <b>{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                        <li>Letterboxd: <b>{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                        <li>TMDb: <b>{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
-                                    </ul>
-                                </div>
-                            </div>  
-                        </div>
-                        <p style="text-align: left, center, right; font-family: sans-serif; color: whitesmoke; font-size: 1.4rem; text-align: left; line-height: 1.6rem; margin: 0 auto; padding-top: 1rem; font-weight: bold;">{{ movie["synopsis"] }}</p>
-                    </div>
-                </a>
+                    </a>
+                </span>
             </div>
         {% endfor %}
     </div>

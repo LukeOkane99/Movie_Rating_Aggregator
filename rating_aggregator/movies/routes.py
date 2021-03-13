@@ -84,7 +84,7 @@ def search_movies_by_year(year=None):
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('movies.title_results', name=search_form.movie_title.data.lower().strip()))
     if flask.request.method == 'POST' and year_form.validate_on_submit():
-        return redirect(url_for('movies.search_movies_by_year', year=year_form.movie_year.data))
+        return redirect(url_for('movies.search_movies_by_year', year=year_form.movie_year.data.strip()))
     count = 0
     movies = Movie.query.filter_by(year=year).all()
     watchlist_entries = []

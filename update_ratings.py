@@ -1,4 +1,4 @@
-from flask import current_app
+from rating_aggregator import create_app
 from bs4 import BeautifulSoup
 from rating_aggregator import db
 from rating_aggregator.models import Movie
@@ -25,6 +25,9 @@ def scrape_top_level_urls(url):
         return response
 
 def main():
+    app = create_app()
+    app.app_context().push()
+
     print('**** Starting Update Process... ****')
     print(datetime.utcnow().strftime('%d/%m/%Y'))
     movies = Movie.query.all()

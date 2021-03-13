@@ -1,38 +1,40 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1 style="text-align: center; font-family: sans-serif; color: whitesmoke; padding-bottom: 2rem;">Request Password Reset</h1>
+    <h1 class="page_tites" style="padding-bottom: 2rem;">Request Password Reset</h1>
     <div style="text-align: center;">
-        <div style="width: 70%; margin-left: auto; margin-right: auto;">
-            <form method="POST" action="">
-                {{ password_reset_form.hidden_tag() }}
-                <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
-                    {% if password_reset_form.password.errors %}
-                        {{ password_reset_form.password(class_="login-form-control") }}
-                        <div>
-                            {% for error in password_reset_form.password %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ password_reset_form.password(class_="login-form-control") }}
-                    {% endif %}
-                </div>
-                <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
-                    {% if password_reset_form.password_confirmation.errors %}
-                        {{ password_reset_form.password_confirmation(class_="login-form-control") }}
-                        <div>
-                            {% for error in password_reset_form.password_confirmation %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ password_reset_form.password_confirmation(class_="login-form-control") }}
-                    {% endif %}
-                </div>
-                <div>
-                    {{ password_reset_form.password_reset_button(class_="login-form-button") }}
-                </div>
-            </form>
+        <div style="float: left; position: relative; left: 50%;">
+            <div style="float: left; position: relative; left: -50%;">
+                <form method="POST" action="">
+                    {{ password_reset_form.hidden_tag() }}
+                    <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
+                        {% if password_reset_form.password.errors %}
+                            {{ password_reset_form.password(class_="login-form-control") }}
+                            <div>
+                                {% for error in password_reset_form.password %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ password_reset_form.password(class_="login-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
+                        {% if password_reset_form.password_confirmation.errors %}
+                            {{ password_reset_form.password_confirmation(class_="login-form-control") }}
+                            <div>
+                                {% for error in password_reset_form.password_confirmation %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ password_reset_form.password_confirmation(class_="login-form-control") }}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ password_reset_form.password_reset_button(class_="login-form-button") }}
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock content %}

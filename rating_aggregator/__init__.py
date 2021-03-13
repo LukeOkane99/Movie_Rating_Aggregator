@@ -34,9 +34,11 @@ def create_app(config_class=Config):
     from rating_aggregator.users.routes import users
     from rating_aggregator.movies.routes import movies
     from rating_aggregator.main.routes import main
+    from rating_aggregator.errors.handlers import errors
 
     app.register_blueprint(users)
     app.register_blueprint(movies)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
 
     return app
