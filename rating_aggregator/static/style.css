@@ -429,9 +429,6 @@
 
 /* confirmation popup */
 
-/* Set a style for all buttons */
-
-
 /* Float cancel and delete buttons and add an equal width */
 .cancelbtn, .deletebtn {
   float: left;
@@ -669,6 +666,47 @@ hr {
   background-color: red;
   padding-bottom: .5rem;
   padding-top: .5rem;
+}
+
+/* loading overlay modal when searching for new movie */
+
+/* Add padding and center-align text to the container */
+.loading-modal-container {
+  text-align: center;
+  padding: 10rem;
+}
+
+/* The Modal (background) */
+.loading-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Modal Content/Box */
+.loading-modal-content {
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  width: 100%; 
+  font-family: sans-serif;
+  color: whitesmoke;
+  font-weight: bold;
+  font-size: 40px;
+  opacity: 1;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
 /* Deal with minimising browser */

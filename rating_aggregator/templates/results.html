@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
+    <head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    </head>
     <h3 style="text-align: center; font-family: sans-serif; color: whitesmoke; padding-right: 5rem;">Refine your search for better results<br></h3>
     <form method="POST" action="" class="form-control results-form" onSubmit="document.getElementById('results-submit').disabled=true;">
         {{ results_form.hidden_tag() }}
@@ -18,7 +21,7 @@
             {% endif %}
         </div>
         <div>
-            <button type="submit" class="results-search-button" id="results-submit"><i class="fa fa-search" style="text-align: center;"></i></button>
+            <button type="submit" class="results-search-button" id="results-submit" onclick="document.getElementById('loading-modal').style.display='block'"><i class="fa fa-search" style="text-align: center;" onclick="$('#loading').show();"></i></button>
         </div>
     </form>
     {% if year %}
@@ -66,6 +69,14 @@
                 </span>
             </div>
         {% endfor %}
+    </div>
+    <div id="loading-modal" class="loading-modal">
+        <form class="loading-modal-content" action='' method=get>
+            <div class="loading-modal-container">
+                <h1>Searching for Movie...</h1>
+                <div id="loading" style="display:none;"><img src="{{url_for('static', filename='loading.gif')}}" alt="" /></div>
+            </div>
+        </form>
     </div>
     {% endif %}
 {% endblock content %}
