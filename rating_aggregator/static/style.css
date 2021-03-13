@@ -331,7 +331,7 @@
 .image-container {
   position: relative;
   width: 100%;
-  max-width: 350px;
+  max-width: 324px;
   padding-bottom: 1rem;
   padding-left: 0rem;
 }
@@ -639,7 +639,7 @@ hr {
 }
 
 .movie-page-grid {
-  display: grid; grid-template-columns: auto auto auto auto; float: left; padding-left: 13rem;
+  display: grid; grid-template-columns: auto auto auto auto; float: left; padding-left: 12rem;
 }
 
 .movie-grid-titles {
