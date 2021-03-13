@@ -83,8 +83,8 @@ def profile(user_id):
                         flash('Email already taken, please provide another!', 'danger')
                     else:
                         user.email = update_form.email.data
-                db.session.commit()
-                flash('Account details successfully updated!', 'success')
+                        db.session.commit()
+                        flash('Account details successfully updated!', 'success')
                 return redirect(url_for('users.profile', user_id=user.id))
             elif request.method == 'GET':
                 # Populate form with users current details

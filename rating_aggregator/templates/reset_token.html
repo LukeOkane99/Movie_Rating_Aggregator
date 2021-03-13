@@ -9,7 +9,7 @@
                     <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
                         {% if password_reset_form.password.errors %}
                             {{ password_reset_form.password(class_="login-form-control") }}
-                            <div>
+                            <div class="form-errors">
                                 {% for error in password_reset_form.password %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
@@ -21,7 +21,7 @@
                     <div style="color: whitesmoke; font-family: sans-serif; font-weight: bold;">
                         {% if password_reset_form.password_confirmation.errors %}
                             {{ password_reset_form.password_confirmation(class_="login-form-control") }}
-                            <div>
+                            <div class="form-errors">
                                 {% for error in password_reset_form.password_confirmation %}
                                     <span>{{ error }}</span>
                                 {% endfor %}

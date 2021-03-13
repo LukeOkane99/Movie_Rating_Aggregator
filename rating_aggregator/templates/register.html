@@ -9,7 +9,7 @@
                     <div style="color: whitesmoke;">
                         {% if register_form.forename.errors %}
                             {{ register_form.forename(class_="register-form-control") }}
-                            <div>
+                            <div class="form-errors">
                                 {% for error in register_form.forename.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
@@ -21,7 +21,7 @@
                     <div style="color: whitesmoke;">
                         {% if register_form.surname.errors %}
                             {{ register_form.surname(class_="register-form-control") }}
-                            <div>
+                            <div class="form-errors">
                                 {% for error in register_form.surname.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
@@ -33,7 +33,7 @@
                     <div style="color: whitesmoke;">
                         {% if register_form.email.errors %}
                             {{ register_form.email(class_="register-form-control") }}
-                            <div>
+                            <div class="form-errors">
                                 {% for error in register_form.email.errors %}
                                     <span style="color: whitesmoke; font-family: sans-serif; padding-bottom: 2rem; background-color: red;">{{ error }}</span>
                                 {% endfor %}
@@ -45,7 +45,7 @@
                     <div style="color: whitesmoke;">
                         {% if register_form.password.errors %}
                             {{ register_form.password(class_="register-form-control") }}
-                            <div>
+                            <div class="form-errors">
                                 {% for error in register_form.password.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
@@ -57,7 +57,7 @@
                     <div style="color: whitesmoke;">
                         {% if register_form.password_confirmation.errors %}
                             {{ register_form.password_confirmation(class_="register-form-control") }}
-                            <div>
+                            <div class="form-errors">
                                 {% for error in register_form.password_confirmation.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1 class="page_tites">Search movies by year</h1>
-    <form method="POST" action="" class="form-control" style="margin-left: auto; margin-right: auto; width: 55%;">
+    <form method="POST" action="" class="form-control year-form">
         {{ year_form.hidden_tag() }}
         <div style="padding-right: 2rem;">
             {% if year_form.movie_year.errors %}

@@ -662,6 +662,15 @@ hr {
   padding-right: 5rem;
 }
 
+/* Form errors */
+.form-errors {
+  color: whitesmoke; 
+  font-family: sans-serif; 
+  background-color: red;
+  padding-bottom: .5rem;
+  padding-top: .5rem;
+}
+
 /* Deal with minimising browser */
 @media screen and (max-width: 1620px) {
   .movie-page-grid {
@@ -727,6 +736,12 @@ hr {
   }
 }
 
+.year-form {
+  margin-left: auto;
+  margin-right: auto; 
+  width: 55%;
+}
+
 @media screen and (max-width: 1000px) {
   .results-form {
     float: left;
@@ -738,8 +753,6 @@ hr {
     padding-left: 8rem;
     padding-top: 0;
   }
-
-  
 
 }
 
@@ -816,6 +829,11 @@ hr {
 }
 
 @media all and (max-width:800px) {
+
+  .year-form {
+    float: left;
+    padding-left: 10rem;
+  }
 
   .results-form {
     float: left;
@@ -928,6 +946,13 @@ hr {
     float: left;
   }
   
+}
+
+@media screen and (max-width: 630px) {
+  .year-form {
+    float: left;
+    padding-left: 0rem;
+  }
 }
 
 @media screen and (max-width: 557px) {

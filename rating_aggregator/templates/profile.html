@@ -10,7 +10,7 @@
 
                     {% if update_form.forename.errors %}
                         {{ update_form.forename(class_="profile-form-control") }}
-                        <div>
+                        <div class="form-errors">
                             {% for error in update_form.forename.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
@@ -24,7 +24,7 @@
 
                     {% if update_form.surname.errors %}
                         {{ update_form.surname(class_="profile-form-control") }}
-                        <div>
+                        <div class="form-errors">
                             {% for error in update_form.surname.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
@@ -38,7 +38,7 @@
 
                     {% if update_form.email.errors %}
                         {{ update_form.email(class_="profile-form-control") }}
-                        <div>
+                        <div class="form-errors">
                             {% for error in update_form.email.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
