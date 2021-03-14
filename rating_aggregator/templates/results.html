@@ -21,7 +21,7 @@
             {% endif %}
         </div>
         <div>
-            <button type="submit" class="results-search-button" id="results-submit" onclick="document.getElementById('loading-modal').style.display='block'"><i class="fa fa-search" style="text-align: center;" onclick="$('#loading').show();"></i></button>
+            <button type="submit" class="results-search-button" id="results-submit" onclick="document.getElementById('loading-modal').style.display='block'" onclick="$('#loading').show();"><i class="fa fa-search" style="text-align: center;"></i></button>
         </div>
     </form>
     {% if year %}
@@ -74,7 +74,7 @@
         <form class="loading-modal-content" action='' method=get>
             <div class="loading-modal-container">
                 <h1>Searching for Movie...</h1>
-                <div id="loading" style="display:none;"><img src="{{url_for('static', filename='loading.gif')}}" alt="" /></div>
+                <img id="loading" src="{{url_for('static', filename='loading.gif')}}" alt="" />
             </div>
         </form>
     </div>
