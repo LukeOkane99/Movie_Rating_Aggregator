@@ -7,7 +7,7 @@ The backend is written in Python, using Flask as the web framework. The frontend
 The scraping was achieved with the use of Python's request library and Beautiful Soup
 
 ## Front-end Views
-![image](https://user-images.githubusercontent.com/72694473/112474703-db942880-8d67-11eb-85d7-d1d214b9aaa0.png)
+![image](https://user-images.githubusercontent.com/72694473/112494428-f02dec00-8d7a-11eb-8847-8f0e1aac4c39.png)
 
 
 ![image](https://user-images.githubusercontent.com/72694473/112474822-ff576e80-8d67-11eb-9fdd-24d1fee094b9.png)
