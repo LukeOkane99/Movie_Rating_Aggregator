@@ -1,10 +1,12 @@
 # Movie_Rating_Aggregator
 Project to scrape movie ratings from IMDb, Rotten Tomatoes, Metacritic, Letterboxd and TMDb and provide a weighted average overall rating analytic
 
+## Technology used
 The backend is written in Python, using Flask as the web framework. The frontend is a combination of HTML, CSS and some javascript scripts in the Jinja 2 web templating engine
 
 The scraping was achieved with the use of Python's request library and Beautiful Soup
 
+## Front-end Views
 ![image](https://user-images.githubusercontent.com/72694473/112474703-db942880-8d67-11eb-85d7-d1d214b9aaa0.png)
 
 
