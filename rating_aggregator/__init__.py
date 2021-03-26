@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
-from rating_aggregator.config import Config
 
 # Create instance of database
 db = SQLAlchemy()
@@ -18,12 +17,12 @@ mail = Mail()
 
 # Function allows to create different instances of the app
 # With different configurations
-def create_app(config_class=Config):
+def create_app(config_class=None):
     # Create app instance
     app = Flask(__name__)
 
     # Config for app
-    app.config.from_object(Config)
+    app.config.from_object(config_class)
 
     db.init_app(app)
     bcrypt.init_app(app)

@@ -6,6 +6,7 @@ class Config:
 
     # Set location of the database
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # config for flask mail
     MAIL_SERVER = 'smtp.googlemail.com'
