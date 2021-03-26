@@ -2,6 +2,7 @@ from rating_aggregator import create_app
 from bs4 import BeautifulSoup
 from rating_aggregator import db
 from rating_aggregator.models import Movie
+from rating_aggregator.config import Config
 import requests
 from requests import get, Session
 import json
@@ -25,10 +26,10 @@ def scrape_top_level_urls(url):
         return response
 
 def main():
-    app = create_app()
+    app = create_app(config_class=Config)
     app.app_context().push()
 
-    print('**** Starting Update Process... ****')
+    print('\033[1;32;40m**** Starting Update Process... ****')
     print(datetime.utcnow().strftime('%d/%m/%Y'))
     movies = Movie.query.all()
     for movie in movies:
@@ -284,7 +285,7 @@ def main():
             
             movie.date_updated = datetime.utcnow()
 
-    print('**** Update Process Completed! ****')
+    print('\033[1;32;40m**** Update Process Completed! ****')
 
 if __name__ ==  '__main__':
     main()
