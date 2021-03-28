@@ -1,3 +1,4 @@
 __pycache__/
 merge_script.sh
 .pytest_cache
+.flaskenv
