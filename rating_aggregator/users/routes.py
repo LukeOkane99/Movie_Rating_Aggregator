@@ -61,6 +61,7 @@ def login():
 
 # Route to log user out
 @users.route('/logout', methods=['GET'])
+@login_required
 def logout():
     logout_user()
     flash('User successfully logged out', 'success')
@@ -80,11 +81,14 @@ def profile(user_id):
                 if update_form.email.data != user.email:
                     other_user = User.query.filter_by(email=update_form.email.data).first()
                     if other_user:
-                        flash('Email already taken, please provide another!', 'danger')
+                        flash('This email is in use, please use a different one!', 'danger')
                     else:
                         user.email = update_form.email.data
                         db.session.commit()
                         flash('Account details successfully updated!', 'success')
+                else:
+                    db.session.commit()
+                    flash('Account details successfully updated!', 'success')
                 return redirect(url_for('users.profile', user_id=user.id))
             elif request.method == 'GET':
                 # Populate form with users current details
