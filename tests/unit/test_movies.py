@@ -54,6 +54,6 @@ def test_scraping_invalid_movie(test_client, init_database):
     THEN check the response is invalid
     """
     response = test_client.get('/movies/results/Batman_2030')
-    assert response.status_code == 200
+    assert response.status_code == 200 or response.status_code == 302
     assert b"Refine your search for better results" in response.data
     assert b"0 Results found for search \'Batman 2030\'" in response.data
