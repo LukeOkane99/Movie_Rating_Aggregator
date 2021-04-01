@@ -8,6 +8,7 @@ def test_landing_page(test_client , init_database):
     response = test_client.get('/')
     assert response.status_code == 200
     assert b"All Movies" in response.data
+    assert b'<div style=" font-size: 1.1rem; float: left;">Gladiator (2000)</br></div>' in response.data
 
 def test_all_movies_page(test_client , init_database):
     """
@@ -18,6 +19,7 @@ def test_all_movies_page(test_client , init_database):
     response = test_client.get('/movies/all')
     assert response.status_code == 200
     assert b'<h1 class="page_tites">All Movies</h1>' in response.data
+    assert b'<div style=" font-size: 1.1rem; float: left;">Gladiator (2000)</br></div>' in response.data
 
 def test_high_to_low_page(test_client , init_database):
     """
@@ -28,6 +30,7 @@ def test_high_to_low_page(test_client , init_database):
     response = test_client.get('/movies/hightolow')
     assert response.status_code == 200
     assert b'<h1 class="page_tites">High to Low Ratings</h1>' in response.data
+    assert b'<div style=" font-size: 1.1rem; float: left;">Gladiator (2000)</br></div>' in response.data
 
 def test_high_to_low_page(test_client , init_database):
     """
@@ -38,6 +41,7 @@ def test_high_to_low_page(test_client , init_database):
     response = test_client.get('/movies/lowtohigh')
     assert response.status_code == 200
     assert b'<h1 class="page_tites">Low to High Ratings</h1>' in response.data
+    assert b'<div style=" font-size: 1.1rem; float: left;">Gladiator (2000)</br></div>' in response.data
 
 def test_favourable_page(test_client, init_database):
     """
@@ -48,6 +52,7 @@ def test_favourable_page(test_client, init_database):
     response = test_client.get('/movies/favourable')
     assert response.status_code == 200
     assert b'<h1 class="page_tites">Favourable Ratings</h1>' in response.data
+    assert b'<div style=" font-size: 1.1rem; float: left;">Gladiator (2000)</br></div>' in response.data
 
 def test_non_favourable_page(test_client , init_database):
     """
@@ -58,6 +63,7 @@ def test_non_favourable_page(test_client , init_database):
     response = test_client.get('/movies/non-favourable')
     assert response.status_code == 200
     assert b'<h1 class="page_tites">Non-Favourable Ratings</h1>' in response.data
+    assert b'<div style=" font-size: 1.1rem; float: left;">Gladiator (2000)</br></div>' not in response.data
 
 def test_top10_page(test_client , init_database):
     """
@@ -68,6 +74,7 @@ def test_top10_page(test_client , init_database):
     response = test_client.get('/movies/top10')
     assert response.status_code == 200
     assert b'<h1 class="page_tites">Top 10 Movies</h1>' in response.data
+    assert b'<div style=" font-size: 1.1rem; float: left;">Gladiator (2000)</br></div>' in response.data
 
 def test_search_by_year_page(test_client , init_database):
     """
