@@ -1,3 +1,47 @@
+def test_help_page(test_client , init_database):
+    """
+    GIVEN a an application configured for testing
+    WHEN the '/help' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/help')
+    assert response.status_code == 200
+    assert b'<h1 class="page_tites" style="padding-bottom: 1rem;">Help</h1>' in response.data
+    assert b'<h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">What is the goal of this site?</h2>' in response.data
+
+def test_register_page(test_client , init_database):
+    """
+    GIVEN a an application configured for testing
+    WHEN the '/register' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/register')
+    assert response.status_code == 200
+    assert b'<h1 class="page_tites" style="padding-bottom: 2rem;">Register</h1>' in response.data
+    assert b'<a href="/login" class="all-small">Already have an account?</a>' in response.data
+
+def test_login_page(test_client , init_database):
+    """
+    GIVEN a an application configured for testing
+    WHEN the '/login' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/login')
+    assert response.status_code == 200
+    assert b'<h1 class="page_tites" style="padding-bottom: 2rem;">User Login</h1>' in response.data
+    assert b'<a href="/reset_password" class="all-small">Forgot your password?</a>' in response.data
+
+def test_reset_password_page(test_client , init_database):
+    """
+    GIVEN a an application configured for testing
+    WHEN the '/reset_password' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/reset_password')
+    assert response.status_code == 200
+    assert b'<h1 class="page_tites" style="padding-bottom: 2rem;">Request Password Reset</h1>' in response.data
+    assert b'<input class="login-form-button" id="request_reset_button" name="request_reset_button" type="submit" value="Request Password Reset">' in response.data
+
 def test_valid_login_logout(test_client, init_database):
     """
     GIVEN a Flask application
@@ -111,6 +155,39 @@ def test_invalid_registration(test_client, init_database):
     assert b'Field must be equal to password.' in response.data
     assert b'<h1 class="page_tites" style="padding-bottom: 2rem;">Register</h1>' in response.data
 
+def test_viewing_profile_page(test_client, init_database):
+    """
+    GIVEN a Flask application
+    WHEN the '/login' page is posted to (POST)
+    THEN check the response is valid
+    """
+    response = test_client.post('/login',
+                                data=dict(email='test-user36@gmail.com', password='reallysecurepassword'),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<div id="flash-messages" class="flash-success">Login successful!</div>' in response.data
+    assert b'<h1 class="page_tites">All Movies</h1>' in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/users/1' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/users/1')
+    assert response.status_code == 200
+    assert b'<h1 class="page_tites" style="padding-bottom: 2rem;">Profile Page</h1>' in response.data
+    assert b'<input class="profile-form-control" id="email" name="email" required type="text" value="test-user36@gmail.com">' in response.data
+    assert b'<input class="profile-form-control" id="forename" name="forename" required type="text" value="Test">' in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/logout' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/logout', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<div id="flash-messages" class="flash-success">User successfully logged out</div>' in response.data
+    assert b'<h1 class="page_tites">All Movies</h1>' in response.data
 
 def test_updating_valid_details(test_client, init_database):
     """
@@ -218,6 +295,137 @@ def test_updating_invalid_email(test_client, init_database):
     assert b'<input class="profile-form-control" id="forename" name="forename" required type="text" value="Scott">' in response.data
     assert b'<input class="profile-form-control" id="surname" name="surname" required type="text" value="Williams">' in response.data
     assert b'<input class="profile-form-control" id="email" name="email" required type="text" value="swilliams-99">' in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/logout' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/logout', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<div id="flash-messages" class="flash-success">User successfully logged out</div>' in response.data
+    assert b'<h1 class="page_tites">All Movies</h1>' in response.data
+
+def test_accessing_watchlist_page(test_client, init_database):
+    """
+    GIVEN a Flask application
+    WHEN the '/login' page is posted to (POST)
+    THEN check the response is valid
+    """
+    response = test_client.post('/login',
+                                data=dict(email='swilliams-99@gmail.com', password='PaSsWoRd'),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<div id="flash-messages" class="flash-success">Login successful!</div>' in response.data
+    assert b'<h1 class="page_tites">All Movies</h1>' in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/users/2/watchlist' page is requested to (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/users/2/watchlist')
+    assert response.status_code == 200
+    assert b'<li><a href="/users/2/watchlist", style="padding-left: 0.5rem;">Watchlist' in response.data
+    assert b'<h1 class="page_tites">Watchlist</h1>' in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/logout' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/logout', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<div id="flash-messages" class="flash-success">User successfully logged out</div>' in response.data
+    assert b'<h1 class="page_tites">All Movies</h1>' in response.data
+
+def test_adding_movie_to_watchlist(test_client, init_database):
+    """
+    GIVEN a Flask application
+    WHEN the '/login' page is posted to (POST)
+    THEN check the response is valid
+    """
+    response = test_client.post('/login',
+                                data=dict(email='swilliams-99@gmail.com', password='PaSsWoRd'),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<div id="flash-messages" class="flash-success">Login successful!</div>' in response.data
+    assert b'<h1 class="page_tites">All Movies</h1>' in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/users/2/watchlist/add/movies/1/Gladiator_2000' route is posted to (POST)
+    THEN check the response is valid
+    """
+    response = test_client.post('/users/2/watchlist/add/movies/1/Gladiator_2000')
+    assert response.status_code == 302
+    
+    """
+    GIVEN a Flask application
+    WHEN the '/users/2/watchlist' page is requested to (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/users/2/watchlist')
+    assert response.status_code == 200
+    assert b'<li><a href="/users/2/watchlist", style="padding-left: 0.5rem;">Watchlist' in response.data
+    assert b'<h1 class="page_tites">Watchlist</h1>' in response.data
+    assert b"Gladiator (2000)" in response.data
+    assert b"86.9" in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/logout' page is requested (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/logout', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<div id="flash-messages" class="flash-success">User successfully logged out</div>' in response.data
+    assert b'<h1 class="page_tites">All Movies</h1>' in response.data
+
+def test_removing_movie_from_watchlist(test_client, init_database):
+    """
+    GIVEN a Flask application
+    WHEN the '/login' page is posted to (POST)
+    THEN check the response is valid
+    """
+    response = test_client.post('/login',
+                                data=dict(email='swilliams-99@gmail.com', password='PaSsWoRd'),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b'<div id="flash-messages" class="flash-success">Login successful!</div>' in response.data
+    assert b'<h1 class="page_tites">All Movies</h1>' in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/users/2/watchlist' page is requested to (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/users/2/watchlist')
+    assert response.status_code == 200
+    assert b'<li><a href="/users/2/watchlist", style="padding-left: 0.5rem;">Watchlist' in response.data
+    assert b'<h1 class="page_tites">Watchlist</h1>' in response.data
+    assert b"Gladiator (2000)" in response.data
+    assert b"86.9" in response.data
+
+    """
+    GIVEN a Flask application
+    WHEN the '/users/2/watchlist/delete/movies/1/Gladiator_2000' route is posted to (POST)
+    THEN check the response is valid
+    """
+    response = test_client.post('/users/2/watchlist/delete/movies/1/Gladiator_2000')
+    assert response.status_code == 302
+
+    """
+    GIVEN a Flask application
+    WHEN the '/users/2/watchlist' page is requested to (GET)
+    THEN check the response is valid
+    """
+    response = test_client.get('/users/2/watchlist')
+    assert response.status_code == 200
+    assert b'<li><a href="/users/2/watchlist", style="padding-left: 0.5rem;">Watchlist' in response.data
+    assert b'<h1 class="page_tites">Watchlist</h1>' in response.data
+    assert b"Gladiator (2000)" not in response.data
+    assert b"86.9" not in response.data
 
     """
     GIVEN a Flask application
