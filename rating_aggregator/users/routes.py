@@ -28,7 +28,7 @@ def register():
     register_form = registrationForm()
     if register_form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(register_form.password.data).decode('utf-8')
-        user = User(forename=register_form.forename.data, surname=register_form.surname.data, email=register_form.email.data, password=hashed_password)
+        user = User(forename=register_form.forename.data, surname=register_form.surname.data.strip(), email=register_form.email.data.strip(), password=hashed_password)
         db.session.add(user)
         db.session.commit()
         flash('Account successfully created. You can now log in!', 'success')
@@ -45,18 +45,18 @@ def login():
     if current_user.is_authenticated:
         flash('You are already logged in with a registered account!', 'danger')
         return redirect(url_for('movies.get_all_movies'))
-
-    login_form = loginForm()
-    if login_form.validate_on_submit():
-        user = User.query.filter_by(email=login_form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, login_form.password.data): # check if both hashed passwords are equal
-            login_user(user)
-            # access page user was trying to access before login
-            next_page = request.args.get('next')
-            flash('Login successful!', 'success')
-            return redirect(next_page) if next_page else redirect(url_for('movies.get_all_movies'))
-        else:
-            flash('Login unsuccessful, please check you have input the correct email and password!', 'danger')
+    else:
+        login_form = loginForm()
+        if login_form.validate_on_submit():
+            user = User.query.filter_by(email=login_form.email.data).first()
+            if user and bcrypt.check_password_hash(user.password, login_form.password.data): # check if both hashed passwords are equal
+                login_user(user)
+                # access page user was trying to access before login
+                next_page = request.args.get('next')
+                flash('Login successful!', 'success')
+                return redirect(next_page) if next_page else redirect(url_for('movies.get_all_movies'))
+            else:
+                flash('Login unsuccessful, please check you have input the correct email and password!', 'danger')
     return render_template('login.html', title='Log in to your account', login_form=login_form, search_form=search_form)
 
 # Route to log user out
@@ -76,14 +76,14 @@ def profile(user_id):
         if current_user.admin:
             user = User.query.filter_by(id=user_id).first()
             if update_form.validate_on_submit():
-                user.forename = update_form.forename.data
-                user.surname = update_form.surname.data
-                if update_form.email.data != user.email:
+                user.forename = update_form.forename.data.strip()
+                user.surname = update_form.surname.data.strip()
+                if update_form.email.data.strip() != user.email:
                     other_user = User.query.filter_by(email=update_form.email.data).first()
                     if other_user:
                         flash('This email is in use, please use a different one!', 'danger')
                     else:
-                        user.email = update_form.email.data
+                        user.email = update_form.email.data.strip()
                         db.session.commit()
                         flash('Account details successfully updated!', 'success')
                 else:
