@@ -39,7 +39,7 @@ def title_results(name, year):
     elif flask.request.method == 'POST' and results_form.validate_on_submit():
         return redirect(url_for('movies.search_for_movie', name=results_form.result_movie_title.data.lower().strip(), year=results_form.result_movie_year.data.strip()))
     count = 0
-    movies = Movie.query.filter(func.lower(Movie.title).like("%{0}%".format(name.lower()))).all()
+    movies = Movie.query.filter(func.lower(Movie.title).like("%{0}%".format(name.lower()))).order_by(Movie.title).all()
     watchlist_entries = []
     for movie in movies:
         count += 1
@@ -86,7 +86,7 @@ def search_movies_by_year(year=None):
     if flask.request.method == 'POST' and year_form.validate_on_submit():
         return redirect(url_for('movies.search_movies_by_year', year=year_form.movie_year.data.strip()))
     count = 0
-    movies = Movie.query.filter_by(year=year).all()
+    movies = Movie.query.filter_by(year=year).order_by(Movie.title).all()
     watchlist_entries = []
     for movie in movies:
         count += 1
@@ -132,7 +132,7 @@ def get_favourable_reviews():
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('movies.title_results', name=search_form.movie_title.data.lower().strip()))
 
-    movies = Movie.query.filter(Movie.average_rating >= 60).all()
+    movies = Movie.query.filter(Movie.average_rating >= 60).order_by(Movie.title).all()
     watchlist_entries = []
     for movie in movies:
         if current_user.is_authenticated:
@@ -147,7 +147,7 @@ def get_nonfavourable_reviews():
     if flask.request.method == 'POST' and search_form.validate_on_submit():
         return redirect(url_for('movies.title_results', name=search_form.movie_title.data.lower().strip()))
 
-    movies = Movie.query.filter(Movie.average_rating < 60).all()
+    movies = Movie.query.filter(Movie.average_rating < 60).order_by(Movie.title).all()
     watchlist_entries = []
     for movie in movies:
         if current_user.is_authenticated:

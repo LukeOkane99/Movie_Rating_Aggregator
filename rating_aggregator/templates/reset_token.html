@@ -10,7 +10,7 @@
                         {% if password_reset_form.password.errors %}
                             {{ password_reset_form.password(class_="login-form-control") }}
                             <div class="form-errors">
-                                {% for error in password_reset_form.password %}
+                                {% for error in password_reset_form.password.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
@@ -22,7 +22,7 @@
                         {% if password_reset_form.password_confirmation.errors %}
                             {{ password_reset_form.password_confirmation(class_="login-form-control") }}
                             <div class="form-errors">
-                                {% for error in password_reset_form.password_confirmation %}
+                                {% for error in password_reset_form.password_confirmation.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
