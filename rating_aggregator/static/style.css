@@ -673,7 +673,12 @@ hr {
 /* Add padding and center-align text to the container */
 .loading-modal-container {
   text-align: center;
-  padding: 20rem;
+  padding-left: 7rem;
+  padding-top: 20rem;
+}
+
+.loading-modal-container img {
+  width: 300px;
 }
 
 /* The Modal (background) */
@@ -698,7 +703,7 @@ hr {
   font-family: sans-serif;
   color: whitesmoke;
   font-weight: bold;
-  font-size: 40px;
+  font-size: 10px;
   opacity: 1;
 }
 
