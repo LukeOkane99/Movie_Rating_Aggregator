@@ -21,6 +21,13 @@
             {% endif %}
         </div>
         <div>
+            <div id="loading-modal" class="loading-modal">
+                <form class="loading-modal-content" action='' method=get>
+                    <div class="loading-modal-container">
+                        <img id="loading" src="{{url_for('static', filename='loading.gif')}}" alt="" />
+                    </div>
+                </form>
+            </div>
             <button type="submit" class="results-search-button" id="results-submit" onclick="document.getElementById('loading-modal').style.display='block'" onclick="$('#loading').show();"><i class="fa fa-search" style="text-align: center;"></i></button>
         </div>
     </form>
@@ -69,14 +76,6 @@
                 </span>
             </div>
         {% endfor %}
-    </div>
-    <div id="loading-modal" class="loading-modal">
-        <form class="loading-modal-content" action='' method=get>
-            <div class="loading-modal-container">
-                <h1>Searching for Movie...</h1>
-                <img id="loading" src="{{url_for('static', filename='loading.gif')}}" alt="" />
-            </div>
-        </form>
     </div>
     {% endif %}
 {% endblock content %}

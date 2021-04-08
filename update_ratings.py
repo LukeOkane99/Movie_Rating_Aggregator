@@ -279,8 +279,10 @@ def main():
             if movie.average_rating != weighted_rating:
                 movie.average_rating = weighted_rating
                 print('weighted average updated')
+                print(movie.average_rating)
             else:
                 print('weighted average is the same')
+                print(movie.average_rating)
             print('\n')
             
             movie.date_updated = datetime.utcnow()

@@ -11,7 +11,7 @@ def test_client():
     with flask_app.test_client() as testing_client:
         # create an application context
         with flask_app.app_context():
-            yield testing_client  # this is where testing occurs
+            yield testing_client  # testing occurs here
 
 @pytest.fixture(scope='module')
 def init_database(test_client):
@@ -30,27 +30,24 @@ def init_database(test_client):
     movie1 = Movie(title='Gladiator', year='2000', imdb_rating=85.0, imdb_votes=1353601, imdb_url='https://www.imdb.com/title/tt0172495/', metascore=67.0, metascore_votes=46, metacritic_url='https://www.metacritic.com/movie/gladiator', tomatometer=77.0, tomatometer_votes=200, audience_score=87.0, audience_score_votes=34128168, rotten_tomatoes_url='https://rottentomatoes.com/m/gladiator', letterboxd_rating=79.0,
      letterboxd_votes=205814, letterboxd_url='https://letterboxd.com/film/gladiator-2000/', tmdb_rating=82.0, tmdb_votes=13372, tmdb_url='https://www.themoviedb.org/movie/98', average_rating=86.9, movie_image='https://image.tmdb.org/t/p/original/ehGpN04mLJIrSnxcZBMvHeG0eDc.jpg', synopsis='A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.')
 
-    # Insert entry into user1 watchlist
-    #entry = WatchlistMovies(userId=1, movieId=1)
 
     db.session.add(user1)
     db.session.add(user2)
     db.session.add(movie1)
-    #db.session.add(entry)
 
     # Commit changes to User table
     db.session.commit()
 
-    yield  # this is where the testing occurs
+    yield  # testing occurs here
 
     db.drop_all()
 
 @pytest.fixture(scope='function')
 def login_default_user(test_client):
     test_client.post('/login',
-                     data=dict(email='anna-taylor36@gmail.com', password='reallysecurepassword'),
+                     data=dict(email='test-user36@gmail.com', password='reallysecurepassword'),
                      follow_redirects=True)
 
-    yield  # this is where the testing happens!
+    yield  # testing occurs here
 
     test_client.get('/logout', follow_redirects=True)

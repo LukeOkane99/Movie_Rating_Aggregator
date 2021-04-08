@@ -21,8 +21,8 @@ class test_Config:
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('EMAIL_USER')
-    MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
     # Enable the TESTING flag to disable the error catching during request handling
     # so that you get better error reports when performing test requests against the application.
@@ -30,3 +30,6 @@ class test_Config:
 
     # Disable CSRF tokens in the Forms (only valid for testing purposes!)
     WTF_CSRF_ENABLED = False
+
+    # API
+    TMDB_API_KEY = os.environ.get('TMDB_API_KEY')

@@ -1,1 +1,0 @@
-FLASK_APP=rating_aggregator.py
