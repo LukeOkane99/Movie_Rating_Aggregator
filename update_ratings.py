@@ -30,11 +30,11 @@ def main():
     app.app_context().push()
 
     print('\033[1;32;40m**** Starting Update Process... ****')
-    print(datetime.utcnow().strftime('%d/%m/%Y'))
+    print('\033[1;32;40m'+datetime.utcnow().strftime('%d/%m/%Y'))
     movies = Movie.query.all()
     for movie in movies:
         difference = datetime.utcnow() - movie.date_updated
-        if difference.days != 0:
+        if difference.days != 3:
             name = movie.title
             year = movie.year
 
@@ -53,7 +53,7 @@ def main():
             
             #--------------------------------------Check if movie votes and ratings need updated--------------------------------------------------#
 
-            print("**** "+name+" ("+year+")"+" ****")
+            print("\033[1;32;40m**** "+name+" ("+year+")"+"\033[1;32;40m ****")
             session = Session()
 
             for response in responses:
@@ -83,21 +83,15 @@ def main():
                             if imdb_rating is not None and imdb_rating != movie.imdb_rating:
                                 movie.imdb_rating = imdb_rating
                                 db.session.commit()
-                                print('imdb rating updated')
-                            elif imdb_rating == movie.imdb_rating: 
-                                print('imdb rating is the same')
+                                print('imdb rating updated: ' + str(movie.imdb_rating))
                             if imdb_votes is not None and imdb_votes != movie.imdb_votes:
                                 movie.imdb_votes = imdb_votes
                                 db.session.commit()
-                                print('imdb votes updated')
-                            elif imdb_votes == movie.imdb_votes: 
-                                print('imdb votes are the same')
+                                print('imdb votes updated: ' + str(movie.imdb_votes))
                             if metacritic_rating is not None and metacritic_rating != movie.metascore:
                                 movie.metascore = metacritic_rating
                                 db.session.commit()
-                                print('metascore updated')
-                            elif metacritic_rating == movie.metascore: 
-                                print('metascore is the same')
+                                print('metascore updated: ' + str(movie.metascore))
                         except Exception as ex:
                             print(str(ex)) 
                             continue
@@ -122,11 +116,9 @@ def main():
                                         metacritic_votes = int(json.loads(info.string)['aggregateRating']['ratingCount'])
                                         break
                             if metacritic_votes is not None and metacritic_votes != movie.metascore_votes:
-                                movie.imdb_votes = imdb_votes
+                                movie.metascore_votes = metacritic_votes
                                 db.session.commit()
-                                print('metascore votes updated')
-                            elif metacritic_votes == movie.metascore_votes: 
-                                print('metascore votes are the same')
+                                print('metascore votes updated: ' + str(movie.metascore_votes))
                         except Exception as ex:
                             print(str(ex)) 
                             continue
@@ -153,15 +145,11 @@ def main():
                             if rating is not None and rating != movie.letterboxd_rating:
                                 movie.letterboxd_rating = rating
                                 db.session.commit()
-                                print('letterboxd rating updated')
-                            elif rating == movie.letterboxd_rating: 
-                                print('letterboxd rating is the same')
+                                print('letterboxd rating updated: ' + str(movie.letterboxd_rating))
                             if letterboxd_votes is not None and letterboxd_votes != movie.letterboxd_votes:
                                 movie.letterboxd_votes = letterboxd_votes
                                 db.session.commit()
-                                print('letterboxd votes updated')
-                            elif letterboxd_votes == movie.letterboxd_votes: 
-                                print('letterboxd votes are the same')
+                                print('letterboxd votes updated: ' + str(movie.letterboxd_votes))
                         except Exception as ex:
                             print(str(ex)) 
                             continue
@@ -191,27 +179,19 @@ def main():
                             if tomatometer_score is not None and tomatometer_score != movie.tomatometer:
                                 movie.tomatometer = tomatometer_score
                                 db.session.commit()
-                                print('tomatometer score updated')
-                            elif tomatometer_score == movie.tomatometer: 
-                                print('tomatometer score is the same')
+                                print('tomatometer score updated: ' + str(movie.tomatometer))
                             if tomatometer_votes is not None and tomatometer_votes != movie.tomatometer_votes:
                                 movie.tomatometer_votes = tomatometer_votes
                                 db.session.commit()
-                                print('tomatometer votes updated')
-                            elif tomatometer_votes == movie.tomatometer_votes: 
-                                print('tomatometer votes are the same')
+                                print('tomatometer votes updated: ' + str(movie.tomatometer_votes))
                             if audience_score is not None and audience_score != movie.audience_score:
                                 movie.audience_score = audience_score
                                 db.session.commit()
-                                print('audience score updated')
-                            elif audience_score == movie.audience_score: 
-                                print('audience score is the same')
+                                print('audience score updated: ' + str(movie.audience_score))
                             if audience_score_votes is not None and audience_score_votes != movie.audience_score_votes:
                                 movie.audience_score_votes = audience_score_votes
                                 db.session.commit()
-                                print('audience score votes updated')
-                            elif audience_score_votes == movie.audience_score_votes: 
-                                print('audience score votes are the same')
+                                print('audience score votes updated: ' + str(movie.audience_score_votes))
                         except Exception as ex:
                             print(str(ex)) 
                             continue
@@ -227,15 +207,11 @@ def main():
                             if tmdb_rating is not None and tmdb_rating != movie.tmdb_rating:
                                 movie.tmdb_rating = tmdb_rating
                                 db.session.commit()
-                                print('tmdb rating updated')
-                            elif tmdb_rating == movie.tmdb_rating: 
-                                print('tmdb rating is the same')
+                                print('tmdb rating updated: ' + str(movie.tmdb_rating))
                             if tmdb_votes is not None and tmdb_votes != movie.tmdb_votes:
                                 movie.tmdb_votes = tmdb_votes
                                 db.session.commit()
-                                print('tmdb votes updated')
-                            elif tmdb_votes != movie.tmdb_votes: 
-                                print('tmdb votes are the same')
+                                print('tmdb votes updated: ' + str(movie.tmdb_votes))
                         except Exception as ex:
                             print(str(ex)) 
                             continue
@@ -278,11 +254,9 @@ def main():
 
             if movie.average_rating != weighted_rating:
                 movie.average_rating = weighted_rating
-                print('weighted average updated')
-                print(movie.average_rating)
+                print('weighted average updated: ' + str(movie.average_rating))
             else:
-                print('weighted average is the same')
-                print(movie.average_rating)
+                print('weighted average is the same: ' + str(movie.average_rating))
             print('\n')
             
             movie.date_updated = datetime.utcnow()

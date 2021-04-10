@@ -11,6 +11,8 @@ services:
     tests:
         build: .
         command: -m pytest -vv
+        volumes:
+            - .:/app
         links:
             - web
     update-script:

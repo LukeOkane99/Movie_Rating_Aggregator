@@ -3,18 +3,18 @@
     <div class="page_content">
         <div style="display: inline-block; text-align: center;">
             <div class="movie-heading">
-                <h1 class="page_tites" style="padding-bottom: 1rem;"><b>{{ movie.title }}</b> ({{ movie.year }}) </h1>
+                <h1 class="movie_page_title" style="padding-bottom: 1rem;"><b>{{ movie.title }}</b> ({{ movie.year }}) </h1>
                     {% if current_user.is_authenticated %}
                         {% if watchlist_entry %}
                             <form action='{{ url_for("users.delete_from_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
                                 <button type="submit" name="remove_movie" style="border: none; background: none;">
-                                    <span title="Remove from watchlist"><i class="fa fa-trash trash-button" style="font-size: 25px; margin-left: 1rem;"></i></span>
+                                    <span title="Remove from watchlist"><i class="fa fa-trash trash-button movie-icon-style"></i></span>
                                 </button>
                             </form>
                         {% else %}
                             <form action='{{ url_for("users.add_to_watchlist", user_id=current_user.id, movie_id=movie.movieId, name=movie.title, year=movie.year) }}' method=post>
                                 <button type="submit" name="add_movie" style="border: none; background: none;">
-                                    <span title="Add to watchlist"><i class="fa fa-plus-square trash-button" style="font-size: 25px; margin-left: 1rem;"></i></span>
+                                    <span title="Add to watchlist"><i class="fa fa-plus-square trash-button movie-icon-style"></i></span>
                                 </button>
                             </form>
                         {% endif %}

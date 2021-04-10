@@ -1,32 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1 class="page_tites" style="padding-bottom: 1rem;">Help</h1>
-    <h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">What is the goal of this site?</h2>
-    <div style="margin-left: auto; margin-right: auto; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; line-height: 1.8rem; padding-bottom: 1rem; width: 60%;">
-        <p style="text-align: left;"></p>
-            The purpose of this site is to obtain movie ratings from the most relevant rating aggregator sites and calculate a weighted average based off of the individual ratings.
-            This will help to give a better overall concensus for a movie rating and help to prevent skewing attempts.
-        </p>
-    </div>
-    <h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">What sources do we use?</h2>
-    <div style="margin-left: auto; margin-right: auto; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; line-height: 1.8rem; padding-bottom: 1rem; width: 60%;">
-        <p style="text-align: left;"></p>
-            This site uses web scraping techniques to obtain key film information and ratings from various sources such as; IMDb, Metacritic, Rotten Tomatoes, Letterboxd and TMDb</br>
-            Each rating has been converted to appear as a score out of 100 to ensure consistency across all the ratings.
-        </p>
-    </div>
-    <h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">How do we ensure that movie ratings are regularly updated?</h2>
-    <div style="margin-left: auto; margin-right: auto; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; line-height: 1.8rem; padding-bottom: 1rem; width: 60%;">
-        <p style="text-align: left;"></p>
-            The site runs an update script everyday that will scrape ratings and votes for each movie within the database that has not been updated in more than 24 hours.
-        </p>
-    </div>
-    <h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">How is the weighted overall rating calculated?</h2>
-    <div style="margin-left: auto; margin-right: auto; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; line-height: 1.8rem; padding-bottom: 1rem; width: 60%;">
-        <p style="text-align: left;"></p>
-            The weighted average is calculated by multiplying each individual rating by the number of votes for that rating. This result is then divided by the total number of votes for all ratings.</br>
-            The benefit of this is that it will help to prevent manipulation of the ratings which could cause skewing. For example: 100 89% reviews will be given more weight than 10 90% reviews.
-        </p>
+    <div class="help">
+        <h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">What is the goal of this site?</h2>
+        <div style="margin-left: auto; margin-right: auto; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; line-height: 1.8rem; padding-bottom: 1rem; width: 60%;">
+            <p style="text-align: left;"></p>
+                The purpose of this site is to obtain movie ratings from the most relevant rating aggregator sites and calculate a weighted average based off of the individual ratings.
+                This will help to give a better overall concensus for a movie rating and help to prevent skewing attempts.
+            </p>
+        </div>
+        <h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">What sources do we use?</h2>
+        <div style="margin-left: auto; margin-right: auto; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; line-height: 1.8rem; padding-bottom: 1rem; width: 60%;">
+            <p style="text-align: left;"></p>
+                This site uses web scraping techniques to obtain key film information and ratings from various sources such as; IMDb, Metacritic, Rotten Tomatoes, Letterboxd and TMDb</br>
+                Each rating has been converted to appear as a score out of 100 to ensure consistency across all the ratings.
+            </p>
+        </div>
+        <h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">How do we ensure that movie ratings are regularly updated?</h2>
+        <div style="margin-left: auto; margin-right: auto; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; line-height: 1.8rem; padding-bottom: 1rem; width: 60%;">
+            <p style="text-align: left;"></p>
+                The site runs an update script everyday that will scrape ratings and votes for each movie within the database that has not been updated in more than 24 hours.
+            </p>
+        </div>
+        <h2 style="margin-left: auto; margin-right: auto; width: 60%; font-family: sans-serif; color: whitesmoke;">How is the weighted overall rating calculated?</h2>
+        <div style="margin-left: auto; margin-right: auto; font-family: sans-serif; color: whitesmoke; font-size: 1.2rem; line-height: 1.8rem; padding-bottom: 1rem; width: 60%;">
+            <p style="text-align: left;"></p>
+                The weighted average is calculated by multiplying each individual rating by the number of votes for that rating. This result is then divided by the total number of votes for all ratings.</br>
+                The benefit of this is that it will help to prevent manipulation of the ratings which could cause skewing. For example: 100 89% reviews will be given more weight than 10 90% reviews.
+            </p>
+        </div>
     </div>
 
 {% endblock content %}
