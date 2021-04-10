@@ -272,6 +272,12 @@
   margin-bottom: 1.5rem;
 }
 
+.year-form {
+  margin-left: auto;
+  margin-right: auto; 
+  width: 55%;
+}
+
 .year-search-button {
   height: 31px;
   border: 2px solid black;
@@ -292,6 +298,12 @@
 }
 
 .page_tites {
+  text-align: center;
+  font-family: sans-serif; 
+  color: whitesmoke;
+}
+
+.movie_page_title {
   text-align: center;
   font-family: sans-serif; 
   color: whitesmoke;
@@ -346,10 +358,7 @@
   margin-left: 205px;
   padding-left: 0.8rem;
   font-size: 30px;
-  position: absolute;
-  width: 90%;
-  height: 40px;
-}
+}  
 
 .flash-danger {
   background-color: red;
@@ -360,9 +369,6 @@
   margin-left: 205px;
   padding-left: 0.8rem;
   font-size: 30px;
-  position: absolute;
-  width: 90%;
-  height: 40px;
 }
 
 /* background circle for ratings */
@@ -426,7 +432,6 @@
   font-family: sans-serif;
   width: 100%;
   text-align: left;
-  padding-right: 1rem;
 }
 
 .all-users-table th, .all-users-table td {
@@ -483,6 +488,7 @@
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   padding-top: 50px;
+  padding-left: 8rem;
 }
 
 /* Modal Content/Box */
@@ -642,7 +648,7 @@ hr {
 }
 
 .movie-page-grid {
-  display: grid; grid-template-columns: auto auto auto auto; float: left; padding-left: 13rem;
+  display: grid; grid-template-columns: auto auto auto auto; float: left; padding-left: 7.5rem;
 }
 
 .movie-grid-titles {
@@ -679,8 +685,7 @@ hr {
 /* Add padding and center-align text to the container */
 .loading-modal-container {
   text-align: center;
-  padding-left: 7rem;
-  padding-top: 20rem;
+  padding-top: 10rem;
 }
 
 .loading-modal-container img {
@@ -720,6 +725,20 @@ hr {
   display: table;
 }
 
+.movie-icon-style {
+  font-size: 25px; margin-left: 1rem;
+}
+
+.year_search_results {
+  text-align: center; padding-top: 6rem; color: whitesmoke; font-family: sans-serif;
+}
+
+.help {}
+
+.register_small_text {
+  text-align: left; padding-left: 0.5rem;
+}
+
 /* Deal with minimising browser */
 @media screen and (max-width: 1620px) {
   .movie-page-grid {
@@ -751,6 +770,22 @@ hr {
   }
 }
 
+
+@media screen and (max-width: 1200px) {
+
+  .header {
+    padding-left: 0;
+  }
+
+  .movie-page-grid {
+    display: grid; grid-template-columns: auto auto; float: left; padding-left: 10rem;
+  }
+
+  .page_tites {
+    padding-right: 5rem;
+  }
+}
+
 @media screen and (max-width: 1173px) {
 
   .header form {
@@ -764,10 +799,6 @@ hr {
 }
 
 @media screen and (max-width: 1100px) {
-
-  .movie-page-grid {
-    padding-left: .5rem;
-  }
 
   .page_content {
     text-align: center;
@@ -783,12 +814,28 @@ hr {
     line-height: 1.8rem; 
     max-width: 550px; 
   }
-}
 
-.year-form {
-  margin-left: auto;
-  margin-right: auto; 
-  width: 55%;
+  .movie-page-grid {
+    display: grid; grid-template-columns: auto auto; float: left; padding-left:4rem;
+  }
+
+  .results-form {
+    margin-right: 6rem;
+  }
+
+  .year-form {
+    margin-left: auto;
+    margin-right: auto; 
+    width: 65%;
+  }
+
+  .year_search_results {
+    margin-right: 6rem;
+  }
+
+  .page_tites {
+   margin-right: 2rem;
+  }
 }
 
 @media screen and (max-width: 1000px) {
@@ -802,6 +849,79 @@ hr {
     padding-left: 8rem;
     padding-top: 0;
   }
+
+  .movie-page-grid {
+    display: grid; grid-template-columns: auto auto; float: left; padding-left: 4rem;
+  }
+
+  .page_tites {
+    padding-right: 6rem;
+  }
+
+  .year-form {
+    margin-left: auto;
+    margin-right: auto; 
+    width: 69%;
+  }
+
+  .year_search_results {
+    text-align: center;
+    padding-top: 6rem; 
+    color: whitesmoke; 
+    font-family: sans-serif;
+    padding-right: 7rem;
+  }
+
+  .profile-form-control {
+    width: 400px;
+    height: 25px;
+    padding-right: 1rem;
+    margin-right: 7rem;
+    border: 2px solid black;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-form-button {
+    width: 79%;
+    height: 30px;
+  }
+
+  .results-text {
+    float: left;
+    padding-left: 10rem;
+    padding-top: 0;
+  }
+
+  .help {
+    padding-right: 6rem;
+  }
+
+  .login-form-control {
+    width: 400px;
+    height: 25px;
+    padding-right: 1rem;
+    border: 2px solid black;
+    margin-bottom: 1.5rem;
+    margin-right: 8rem;
+  }
+
+  .login-form-button {
+    width: 77%;
+    height: 30px;
+    margin-right: 8rem;
+  }
+
+  .register-form-control {
+    width: 400px;
+    height: 25px;
+    margin-right: 8rem;
+  }
+  
+  .register-form-button {
+    width: 77%;
+    margin-right: 8rem;
+  }
+
 
 }
 
@@ -856,6 +976,18 @@ hr {
     padding-bottom: 0;
   }
 
+  .movie-page-grid {
+    display: grid;
+    grid-template-columns: auto auto; 
+    float: left; 
+    padding-left: 2.5rem;
+  }
+
+  .page_tites {
+    padding-right: 9rem;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .header h1 {
     font-size: 30px;
@@ -864,16 +996,21 @@ hr {
   .header-logo {
     font-size: 35px;
   }
-}
-
-@media screen and (max-width: 870px) {
-
-  .header {
-    padding-left: 0;
-  }
 
   .movie-page-grid {
-    display: grid; grid-template-columns: auto; float: left; padding-left: .5rem;
+    display: grid;
+    grid-template-columns: auto auto; 
+    float: left; 
+    padding-left: .5rem;
+  }
+}
+
+@media all and (max-width:880px) {
+  .movie-page-grid {
+    display: grid;
+    grid-template-columns: auto; 
+    float: left; 
+    padding-left: 10rem;
   }
 }
 
@@ -994,7 +1131,22 @@ hr {
     margin: 0rem;
     float: left;
   }
+
+  .movie-page-grid {
+    display: grid;
+    grid-template-columns: auto; 
+    float: left; 
+    padding-left: 5.5rem;
+  }
+
+  .page_tites {
+    padding-right: 9rem;
+  }
   
+}
+
+@media screen and (max-width: 638px) {
+
 }
 
 @media screen and (max-width: 630px) {
@@ -1002,6 +1154,70 @@ hr {
     float: left;
     padding-left: 0rem;
   }
+
+  .movie-heading {
+    font-size: 10px;
+    
+  }
+
+  .movie-icon-style {
+    font-size: 20px;
+  }
+
+  .movie-page-grid {
+    display: grid;
+    grid-template-columns: auto; 
+    float: left; 
+    padding-left: 2.5rem;
+  }
+
+  .page_tites {
+    padding-right: 10rem;
+  }
+}
+
+@media screen and (max-width: 590px) {
+
+  
+  .movie-page-grid {
+    display: grid;
+    grid-template-columns: auto; 
+    float: left; 
+    padding-left: .1rem;
+  }
+
+  .profile-form-control {
+    margin-left: 5rem;
+  }
+
+  .profile-form-button {
+    margin-left: 5rem;
+  }
+
+  .profile-label-control {
+    margin-left: 5rem;
+  }
+
+  .login-form-control {
+    margin-left: 5rem;
+  }
+
+  .login-form-button {
+    margin-left: 5rem;
+  }
+
+  .register_small_text {
+    margin-left: 5rem;
+  }
+
+  .register-form-control {
+    margin-left: 5rem;
+  }
+
+  .register-form-button {
+    margin-left: 5rem;
+  }
+  
 }
 
 @media screen and (max-width: 557px) {
@@ -1045,6 +1261,23 @@ hr {
     float: left;
   }
 
+  .page_tites {
+    float: left;
+    padding-left: 3rem;
+  }
+
+  .movie-heading {
+    float: left;
+    padding-left: 2rem;
+    font-size: 8px;
+  }
+
+  .movie-icon-style {
+    padding-top: 0.5rem;
+    margin-right: 10rem;
+    font-size: 20px;
+  }
+
   .movie-page-synopsis {
     font-family: sans-serif;
     color: whitesmoke; 
@@ -1086,5 +1319,38 @@ hr {
     border: 3px solid black; 
     margin: 0rem;
     float: left;
+  }
+
+  .movie-page-grid {
+    display: grid;
+    grid-template-columns: auto; 
+    float: left; 
+    padding-left: .5rem;
+  }
+
+  .login-form-control {
+    margin-right: 5rem;
+  }
+
+  .register-form-control {
+    margin-right: 5rem;
+  }
+
+  .profile-form-control {
+    margin-right: 5rem;
+  }
+
+  .help {
+    padding-right: 10rem;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 360px) {
+  .movie-page-grid {
+    display: grid; 
+    grid-template-columns: auto; 
+    float: left; 
+    padding-left: 5rem;
   }
 }

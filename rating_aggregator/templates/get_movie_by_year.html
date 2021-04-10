@@ -21,9 +21,9 @@
     </form>
     {% if year %}
         {% if count == 1 %}
-            <h2 style="text-align: center; padding-top: 6rem; color: whitesmoke; font-family: sans-serif;">{{count}} Result found for year '{{year}}'</h2>
+            <h2 class="year_search_results">{{count}} Result found for year '{{year}}'</h2>
         {% else %}
-            <h2 style="text-align: center; padding-top: 6rem; color: whitesmoke; font-family: sans-serif;">{{count}} Results found for year '{{year}}'</h2>
+            <h2 class="year_search_results">{{count}} Results found for year '{{year}}'</h2>
         {% endif %}
         {% if movies %}
         <div class="movie-page-grid">
