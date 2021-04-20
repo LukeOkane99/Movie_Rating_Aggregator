@@ -34,7 +34,7 @@ def main():
     movies = Movie.query.all()
     for movie in movies:
         difference = datetime.utcnow() - movie.date_updated
-        if difference.days != 3:
+        if difference.days != 0:
             name = movie.title
             year = movie.year
 
@@ -84,10 +84,16 @@ def main():
                                 movie.imdb_rating = imdb_rating
                                 db.session.commit()
                                 print('imdb rating updated: ' + str(movie.imdb_rating))
-                            if imdb_votes is not None and imdb_votes != movie.imdb_votes:
-                                movie.imdb_votes = imdb_votes
-                                db.session.commit()
-                                print('imdb votes updated: ' + str(movie.imdb_votes))
+                            if movie.imdb_url is None:
+                                if movie.imdb_votes != 0:
+                                    movie.imdb_votes = 0
+                                    db.session.commit()
+                                    print('imdb votes updated: ' + str(movie.imdb_votes))
+                            else:
+                                if imdb_votes is not None and imdb_votes != movie.imdb_votes:
+                                    movie.imdb_votes = imdb_votes
+                                    db.session.commit()
+                                    print('imdb votes updated: ' + str(movie.imdb_votes))
                             if metacritic_rating is not None and metacritic_rating != movie.metascore:
                                 movie.metascore = metacritic_rating
                                 db.session.commit()
@@ -115,10 +121,16 @@ def main():
                                     if json.loads(info.string)['aggregateRating']['ratingValue']:
                                         metacritic_votes = int(json.loads(info.string)['aggregateRating']['ratingCount'])
                                         break
-                            if metacritic_votes is not None and metacritic_votes != movie.metascore_votes:
-                                movie.metascore_votes = metacritic_votes
-                                db.session.commit()
-                                print('metascore votes updated: ' + str(movie.metascore_votes))
+                            if movie.metacritic_url is None:
+                                if movie.metascore_votes != 0:
+                                    movie.metascore_votes = 0
+                                    db.session.commit()
+                                    print('metascore votes updated: ' + str(movie.metascore_votes))
+                            else:
+                                if metacritic_votes is not None and metacritic_votes != movie.metascore_votes:
+                                    movie.metascore_votes = metacritic_votes
+                                    db.session.commit()
+                                    print('metascore votes updated: ' + str(movie.metascore_votes))
                         except Exception as ex:
                             print(str(ex)) 
                             continue
@@ -146,10 +158,16 @@ def main():
                                 movie.letterboxd_rating = rating
                                 db.session.commit()
                                 print('letterboxd rating updated: ' + str(movie.letterboxd_rating))
-                            if letterboxd_votes is not None and letterboxd_votes != movie.letterboxd_votes:
-                                movie.letterboxd_votes = letterboxd_votes
-                                db.session.commit()
-                                print('letterboxd votes updated: ' + str(movie.letterboxd_votes))
+                            if movie.letterboxd_url is None:
+                                if movie.letterboxd_votes != 0:
+                                    movie.letterboxd_votes = 0
+                                    db.session.commit()
+                                    print('letterboxd votes updated: ' + str(movie.letterboxd_votes))
+                            else:
+                                if letterboxd_votes is not None and letterboxd_votes != movie.letterboxd_votes:
+                                    movie.letterboxd_votes = letterboxd_votes
+                                    db.session.commit()
+                                    print('letterboxd votes updated: ' + str(movie.letterboxd_votes))
                         except Exception as ex:
                             print(str(ex)) 
                             continue
@@ -180,18 +198,30 @@ def main():
                                 movie.tomatometer = tomatometer_score
                                 db.session.commit()
                                 print('tomatometer score updated: ' + str(movie.tomatometer))
-                            if tomatometer_votes is not None and tomatometer_votes != movie.tomatometer_votes:
-                                movie.tomatometer_votes = tomatometer_votes
-                                db.session.commit()
-                                print('tomatometer votes updated: ' + str(movie.tomatometer_votes))
+                            if movie.rotten_tomatoes_url is None:
+                                if movie.tomatometer_votes != 0:
+                                    movie.tomatometer_votes = 0
+                                    db.session.commit()
+                                    print('tomatometer votes updated: ' + str(movie.tomatometer_votes))
+                            else:
+                                if tomatometer_votes is not None and tomatometer_votes != movie.tomatometer_votes:
+                                    movie.tomatometer_votes = tomatometer_votes
+                                    db.session.commit()
+                                    print('tomatometer votes updated: ' + str(movie.tomatometer_votes))
                             if audience_score is not None and audience_score != movie.audience_score:
                                 movie.audience_score = audience_score
                                 db.session.commit()
                                 print('audience score updated: ' + str(movie.audience_score))
-                            if audience_score_votes is not None and audience_score_votes != movie.audience_score_votes:
-                                movie.audience_score_votes = audience_score_votes
-                                db.session.commit()
-                                print('audience score votes updated: ' + str(movie.audience_score_votes))
+                            if movie.rotten_tomatoes_url is None:
+                                if movie.audience_score_votes != 0:
+                                    movie.audience_score_votes = 0
+                                    db.session.commit()
+                                    print('audience score votes updated: ' + str(movie.audience_score_votes))
+                            else:
+                                if audience_score_votes is not None and audience_score_votes != movie.audience_score_votes:
+                                    movie.audience_score_votes = audience_score_votes
+                                    db.session.commit()
+                                    print('audience score votes updated: ' + str(movie.audience_score_votes))
                         except Exception as ex:
                             print(str(ex)) 
                             continue
@@ -208,10 +238,16 @@ def main():
                                 movie.tmdb_rating = tmdb_rating
                                 db.session.commit()
                                 print('tmdb rating updated: ' + str(movie.tmdb_rating))
-                            if tmdb_votes is not None and tmdb_votes != movie.tmdb_votes:
-                                movie.tmdb_votes = tmdb_votes
-                                db.session.commit()
-                                print('tmdb votes updated: ' + str(movie.tmdb_votes))
+                            if movie.tmdb_url is None:
+                                if movie.tmdb_votes != 0:
+                                    movie.tmdb_votes = 0
+                                    db.session.commit()
+                                    print('tmdb votes updated: ' + str(movie.tmdb_votes))
+                            else:
+                                if tmdb_votes is not None and tmdb_votes != movie.tmdb_votes:
+                                    movie.tmdb_votes = tmdb_votes
+                                    db.session.commit()
+                                    print('tmdb votes updated: ' + str(movie.tmdb_votes))
                         except Exception as ex:
                             print(str(ex)) 
                             continue

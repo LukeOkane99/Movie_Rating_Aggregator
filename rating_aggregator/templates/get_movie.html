@@ -25,41 +25,288 @@
                 <div class="rating-block" style="position: relative; padding-bottom: 3rem; ">
                     <img class="movie-page-image" src="{{ image }}">
                     <div style="padding-top: 1rem;">
-                        <span title="Overall Weighted Rating"><div class="rating-circle movie-page-rating-circle">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div></span>
+                        <span title="Overall Weighted Rating">
+                            {% if movie.average_rating >= 60 %}
+                                <div class="rating-circle movie-page-rating-circle">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div>
+                            {% else %}
+                            <div class="rating-circle movie-page-rating-circle" style="background-color: red;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div>
+                            {% endif %}
+                        </span>
                         <div style="display: inline-block; text-align: left; margin-right: 1rem;">
                             <ul class="movie-page-individual-ratings">
                                 {% if movie.imdb_url %}
-                                    <span title="View on IMDb"><li><a class="rating-hrefs" href="{{ movie['imdb_url'] }}" target="_blank"><b>IMDb: {{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.imdb_rating is none %}
+                                                <a class="rating-hrefs-negative" href="{{ movie['imdb_url'] }}" target="_blank">
+                                                    IMDb: 
+                                                </a>
+                                            {% else %}
+                                                {% if movie.imdb_rating and movie.imdb_rating >= 60 %}
+                                                    <a class="rating-hrefs-positive" href="{{ movie['imdb_url'] }}" target="_blank">
+                                                        IMDb: <b style="color: rgb(22, 192, 22);">{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% else %}
+                                                    <a class="rating-hrefs-negative" href="{{ movie['imdb_url'] }}" target="_blank">
+                                                        IMDb: <b style="color: red;">{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.imdb_votes %}
+                                                <span class="tooltiptext">{{ movie['imdb_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% else %}
-                                    <li><b>IMDb: {{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.imdb_rating is none %}
+                                                IMDb: 
+                                            {% else %}
+                                                {% if movie.imdb_rating and movie.imdb_rating >= 60 %}
+                                                    IMDb: <b style="color: rgb(22, 192, 22);">{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% else %}
+                                                    IMDb: <b style="color: red;">{{ (movie["imdb_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.imdb_votes %}
+                                                <span class="tooltiptext">{{ movie['imdb_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% endif %}
                                 {% if movie.metacritic_url %}
-                                    <span title="View on Metacritic"><li><a class="rating-hrefs" href="{{ movie['metacritic_url'] }}" target="_blank"><b>Metascore: {{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.metascore is none %}
+                                                <a class="rating-hrefs-negative" href="{{ movie['metacritic_url'] }}" target="_blank">
+                                                    Metascore: 
+                                                </a>
+                                            {% else %}
+                                                {% if movie.metascore and movie.metascore >= 60 %}
+                                                    <a class="rating-hrefs-positive" href="{{ movie['metacritic_url'] }}" target="_blank">
+                                                        Metascore: <b style="color: rgb(22, 192, 22);">{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% else %}
+                                                    <a class="rating-hrefs-negative" href="{{ movie['metacritic_url'] }}" target="_blank">
+                                                        Metascore: <b style="color: red;">{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.metascore_votes %}
+                                                <span class="tooltiptext">{{ movie['metascore_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% else %}
-                                    <li><b>Metascore: {{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.metascore is none %}
+                                                Metascore: 
+                                            {% else %}
+                                                {% if movie.metascore and movie.metascore >= 60 %}
+                                                    Metascore: <b style="color: rgb(22, 192, 22);">{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% else %}
+                                                    Metascore: <b style="color: red;">{{ (movie["metascore"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.metascore_votes %}
+                                                <span class="tooltiptext">{{ movie['metascore_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% endif %}
                                 {% if movie.rotten_tomatoes_url %}
-                                    <span title="View on Rotten Tomatoes"><li><a class="rating-hrefs" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank"><b>Tomatometer: {{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.tomatometer is none %}
+                                                <a class="rating-hrefs-negative" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">
+                                                    Tomatometer: 
+                                                </a>
+                                            {% else %}
+                                                {% if movie.tomatometer and movie.tomatometer >= 60 %}
+                                                    <a class="rating-hrefs-positive" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">
+                                                        Tomatometer: <b style="color: rgb(22, 192, 22);">{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% else %}
+                                                    <a class="rating-hrefs-negative" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">
+                                                        Tomatometer: <b style="color: red;">{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.tomatometer_votes %}
+                                                <span class="tooltiptext">{{ movie['tomatometer_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% else %}
-                                    <li><b>Tomatometer: {{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.tomatometer is none %}
+                                                Tomatometer: 
+                                            {% else %}
+                                                {% if movie.tomatometer and movie.tomatometer >= 60 %}
+                                                    Tomatometer: <b style="color: rgb(22, 192, 22);">{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% else %}
+                                                    Tomatometer: <b style="color: red;">{{ (movie["tomatometer"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.tomatometer_votes %}
+                                                <span class="tooltiptext">{{ movie['tomatometer_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% endif %}
                                 {% if movie.rotten_tomatoes_url %}
-                                    <span title="View on Rotten Tomatoes"><li><a class="rating-hrefs" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank"><b>Audience Score: {{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.audience_score is none %}
+                                                <a class="rating-hrefs-negative" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">
+                                                    Audience Score: 
+                                                </a>
+                                            {% else %}
+                                                {% if movie.audience_score and movie.audience_score >= 60 %}
+                                                    <a class="rating-hrefs-positive" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">
+                                                        Audience Score: <b style="color: rgb(22, 192, 22);">{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% else %}
+                                                    <a class="rating-hrefs-negative" href="{{ movie['rotten_tomatoes_url'] }}" target="_blank">
+                                                        Audience Score: <b style="color: red;">{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.audience_score_votes %}
+                                                <span class="tooltiptext">{{ movie['audience_score_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% else %}
-                                    <li><b>Audience Score: {{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.audience_score is none %}
+                                                Audience Score: 
+                                            {% else %}
+                                                {% if movie.audience_score and movie.audience_score >= 60 %}
+                                                    Audience Score: <b style="color: rgb(22, 192, 22);">{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% else %}
+                                                    Audience Score: <b style="color: red;">{{ (movie["audience_score"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.audience_score_votes %}
+                                                <span class="tooltiptext">{{ movie['audience_score_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% endif %}
                                 {% if movie.letterboxd_url %}
-                                    <span title="View on Letterboxd"><li><a class="rating-hrefs" href="{{ movie['letterboxd_url'] }}" target="_blank"><b>Letterboxd: {{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.letterboxd_rating is none %}
+                                                <a class="rating-hrefs-negative" href="{{ movie['letterboxd_url'] }}" target="_blank">
+                                                    Letterboxd: 
+                                                </a>
+                                            {% else %}
+                                                {% if movie.letterboxd_rating and movie.letterboxd_rating >= 60 %}
+                                                    <a class="rating-hrefs-positive" href="{{ movie['letterboxd_url'] }}" target="_blank">
+                                                        Letterboxd: <b style="color: rgb(22, 192, 22);">{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% else %}
+                                                    <a class="rating-hrefs-negative" href="{{ movie['letterboxd_url'] }}" target="_blank">
+                                                        Letterboxd: <b style="color: red;">{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.letterboxd_votes %}
+                                                <span class="tooltiptext">{{ movie['letterboxd_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% else %}
-                                    <li><b>Letterboxd: {{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.letterboxd_rating is none %}
+                                                Letterboxd: 
+                                            {% else %}
+                                                {% if movie.letterboxd_rating and movie.letterboxd_rating >= 60 %}
+                                                    Letterboxd: <b style="color: rgb(22, 192, 22);">{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% else %}
+                                                    Letterboxd: <b style="color: red;">{{ (movie["letterboxd_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.letterboxd_votes %}
+                                                <span class="tooltiptext">{{ movie['letterboxd_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% endif %}
                                 {% if movie.tmdb_url %}
-                                    <span title="View on TMDb"><li><a class="rating-hrefs" href="{{ movie['tmdb_url'] }}" target="_blank"><b>TMDb: {{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b></a></li></span>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.tmdb_rating is none %}
+                                                <a class="rating-hrefs-negative" href="{{ movie['tmdb_url'] }}" target="_blank">
+                                                    TMDb: 
+                                                </a>
+                                            {% else %}
+                                                {% if movie.tmdb_rating and movie.tmdb_rating >= 60 %}
+                                                    <a class="rating-hrefs-positive" href="{{ movie['tmdb_url'] }}" target="_blank">
+                                                        TMDb: <b style="color: rgb(22, 192, 22);">{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% else %}
+                                                    <a class="rating-hrefs-negative" href="{{ movie['tmdb_url'] }}" target="_blank">
+                                                        TMDb: <b style="color: red;">{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.tmdb_votes %}
+                                                <span class="tooltiptext">{{ movie['tmdb_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% else %}
-                                    <li><b>TMDb: {{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b></li>
+                                    <li>
+                                        <div class="tooltip">
+                                            {% if movie.tmdb_rating is none %}
+                                                TMDb: 
+                                            {% else %}
+                                                {% if movie.tmdb_rating and movie.tmdb_rating >= 60 %}
+                                                    TMDb: <b style="color: rgb(22, 192, 22);">{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% else %}
+                                                    TMDb: <b style="color: red;">{{ (movie["tmdb_rating"]|string).rstrip('0').rstrip('.') }}</b>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if movie.tmdb_votes %}
+                                                <span class="tooltiptext">{{ movie['tmdb_votes'] }} votes</span>
+                                            {% else %}
+                                                <span class="tooltiptext">0 votes</span> 
+                                            {% endif %}
+                                        </div>
+                                    </li>
                                 {% endif %}
                             </ul>
                         </div>
+                        <hr style="background-color: whitesmoke;">
                     </div>
                     <p class="movie-page-synopsis">
                         {{ movie["synopsis"] }}

@@ -24,7 +24,7 @@
             <div id="loading-modal" class="loading-modal">
                 <form class="loading-modal-content" action='' method=get>
                     <div class="loading-modal-container">
-                        <h1 class="page_tites" style="font-size: 80px;">Loading...</h1>
+                        <h1 class="page_tites" style="font-size: 80px; padding-left: 5rem;">Loading...</h1>
                         <img id="loading" src="{{url_for('static', filename='loading.gif')}}" style=": whitesmoke;" alt="" />
                     </div>
                 </form>
@@ -71,7 +71,13 @@
                             <div class="movie-grid-titles">
                                 <div style=" font-size: 1.1rem; float: left;">{{ movie["title"] }} ({{ movie["year"] }})</br></div>
                             </div>
-                            <span title="Overall Weighted Rating"><div class="rating-circle" style="width: 140px; height: 140px; line-height: 140px; font-size: 40px; border: 2px solid black; margin-top: 2rem;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div></span>
+                            <span title="Overall Weighted Rating">
+                                {% if movie.average_rating >= 60 %}
+                                    <div class="rating-circle" style="width: 140px; height: 140px; line-height: 140px; font-size: 40px; border: 2px solid black; margin-top: 2rem;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div>
+                                {% else %}
+                                    <div class="rating-circle" style="width: 140px; height: 140px; line-height: 140px; font-size: 40px; border: 2px solid black; margin-top: 2rem; background-color: red;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div>
+                                {% endif %}
+                            </span>
                         </div>
                     </a>
                 </span>

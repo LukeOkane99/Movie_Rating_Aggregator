@@ -17,7 +17,13 @@
                             <div class="movie-grid-titles">
                                 <div style=" font-size: 1.1rem; float: left;">{{ movie["title"] }} ({{ movie["year"] }})</br></div>
                             </div>
-                            <span title="Overall Weighted Rating"><div class="rating-circle" style="width: 140px; height: 140px; line-height: 140px; font-size: 40px; border: 2px solid black; margin-top: 2rem;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div></span>
+                            <span title="Overall Weighted Rating">
+                                {% if movie.average_rating >= 60 %}
+                                    <div class="rating-circle" style="width: 140px; height: 140px; line-height: 140px; font-size: 40px; border: 2px solid black; margin-top: 2rem;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div>
+                                {% else %}
+                                    <div class="rating-circle" style="width: 140px; height: 140px; line-height: 140px; font-size: 40px; border: 2px solid black; margin-top: 2rem; background-color: red;">{{ (movie["average_rating"]|string).rstrip('0').rstrip('.') }}</div>
+                                {% endif %}
+                            </span>
                         </div>
                     </a>
                 </span>

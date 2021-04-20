@@ -204,8 +204,8 @@ def get_all_ratings(movie, year):
 
 """
 # Testing
-movie = "shrek"
-year = '2001'
+movie = "the dirt"
+year = '2019'
 
 title, release_year, imdb, imdb_votes, metacritic, metacritic_votes, synopsis, imdb_url, metacritic_url, tomatometer, tomatometer_votes, audience, audience_score_votes, rotten_tomatoes_url, letterboxd, letterboxd_votes, letterboxd_url, tmdb, tmdb_votes, image, tmdb_url, avg = get_all_ratings(movie, year)
 

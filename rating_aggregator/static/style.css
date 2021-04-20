@@ -580,12 +580,21 @@ hr {
 }
 
 /* styling for rating site hrefs */
-.rating-hrefs {
+.rating-hrefs-positive {
   text-decoration: none;
   color: whitesmoke;
 } 
 
-.rating-hrefs:hover {
+.rating-hrefs-positive:hover {
+  color: rgb(22, 192, 22);
+}
+
+.rating-hrefs-negative {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+.rating-hrefs-negative:hover {
   color: red;
 }
 
@@ -686,10 +695,12 @@ hr {
 .loading-modal-container {
   text-align: center;
   padding-top: 10rem;
+  padding-left: 6rem;
 }
 
 .loading-modal-container img {
   width: 300px;
+  padding-left: 4rem;
 }
 
 /* The Modal (background) */
@@ -737,6 +748,55 @@ hr {
 
 .register_small_text {
   text-align: left; padding-left: 0.5rem;
+}
+
+/* Tool tip */
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  font-weight: bold;
+  font-family: sans-serif;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Deal with minimising browser */
@@ -835,6 +895,10 @@ hr {
 
   .page_tites {
    margin-right: 2rem;
+  }
+
+  .loading-modal-content {
+    padding-left: 10rem;
   }
 }
 
@@ -1008,9 +1072,8 @@ hr {
 @media all and (max-width:880px) {
   .movie-page-grid {
     display: grid;
-    grid-template-columns: auto; 
-    float: left; 
-    padding-left: 10rem;
+    grid-template-columns: auto auto; 
+    float: left;
   }
 }
 
@@ -1138,6 +1201,7 @@ hr {
     float: left; 
     padding-left: 5.5rem;
   }
+
 
   .page_tites {
     padding-right: 9rem;
@@ -1268,8 +1332,9 @@ hr {
 
   .movie-heading {
     float: left;
-    padding-left: 2rem;
+    padding-left: 0rem;
     font-size: 8px;
+    padding-right: 10rem;
   }
 
   .movie-icon-style {
@@ -1284,14 +1349,14 @@ hr {
     font-size: 1rem;
     text-align: left;
     line-height: 1.4rem; 
-    max-width: 250px; 
+    max-width: 230px; 
     padding-left: 0rem; 
     margin-right: 0;
     padding-bottom: 0;
   }
 
   .movie-page-image {
-    margin-left: 4rem;
+    margin-left: 2.75rem;
     margin-right: 5rem;
     width: auto;
     height: auto; 
@@ -1306,15 +1371,15 @@ hr {
     color: whitesmoke; 
     font-family: sans-serif; 
     margin: 0 auto; 
-    font-size: 0.8rem; 
+    font-size: 0.7rem; 
     line-height: 1.4; 
     padding-bottom: 2rem;
   }
 
   .movie-page-rating-circle {
-    width: 100px; 
-    height: 100px;
-    line-height: 100px; 
+    width: 80px; 
+    height: 80px;
+    line-height: 80px; 
     font-size: 25px; 
     border: 3px solid black; 
     margin: 0rem;
