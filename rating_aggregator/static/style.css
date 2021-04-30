@@ -1346,9 +1346,9 @@ hr {
   .movie-page-synopsis {
     font-family: sans-serif;
     color: whitesmoke; 
-    font-size: 1rem;
+    font-size: .8rem;
     text-align: left;
-    line-height: 1.4rem; 
+    line-height: 1.2rem; 
     max-width: 230px; 
     padding-left: 0rem; 
     margin-right: 0;
@@ -1411,11 +1411,24 @@ hr {
 }
 
 /* Mobile */
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 320px) {
   .movie-page-grid {
     display: grid; 
     grid-template-columns: auto; 
     float: left; 
     padding-left: 5rem;
   }
+
+  .movie-page-synopsis {
+    font-family: sans-serif;
+    color: whitesmoke; 
+    font-size: .8rem;
+    text-align: left;
+    line-height: 1.2rem; 
+    max-width: 230px; 
+    padding-left: 0rem; 
+    margin-right: 0;
+    padding-bottom: 0;
+  }
+
 }
